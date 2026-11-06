@@ -18,6 +18,7 @@ a:focus-visible{outline:3px solid currentColor;outline-offset:4px}
 ::selection{background:var(--lime);color:var(--ink)}
 .frame{padding-inline:var(--gutter)}
 header,footer{display:flex;align-items:center;justify-content:space-between;gap:.25rem 1.25rem;flex-wrap:wrap;padding-block:.55rem}
+header{direction:ltr}
 header strong{font-weight:900;letter-spacing:-.05em}
 nav{display:flex;gap:1.2rem}
 nav a,footer a{display:inline-flex;align-items:center;min-height:44px}
@@ -32,7 +33,9 @@ h1 span{display:inline-block;background:var(--lime);padding-inline:.10em .14em;t
 .work{padding-block:clamp(2rem,6vw,6rem)}
 h2{font-size:clamp(2.7rem,6vw,5.25rem);line-height:1.05;letter-spacing:-.055em;font-weight:900;margin-block-end:1.5rem}
 .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr));gap:clamp(1rem,3vw,2.5rem)}
-.project{width:min(100%,44rem);margin:0}
+.project{min-width:0;margin:0}
+.picky-art{display:grid;place-items:center;background:var(--pink)}
+.picky-art img{display:block;width:clamp(6rem,13vw,10rem);height:auto}
 .project-media{background:var(--blue);display:block;width:100%;aspect-ratio:4/3}
 figcaption{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:.5rem 1rem;padding-block:.65rem}
 h3{font-size:clamp(1.6rem,3vw,2.6rem);line-height:1.05;font-weight:900}
@@ -50,7 +53,7 @@ h1{font-size:clamp(2.6rem,11vw,5.3rem);white-space:normal}
 </style>
 </head>
 <body>
-<header class="frame" id="top"><strong lang="en" dir="ltr">MAYA BACHRACH</strong><nav aria-label="ניווט ראשי"><a href="#work">גלריה</a><a href="#contact">יצירת קשר</a></nav></header>
+<header class="frame" id="top"><strong lang="en" dir="ltr">MAYA BACHRACH</strong><nav dir="rtl" aria-label="ניווט ראשי"><a href="#contact">יצירת קשר</a></nav></header>
 <main>
 <section class="hero frame" aria-labelledby="title">
 <div class="hero-copy"><h1 id="title">מאיה <span>בכרך</span></h1><p>קריאייטיב ופיתוח קונספטים לחוויות, מוזיקה וסיפורים חזותיים.</p><a class="jump" href="#work">גלריה</a></div>
@@ -76,18 +79,26 @@ h1{font-size:clamp(2.6rem,11vw,5.3rem);white-space:normal}
 <ul class="tags" aria-label="תגיות"><li>איור</li><li>מוזיקה</li></ul>
 </figcaption>
 </figure>
+<figure class="project">
+<a class="project-media picky-art" href="https://github.com/MayaBachrach/picky" aria-label="PICKY ב־GitHub">
+<img src="data:image/png;base64,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" width="128" height="128" alt="">
+</a>
+<figcaption>
+<h3 lang="en" dir="ltr"><a href="https://github.com/MayaBachrach/picky">PICKY</a></h3>
+<ul class="tags" aria-label="תגיות"><li>עיצוב ממשק</li><li>כלי צבע</li><li>תוסף לכרום</li></ul>
+</figcaption>
+</figure>
 </div>
 </section>
 <section class="contact frame" id="contact" aria-labelledby="contact-title">
 <h2 id="contact-title">בואו ניצור משהו יפה ביחד <bdi dir="ltr">:)</bdi></h2>
 <ul class="contact-links">
 <li><a href="https://www.instagram.com/yes.maya/">אינסטגרם</a></li>
-<li><a href="https://wa.me/972544376688">וואטסאפ</a></li>
+<li><a href="https://wa.me/972544376688?text=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%99%D7%A6%D7%95%D7%A8%20%D7%93%D7%91%D7%A8%20%D7%99%D7%A4%D7%94">וואטסאפ</a></li>
 <li><a href="mailto:Mayaba4@gmail.com">מייל</a></li>
-<li><a href="tel:+972544376688">טלפון</a></li>
 </ul>
 </section>
 </main>
-<footer class="frame"><strong lang="en" dir="ltr">MAYA BACHRACH</strong><a href="#top">לראש הדף ↑</a></footer>
+<footer class="frame"><a href="#top">לראש הדף ↑</a></footer>
 </body>
 </html>
