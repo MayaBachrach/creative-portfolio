@@ -69,6 +69,10 @@ h1{display:grid;gap:.18em;font-size:clamp(2.6rem,11vw,5.3rem)}
 .set-photos a{display:block}
 .set-photos img{display:block;width:100%;height:auto}
 @media(max-width:36rem){.set-media{grid-template-columns:1fr}.set-video{width:min(100%,18rem);justify-self:center}}
+.social-project{grid-column:1 / -1}
+.social-videos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(.5rem,2vw,1.25rem);max-width:43rem}
+.social-videos video{display:block;width:100%;height:auto;aspect-ratio:9/16;background:var(--ink)}
+@media(max-width:30rem){.social-videos{grid-template-columns:1fr;max-width:20rem}}
 </style>
 </head>
 <body>
@@ -122,6 +126,22 @@ h1{display:grid;gap:.18em;font-size:clamp(2.6rem,11vw,5.3rem)}
 <figcaption>
 <h3>עיצוב תפאורה</h3>
 <ul class="tags" aria-label="תגיות"><li>תפאורה</li><li>אביזרים</li><li>עבודת יד</li></ul>
+</figcaption>
+</figure>
+<figure class="project social-project" id="social">
+<div class="social-videos">
+<video width="360" height="640" controls playsinline preload="none" poster="./assets/social-1.webp" aria-label="סרטון סושיאל 1">
+<source src="./assets/social-1.mp4" type="video/mp4">
+<a href="./assets/social-1.mp4">פתיחת סרטון 1</a>
+</video>
+<video width="360" height="640" controls playsinline preload="none" poster="./assets/social-2.webp" aria-label="סרטון סושיאל 2">
+<source src="./assets/social-2.mp4" type="video/mp4">
+<a href="./assets/social-2.mp4">פתיחת סרטון 2</a>
+</video>
+</div>
+<figcaption>
+<h3>סושיאל ושיווק דיגיטלי</h3>
+<ul class="tags" aria-label="תגיות"><li>סושיאל</li><li>הופעה מול מצלמה</li><li>אלתור</li></ul>
 </figcaption>
 </figure>
 <figure class="project">
