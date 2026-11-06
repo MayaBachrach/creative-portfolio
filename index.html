@@ -23,9 +23,12 @@ header strong{font-weight:900;letter-spacing:-.05em}
 nav{display:flex;gap:1.2rem}
 nav a,footer a{display:inline-flex;align-items:center;min-height:44px}
 .hero{background:var(--pink);position:relative;isolation:isolate;display:grid;grid-template-columns:1.06fr 1fr;align-items:center;gap:clamp(1rem,3vw,3rem);min-height:clamp(30rem,47vw,46rem);padding-block:clamp(2rem,6vw,6rem);overflow:clip}
+.greeting{grid-column:1 / -1;min-width:0;font-size:clamp(3.4rem,10vw,9.5rem);font-weight:900;line-height:1.02;white-space:nowrap;overflow:clip}
+.greeting span{display:inline-block;transform-origin:right center}
+.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .hero-copy{z-index:1;min-width:0}
 h1{font-size:clamp(3.4rem,7.25vw,8rem);letter-spacing:-.055em;font-weight:900;line-height:1.05;white-space:nowrap}
-h1 span{display:inline-block;background:var(--lime);padding-inline:.10em .14em;transform:rotate(-3deg)}
+h1 .name{display:inline-block;background:var(--yellow);padding-inline:.10em .14em;transform:rotate(-3deg)}
 .hero p{font-weight:700;font-size:clamp(1.15rem,2vw,1.55rem);max-width:26rem;margin-block:1.6rem 1rem}
 .jump{display:inline-flex;min-height:46px;align-items:center;gap:.75rem;background:var(--ink);color:var(--paper);padding:.5rem .95rem;font-weight:700;text-decoration:none}
 .jump:focus-visible{outline-color:var(--ink)}
@@ -56,7 +59,8 @@ h1{font-size:clamp(2.6rem,11vw,5.3rem);white-space:normal}
 <header class="frame" id="top"><strong lang="en" dir="ltr">MAYA BACHRACH</strong><nav dir="rtl" aria-label="ניווט ראשי"><a href="#contact">יצירת קשר</a></nav></header>
 <main>
 <section class="hero frame" aria-labelledby="title">
-<div class="hero-copy"><h1 id="title">מאיה <span>בכרך</span></h1><p>קריאייטיב ופיתוח קונספטים לחוויות, מוזיקה וסיפורים חזותיים.</p><a class="jump" href="#work">גלריה</a></div>
+<div class="greeting" aria-hidden="true"><span>הייייייי</span></div>
+<div class="hero-copy"><h1 id="title"><span class="visually-hidden">היי, </span>אני <span class="name">מאיה</span></h1><p>קריאייטיב ופיתוח קונספטים לחוויות, מוזיקה וסיפורים חזותיים.</p><a class="jump" href="#work">גלריה</a></div>
 <svg class="hero-art" viewBox="0 0 500 470" role="img" aria-label="DJ Mayu, איור של מאיה בכרך. דמות עם כתר מתקלטת על שני פטיפונים.">
 <path d="M64 66 408 43 431 380 82 412 72 386 81 371 67 347 78 330 60 304 67 286 56 258Z" fill="#fffdf6" stroke="#1b101c" stroke-width="4"/>
 <path d="M90 85 393 65 413 341 105 373Z" fill="#d6ff43"/>
@@ -100,5 +104,37 @@ h1{font-size:clamp(2.6rem,11vw,5.3rem);white-space:normal}
 </section>
 </main>
 <footer class="frame"><a href="#top">לראש הדף ↑</a></footer>
+<script>
+const greeting = document.querySelector(".greeting");
+const greetingText = greeting.querySelector("span");
+
+function fitGreeting() {
+  const availableWidth = greeting.clientWidth;
+  if (!availableWidth) return;
+
+  greetingText.style.transform = "";
+  const measure = count => {
+    greetingText.textContent = "ה" + "י".repeat(count);
+    return greetingText.getBoundingClientRect().width;
+  };
+
+  let low = 1;
+  let high = 2;
+  while (measure(high) <= availableWidth) high *= 2;
+
+  while (high - low > 1) {
+    const middle = Math.floor((low + high) / 2);
+    if (measure(middle) <= availableWidth) low = middle;
+    else high = middle;
+  }
+
+  const textWidth = measure(low);
+  greetingText.style.transform = `scaleX(${availableWidth / textWidth})`;
+}
+
+new ResizeObserver(fitGreeting).observe(greeting);
+document.fonts.ready.then(fitGreeting);
+fitGreeting();
+</script>
 </body>
 </html>
