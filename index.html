@@ -62,6 +62,13 @@ h1{display:grid;gap:.18em;font-size:clamp(2.6rem,11vw,5.3rem)}
 .lobby-photos{grid-template-columns:1fr 1fr}
 .lobby-photos a:first-child{grid-column:1 / -1}
 }
+.set-project{grid-column:1 / -1}
+.set-media{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:start;gap:clamp(.5rem,1.5vw,1.25rem)}
+.set-video{display:block;width:100%;height:auto;aspect-ratio:9/16;background:var(--ink)}
+.set-photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(.35rem,1vw,.8rem)}
+.set-photos a{display:block}
+.set-photos img{display:block;width:100%;height:auto}
+@media(max-width:36rem){.set-media{grid-template-columns:1fr}.set-video{width:min(100%,18rem);justify-self:center}}
 </style>
 </head>
 <body>
@@ -92,6 +99,29 @@ h1{display:grid;gap:.18em;font-size:clamp(2.6rem,11vw,5.3rem)}
 <figcaption>
 <h3>עיצוב לובי</h3>
 <ul class="tags" aria-label="תגיות"><li>עיצוב חלל</li><li>תפאורה</li><li>הקמה</li></ul>
+</figcaption>
+</figure>
+<figure class="project set-project" id="set-design">
+<div class="set-media">
+<video class="set-video" width="540" height="960" controls playsinline preload="none" poster="./assets/set-poster.webp" aria-label="סרטון מתהליך עיצוב התפאורה">
+<source src="./assets/set-process.mp4" type="video/mp4">
+<a href="./assets/set-process.mp4">פתיחת הסרטון</a>
+</video>
+<div class="set-photos">
+<a href="./assets/set-6.webp"><img src="./assets/set-6.webp" width="720" height="960" loading="lazy" decoding="async" alt="מסגרת תפאורה ירוקה מעוטרת בעלים"></a>
+<a href="./assets/set-5.webp"><img src="./assets/set-5.webp" width="720" height="960" loading="lazy" decoding="async" alt="סדנת העבודה ובה משטחי עבודה ולוחות עץ"></a>
+<a href="./assets/set-4.webp"><img src="./assets/set-4.webp" width="720" height="960" loading="lazy" decoding="async" alt="מסגרות תפאורה וחלקי עץ בסדנה"></a>
+<a href="./assets/set-3.webp"><img src="./assets/set-3.webp" width="720" height="960" loading="lazy" decoding="async" alt="הצמדת סרט אבני קישוט לידית עץ"></a>
+<a href="./assets/set-10.webp"><img src="./assets/set-10.webp" width="720" height="960" loading="lazy" decoding="async" alt="תקריב של רצועת חיבור באביזר צהוב"></a>
+<a href="./assets/set-7.webp"><img src="./assets/set-7.webp" width="720" height="960" loading="lazy" decoding="async" alt="פין מתכת ושרשרת בחיבור למסגרת ירוקה"></a>
+<a href="./assets/set-8.webp"><img src="./assets/set-8.webp" width="720" height="960" loading="lazy" decoding="async" alt="פרט חיבור באביזר עץ צבוע בצהוב"></a>
+<a href="./assets/set-1.webp"><img src="./assets/set-1.webp" width="720" height="960" loading="lazy" decoding="async" alt="רצועת גומי בתוך כובע שחור"></a>
+<a href="./assets/set-2.webp"><img src="./assets/set-2.webp" width="720" height="960" loading="lazy" decoding="async" alt="ידיים מחזיקות אביזר מקופל עם בטנה צהובה"></a>
+</div>
+</div>
+<figcaption>
+<h3>עיצוב תפאורה</h3>
+<ul class="tags" aria-label="תגיות"><li>תפאורה</li><li>אביזרים</li><li>עבודת יד</li></ul>
 </figcaption>
 </figure>
 <figure class="project">
