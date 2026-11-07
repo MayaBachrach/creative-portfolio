@@ -304,3 +304,5 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 #music-toggle svg { width: 26px; height: 26px; overflow: visible; }
 #music-toggle[aria-pressed="true"] .music-muted-line { display: none; }
 :root[data-cards] .card-title { margin-block-end: -.15rem; }
+
+@media(max-width:23rem) { .site-header { min-height: 104px; padding-block-end: 52px; } .header-controls { top: 52px; } }
