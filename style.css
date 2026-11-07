@@ -51,14 +51,14 @@
   --panel-text: #222028;
   --tag-background: #fff;
   --tag-text: #222028;
-  --contact-background: #222028;
-  --contact-title: #ec3e54;
+  --contact-background: #fff;
+  --contact-title: var(--accent-1);
   --name-background: #e7ac00;
   --name-text: #222028;
   --media-background: #fff;
   --media-text: #222028;
   --close-color: #222028;
-  --icon-color: #fff;
+  --icon-color: #222028;
   --accent-1: #ec3e54;
   --accent-2: #325ee8;
   --accent-3: #e7ac00;
@@ -79,17 +79,17 @@
   --panel-text: #faf7f2;
   --tag-background: #151419;
   --tag-text: #faf7f2;
-  --contact-background: #faf7f2;
-  --contact-title: #a72778;
-  --footer-accent-1: #c32484;
-  --footer-accent-2: #527600;
-  --footer-accent-3: #087b9e;
+  --contact-background: #151419;
+  --contact-title: var(--accent-1);
+  --footer-accent-1: var(--accent-1);
+  --footer-accent-2: var(--accent-2);
+  --footer-accent-3: var(--accent-3);
   --name-background: #b8ff42;
   --name-text: #151419;
   --media-background: #faf7f2;
   --media-text: #151419;
   --close-color: #faf7f2;
-  --icon-color: #151419;
+  --icon-color: #faf7f2;
   --accent-1: #ff65c9;
   --accent-2: #b8ff42;
   --accent-3: #74dffb;
@@ -193,8 +193,10 @@ h1 { display: flex; align-items: baseline; gap: .22em; font-size: clamp(3.2rem, 
 }
 
 .social-icon { position: relative; display: grid; place-items: center; width: clamp(4rem, 10vw, 5.5rem); height: clamp(4rem, 10vw, 5.5rem); color: var(--icon-color); }
-.social-icon > svg { width: 55%; height: 55%; }
-.social-icon::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: var(--pencil-outline) center / 100% 100% no-repeat; }
+.social-icon > svg:not(.pencil-frame) { width: 55%; height: 55%; }
+.social-icon { border: 2px solid var(--social-outline); }
+.social-icon.has-pencil-frame { border-color: transparent; }
+.social-icon > .pencil-frame { position: absolute; inset: -2px; display: block; width: calc(100% + 4px); height: calc(100% + 4px); overflow: visible; pointer-events: none; }
 @media (hover: hover) { .social-icon:hover { color: var(--social-outline); } }
 
 .theme-toggle { min-height: 44px; padding: .2rem .65rem; border: 1px solid currentColor; border-radius: 999px; background: transparent; color: var(--page-text); font-size: .9rem; }
@@ -207,14 +209,11 @@ h1 { display: flex; align-items: baseline; gap: .22em; font-size: clamp(3.2rem, 
 :root:is([data-theme="crayons"], [data-theme="markers"]) .project-entry:nth-child(4n) { --outline-color: var(--accent-4); --card-accent: var(--accent-4); }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .project-card::after { opacity: 1; }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .card-title { color: color-mix(in srgb, var(--card-accent) 75%, var(--page-text)); }
-:root:is([data-theme="crayons"], [data-theme="markers"]) .carousel-tile:nth-child(5n + 1) { --star-fill: var(--accent-4); }
-:root:is([data-theme="crayons"], [data-theme="markers"]) .carousel-tile:nth-child(5n + 2) { --star-fill: var(--accent-2); }
-:root:is([data-theme="crayons"], [data-theme="markers"]) .carousel-tile:nth-child(5n + 3) { --star-fill: var(--accent-5); }
-:root:is([data-theme="crayons"], [data-theme="markers"]) .carousel-tile:nth-child(5n + 4) { --star-fill: var(--accent-1); }
-:root:is([data-theme="crayons"], [data-theme="markers"]) .carousel-tile:nth-child(5n) { --star-fill: var(--accent-3); }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .social-icon:nth-child(1) { --social-outline: var(--footer-accent-1); }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .social-icon:nth-child(2) { --social-outline: var(--footer-accent-2); }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .social-icon:nth-child(3) { --social-outline: var(--footer-accent-3); }
 @media(max-width: 26rem) { .site-header { gap: .4rem; } .wordmark { font-size: .9rem; } .theme-toggle { font-size: .75rem; padding-inline: .45rem; } .site-header > a:last-child { font-size: .9rem; } }
 
 :root[data-theme="markers"] .carousel-tile img, :root[data-theme="markers"] .carousel-tile video { filter: brightness(0) invert(1); }
+
+:root:is([data-theme="crayons"], [data-theme="markers"]) .carousel-tile::before { background: var(--carousel-color, var(--accent-1)); }

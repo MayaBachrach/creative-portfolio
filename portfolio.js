@@ -2,7 +2,7 @@
 const carouselItems = [
   { type: "image", src: "./assets/dj-mayu.png", frames: ["./assets/dj-frame-1.svg", "./assets/dj-frame-2.svg", "./assets/dj-frame-3.svg"], frameDuration: 280, alt: "DJ Mayu, איור של מאיה" },
 ];
-const carouselSettings = { minimumTiles: 6, secondsPerTile: 7 };
+const carouselSettings = { minimumTiles: 6, secondsPerTile: 7, colorCount: 5 };
 
 // Add another project object to extend the home page.
 const projects = [
@@ -85,7 +85,15 @@ function changePencilOutline(card, colorToken = "--outline-color", retainShape =
   const color = theme.getPropertyValue(colorToken).trim();
   const strokeWidth = Number(theme.getPropertyValue("--outline-width")) || 2.8;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="none"><g fill="none" stroke="${color}" stroke-linecap="round" stroke-linejoin="round"><path d="${path}" vector-effect="non-scaling-stroke" stroke-width="${strokeWidth}"/><path d="${path}" transform="translate(1.5 -1)" vector-effect="non-scaling-stroke" stroke-width="${strokeWidth * .33}" opacity=".65"/><path d="${path}" transform="translate(-1 1.8)" vector-effect="non-scaling-stroke" stroke-width="${strokeWidth * .25}" opacity=".45" stroke-dasharray="12 2 6 1"/></g></svg>`;
-  card.style.setProperty("--pencil-outline", `url("data:image/svg+xml,${encodeURIComponent(svg)}")`);
+  if (card.classList.contains("social-icon")) {
+    const visibleFrame = svg.replace("<svg ", '<svg class="pencil-frame" aria-hidden="true" ');
+    const existingFrame = card.querySelector(".pencil-frame");
+    if (existingFrame) existingFrame.outerHTML = visibleFrame;
+    else card.insertAdjacentHTML("beforeend", visibleFrame);
+    card.classList.add("has-pencil-frame");
+  } else {
+    card.style.setProperty("--pencil-outline", `url("data:image/svg+xml,${encodeURIComponent(svg)}")`);
+  }
 }
 
 function renderCards() {
@@ -255,6 +263,11 @@ window.addEventListener("hashchange", showRoute);
 function renderCarousel() {
   const track = document.querySelector("#carousel-track");
   const count = Math.max(carouselSettings.minimumTiles, carouselItems.length);
+  const colorIndices = Array.from({ length: count }, (_, index) => index % carouselSettings.colorCount);
+  // The duplicate track must also join without repeating a color at the seam.
+  if (count > 1 && colorIndices[count - 1] === colorIndices[0]) {
+    colorIndices[count - 1] = (colorIndices[count - 1] + 1) % carouselSettings.colorCount;
+  }
   track.style.setProperty("--carousel-duration", count * carouselSettings.secondsPerTile + "s");
   for (let group = 0; group < 2; group++) {
     const set = element("div", "carousel-set");
@@ -262,6 +275,7 @@ function renderCarousel() {
     for (let index = 0; index < count; index++) {
       const item = carouselItems[index % carouselItems.length];
       const tile = element("div", "carousel-tile");
+      tile.style.setProperty("--carousel-color", `var(--accent-${colorIndices[index] + 1})`);
       const media = element(item.type === "video" ? "video" : "img");
       media.src = item.frames?.[0] || item.src;
       if (item.type === "video") {
