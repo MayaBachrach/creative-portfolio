@@ -12,7 +12,7 @@ window.PORTFOLIO_CONFIG = {
   },
   // Sampled from Maya's supplied references.
   palettePresets: {
-    "play-poster": ["#EE364C", "#1C49AE", "#F9DA44", "#0E8C61"],
+    "play-poster": ["#EE364C", "#1C49AE", "#F9DA44", "#0E8C61", "#F97513"],
     "neon-scribbles": ["#F84AAD", "#B2F224", "#10B8F0", "#F97513", "#8132B9"],
   },
   paletteNames: { light: "play-poster", dark: "neon-scribbles" },
