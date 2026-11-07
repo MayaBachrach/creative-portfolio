@@ -154,6 +154,16 @@ function stopDetailVideos() {
   detailMedia.querySelectorAll("video").forEach(video => video.pause());
 }
 
+function updatePanelAccent() {
+  const projectId = dialog.dataset.project;
+  const source = projectId
+    ? document.querySelector(`a[href="#project/${projectId}"]`)
+    : null;
+  const theme = getComputedStyle(source || document.documentElement);
+  const accent = theme.getPropertyValue(source ? "--outline-color" : "--accent-1").trim();
+  dialog.style.setProperty("--panel-accent", accent);
+}
+
 function showRoute() {
   const [kind, encodedValue] = location.hash.slice(1).split("/");
   if (kind !== "project" && kind !== "tag") {
@@ -170,11 +180,15 @@ function showRoute() {
   const project = projects.find(item => item.id === value);
   let media;
   if (kind === "project" && project) {
+    dialog.dataset.project = project.id;
+    updatePanelAccent();
     projectTitle.textContent = project.title;
     document.querySelector("#project-description").textContent = project.description;
     renderTags(document.querySelector("#project-tags"), project.tags);
     media = project.media;
   } else if (kind === "tag") {
+    delete dialog.dataset.project;
+    updatePanelAccent();
     projectTitle.textContent = value;
     document.querySelector("#project-description").textContent = "כל העבודות עם התגית ״" + value + "״";
     document.querySelector("#project-tags").replaceChildren();
@@ -326,6 +340,7 @@ document.querySelectorAll(".social-icon").forEach(link => {
 });
 
 function refreshThemeOutlines() {
+  updatePanelAccent();
   document.querySelectorAll(".project-card").forEach(card => changePencilOutline(card, "--outline-color", true));
   document.querySelectorAll(".social-icon").forEach(link => changePencilOutline(link, "--social-outline", true));
 }
