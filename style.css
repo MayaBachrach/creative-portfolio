@@ -108,7 +108,7 @@
 }
 
 * { box-sizing: border-box; }
-body { margin: 0; color: var(--page-text); background: var(--page-background); font: 1.1rem/1.6 "Heebo", system-ui, sans-serif; }
+body { margin: 0; color: var(--page-text); background: var(--page-background); font: 1.1rem/1.6 var(--font-body, "Heebo", system-ui, sans-serif); }
 body:has(dialog[open]) { overflow: hidden; }
 h1, h2, h3, p, figure { margin: 0; }
 button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
@@ -238,3 +238,6 @@ body, .hero, .project-card, .project-page, .project-page-header, .contact {
   background-image: var(--surface-texture);
   background-size: var(--surface-texture-size);
 }
+
+/* Typography roles: change the font once in site-config.js. */
+h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, sans-serif); }

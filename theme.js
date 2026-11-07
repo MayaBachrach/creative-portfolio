@@ -1,22 +1,8 @@
 (() => {
   // The original palette is preserved as "pink-dark" (and "pink-white").
   // Light and dark now use the two selected multicolor palettes.
-  const themeNames = { light: "crayons", dark: "markers" };
-  const themeFamilies = {
-    crayons: "multicolor",
-    markers: "multicolor",
-    "pink-dark": "guided",
-    "pink-white": "guided",
-  };
-  // Sampled from Maya's supplied references. Earlier palettes remain available here.
-  const palettePresets = {
-    "play-poster": ["#EE364C", "#1C49AE", "#F9DA44", "#0E8C61"],
-    "neon-scribbles": ["#F84AAD", "#B2F224", "#10B8F0", "#F97513", "#8132B9"],
-    "crayola-classic": ["#EE204D", "#1F75FE", "#FCE883", "#1CAC78", "#926EAE", "#FF7538"],
-    "original-markers": ["#ff65c9", "#b8ff42", "#74dffb", "#ffb46d", "#b29bff"],
-    "pink-lime": ["#ff38b5", "#d6ff43"],
-  };
-  const paletteNames = { light: "play-poster", dark: "neon-scribbles" };
+  const { themeNames, themeFamilies, palettePresets, paletteNames, typography, designTokens } = window.PORTFOLIO_CONFIG;
+  Object.entries({ ...designTokens, "--font-heading": typography.headings, "--font-body": typography.body }).forEach(([name, value]) => document.documentElement.style.setProperty(name, value));
   const storageKey = "maya-portfolio-color-mode";
   const systemScheme = matchMedia("(prefers-color-scheme: dark)");
   let preference = null;
