@@ -4,18 +4,13 @@ window.PORTFOLIO_CONFIG = {
   themeFamilies: {
     crayons: "multicolor",
     markers: "multicolor",
-    "pink-dark": "guided",
-    "pink-white": "guided",
   },
-  // Sampled from Maya's supplied references. Earlier palettes remain available here.
+  // Sampled from Maya's supplied references.
   palettePresets: {
     "play-poster": ["#EE364C", "#1C49AE", "#F9DA44", "#0E8C61"],
     "neon-scribbles": ["#F84AAD", "#B2F224", "#10B8F0", "#F97513", "#8132B9"],
-    "crayola-classic": ["#EE204D", "#1F75FE", "#FCE883", "#1CAC78", "#926EAE", "#FF7538"],
-    "original-markers": ["#ff65c9", "#b8ff42", "#74dffb", "#ffb46d", "#b29bff"],
-    "pink-lime": ["#ff38b5", "#d6ff43"],
   },
   paletteNames: { light: "play-poster", dark: "neon-scribbles" },
   typography: { headings: '"Heebo", system-ui, sans-serif', body: '"Heebo", system-ui, sans-serif' },
-  designTokens: { "--outline-width": "3.8", "--outline-grain": ".55", "--outline-roughness": "1.3", "--outline-wobble": "1.4", "--gutter": "clamp(1rem, 4.5vw, 5rem)" },
+  designTokens: { "--outline-width": "3.8", "--outline-grain": ".55", "--outline-roughness": "1.3", "--outline-wobble": ".65", "--gutter": "clamp(1rem, 4.5vw, 5rem)" },
 };

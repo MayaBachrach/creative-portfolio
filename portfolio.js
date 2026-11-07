@@ -90,7 +90,7 @@ function chalkContour(variant, wobble) {
     for (let step = 0; step < 18; step++) {
       const t = step / 18;
       const phase = variant * 1.73 + edge * 2.41;
-      const drift = Math.sin(t * Math.PI) * (Math.sin(phase) * 2.4);
+      const drift = Math.sin(t * Math.PI) * (Math.sin(phase) * 1.2);
       const grain = (Math.sin(step * 2.31 + phase) * .65 + Math.sin(step * 4.7 + phase) * .35) * wobble;
       const offset = drift + grain;
       points.push([(x + (endX - x) * t + normalX * offset).toFixed(2), (y + (endY - y) * t + normalY * offset).toFixed(2)]);
@@ -104,14 +104,14 @@ function changePencilOutline(card, colorToken = "--outline-color", retainShape =
   const index = retainShape && previous >= 0 ? previous : (previous + offset + chalkVariantCount) % chalkVariantCount;
   card.dataset.outline = index;
   const theme = getComputedStyle(card);
-  const wobble = Number(theme.getPropertyValue("--outline-wobble")) || 1.4;
+  const wobble = Number(theme.getPropertyValue("--outline-wobble")) || .65;
   const path = chalkContour(index, wobble);
   const color = theme.getPropertyValue(colorToken).trim();
   const strokeWidth = Number(theme.getPropertyValue("--outline-width")) || 3.8;
   const grain = Number(theme.getPropertyValue("--outline-grain")) || .55;
   const roughness = Number(theme.getPropertyValue("--outline-roughness")) || 1.3;
   const filterId = "chalk-grain-" + (++chalkFilterId);
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="none"><defs><filter id="${filterId}" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="3" seed="12" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="${roughness}" xChannelSelector="R" yChannelSelector="G" result="rough"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 ${grain} 0 0 0 ${1 - grain}" result="chalk"/><feComposite in="rough" in2="chalk" operator="in"/></filter></defs><path d="${path}" fill="none" stroke="${color}" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" stroke-width="${strokeWidth}" filter="url(#${filterId})"/></svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="none"><defs><filter id="${filterId}" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="3" seed="12" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="${roughness}" xChannelSelector="R" yChannelSelector="G" result="rough"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 ${grain} 0 0 0 ${1 - grain}" result="chalk"/><feComponentTransfer in="chalk" result="opaque-grain"><feFuncA type="discrete" tableValues="0 0 0 0 0 1 1 1"/></feComponentTransfer><feComposite in="rough" in2="opaque-grain" operator="in"/></filter></defs><path d="${path}" fill="none" stroke="${color}" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" stroke-width="${strokeWidth}" filter="url(#${filterId})"/></svg>`;
   if (card.classList.contains("social-icon")) {
     const visibleFrame = svg.replace("<svg ", '<svg class="pencil-frame" aria-hidden="true" ');
     const existingFrame = card.querySelector(".pencil-frame");

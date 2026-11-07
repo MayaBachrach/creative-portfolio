@@ -1,7 +1,7 @@
 :root {
   color-scheme: light;
-  --pink: #ff38b5;
-  --lime: #d6ff43;
+  --pink: #EE364C;
+  --lime: #0E8C61;
   --ink: #1b101c;
   --white: #fff;
   --on-pink: var(--ink);
@@ -10,7 +10,7 @@
   --outline-width: 3.8;
   --outline-grain: .55;
   --outline-roughness: 1.3;
-  --outline-wobble: 1.4;
+  --outline-wobble: .65;
   --social-outline: var(--pink);
   --primary-color: var(--pink);
   --secondary-color: var(--lime);
@@ -43,9 +43,9 @@
   --gutter: clamp(1rem, 4.5vw, 5rem);
 }
 :root[data-theme-family="multicolor"] { --media-padding: 0; }
-:root[data-theme="pink-white"] { --on-pink: #fff; --card-text: #fff; --panel-text: #fff; }
 
-/* Original pink/lime palettes remain available as pink-dark and pink-white. */
+
+/* Light and dark reference palettes. */
 :root[data-theme="crayons"] {
   color-scheme: light;
   --page-background: #fff;
@@ -60,21 +60,19 @@
   --tag-text: #222028;
   --contact-background: #fff;
   --contact-title: var(--accent-1);
-  --name-background: #FCE883;
+  --name-background: #1C49AE;
   --name-text: #222028;
   --media-background: #fff;
   --media-text: #222028;
   --close-color: #222028;
   --icon-color: #222028;
-  --accent-1: #EE204D;
-  --accent-2: #1F75FE;
-  --accent-3: #FCE883;
-  --accent-4: #1CAC78;
-  --accent-5: #926EAE;
-  --accent-6: #FF7538;
-  --accent-count: 6;
-  --outline-color: #1CAC78;
-  --social-outline: #EE204D;
+  --accent-1: #EE364C;
+  --accent-2: #1C49AE;
+  --accent-3: #F9DA44;
+  --accent-4: #0E8C61;
+  --accent-count: 4;
+  --outline-color: #0E8C61;
+  --social-outline: #EE364C;
 }
 :root[data-theme="markers"] {
   color-scheme: dark;
@@ -93,19 +91,19 @@
   --footer-accent-1: var(--accent-1);
   --footer-accent-2: var(--accent-2);
   --footer-accent-3: var(--accent-3);
-  --name-background: #b8ff42;
+  --name-background: #B2F224;
   --name-text: #151419;
   --media-background: #faf7f2;
   --media-text: #151419;
   --close-color: #faf7f2;
   --icon-color: #faf7f2;
-  --accent-1: #ff65c9;
-  --accent-2: #b8ff42;
-  --accent-3: #74dffb;
-  --accent-4: #ffb46d;
-  --accent-5: #b29bff;
-  --outline-color: #b8ff42;
-  --social-outline: #ff65c9;
+  --accent-1: #F84AAD;
+  --accent-2: #B2F224;
+  --accent-3: #10B8F0;
+  --accent-4: #F97513;
+  --accent-5: #8132B9;
+  --outline-color: #B2F224;
+  --social-outline: #F84AAD;
 }
 
 * { box-sizing: border-box; }
@@ -242,3 +240,6 @@ body, .hero, .project-card, .project-page, .project-page-header, .contact {
 
 /* Typography roles: change the font once in site-config.js. */
 h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, sans-serif); }
+
+/* White lettering only inside the blue hero name label in light mode. */
+:root[data-theme="crayons"] .intro-name .name { color: #fff; }

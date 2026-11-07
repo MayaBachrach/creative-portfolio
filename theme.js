@@ -1,5 +1,4 @@
 (() => {
-  // The original palette is preserved as "pink-dark" (and "pink-white").
   // Light and dark now use the two selected multicolor palettes.
   const { themeNames, themeFamilies, palettePresets, paletteNames, typography, designTokens } = window.PORTFOLIO_CONFIG;
   Object.entries({ ...designTokens, "--font-heading": typography.headings, "--font-body": typography.body }).forEach(([name, value]) => document.documentElement.style.setProperty(name, value));
