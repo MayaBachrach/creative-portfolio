@@ -1,4 +1,4 @@
-// An original lounge loop, synthesized locally after an explicit play gesture.
+// Original lounge loop. Try autoplay; unlock on the first permitted user gesture.
 (() => {
   const settings = window.PORTFOLIO_CONFIG.music;
   const button = document.querySelector('#music-toggle');
@@ -58,32 +58,52 @@
       nextTime += eighth;
     }
   }
-  async function toggle() {
+  let wanted = Boolean(settings.autoplay);
+  function updateControl() {
+    button.setAttribute('aria-pressed', String(playing));
+    button.setAttribute('aria-label', playing ? 'השתקת מוזיקת הרקע' : 'הפעלת מוזיקת הרקע');
+    button.dataset.musicState = playing ? 'playing' : wanted ? 'waiting' : 'muted';
+  }
+  function beginIfRunning() {
+    if (!wanted || playing || context.state !== 'running') return;
+    playing = true;
+    nextTime = context.currentTime + .06;
+    master.gain.setTargetAtTime(settings.volume, context.currentTime, .08);
+    schedule(); timer = setInterval(schedule, 40);
+    updateControl();
+  }
+  function tryStart() {
+    if (!wanted) return;
     try {
       if (!context) setup();
-      if (playing) {
-        playing = false; clearInterval(timer);
-        master.gain.setTargetAtTime(0, context.currentTime, .04);
-      } else {
-        await context.resume(); playing = true;
-        nextTime = context.currentTime + .06;
-        master.gain.setTargetAtTime(settings.volume, context.currentTime, .08);
-        schedule(); timer = setInterval(schedule, 40);
-      }
-      button.setAttribute('aria-pressed', String(playing));
-      button.setAttribute('aria-label', playing ? 'השהיית מוזיקת הרקע' : 'הפעלת מוזיקת הרקע');
-      button.querySelector('span').textContent = playing ? 'השהיה' : 'מוזיקה';
-    } catch {
-      button.querySelector('span').textContent = 'לא ניתן לנגן';
-    }
+      context.resume().then(beginIfRunning).catch(updateControl);
+      beginIfRunning();
+    } catch { wanted = false; updateControl(); }
   }
-  button.addEventListener('click', toggle);
+  function stop() {
+    wanted = false; playing = false;
+    clearInterval(timer);
+    if (context) master.gain.setTargetAtTime(0, context.currentTime, .04);
+    updateControl();
+  }
+  button.addEventListener('click', event => {
+    if (playing) stop();
+    else { wanted = true; tryStart(); }
+    if (event.detail > 0) button.blur();
+  });
+  function unlock(event) {
+    if (event.target.closest?.('#music-toggle')) return;
+    if (wanted && !playing) tryStart();
+  }
+  for (const event of ['pointerdown', 'click', 'keydown']) document.addEventListener(event, unlock, true);
   document.addEventListener('visibilitychange', () => {
     if (!context) return;
     if (document.hidden) context.suspend();
-    else if (playing) context.resume();
+    else if (wanted) { context.resume().then(beginIfRunning); }
   });
   document.addEventListener('play', event => {
-    if (event.target.tagName === 'VIDEO' && playing) toggle();
+    if (event.target.tagName === 'VIDEO' && !event.target.muted && playing) stop();
   }, true);
+  updateControl();
+  if (wanted) tryStart();
 })();

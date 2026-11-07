@@ -1,10 +1,10 @@
 // Central design settings. Use exact palette values; do not generate extra shades.
 window.PORTFOLIO_CONFIG = {
-  music: { enabled: true, bpm: 92, volume: .16 },
-  cursor: { size: 32, strokeWidth: 2.2, colorRoles: { light: { fill: 3, stroke: 2 }, dark: { fill: 2, stroke: 5 } } },
+  music: { enabled: true, autoplay: true, bpm: 92, volume: .16 },
+  cursor: { size: 32, strokeWidth: 3.2, colors: { light: "#000000", dark: "#FFFFFF" } },
   colorRoles: { contactHeading: 4 },
   presentation: { defaultCards: "outline" },
-  favicons: { light: "./assets/branding/favicon-light.png?v=29", dark: "./assets/branding/favicon-dark.png?v=29" },
+  favicons: { light: "./assets/branding/favicon-light-flat.png?v=31", dark: "./assets/branding/favicon-dark-flat.png?v=31" },
   themeNames: { light: "crayons", dark: "markers" },
   themeFamilies: {
     crayons: "multicolor",
@@ -17,5 +17,5 @@ window.PORTFOLIO_CONFIG = {
   },
   paletteNames: { light: "play-poster", dark: "neon-scribbles" },
   typography: { headings: '"Heebo", system-ui, sans-serif', body: '"Heebo", system-ui, sans-serif' },
-  designTokens: { "--frame-inner-scale": ".82", "--outline-width": "3.8", "--gutter": "clamp(1rem, 4.5vw, 5rem)" },
+  designTokens: { "--frame-inner-scale": ".90", "--outline-width": "3.8", "--gutter": "clamp(1rem, 4.5vw, 5rem)" },
 };

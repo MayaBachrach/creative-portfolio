@@ -297,9 +297,10 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
   a[href], button, [role="button"], [role="switch"] { cursor: var(--site-cursor-link, pointer); }
 }
 
-#music-toggle { position: fixed; z-index: 20; inset-inline-end: 1rem; bottom: 1rem; display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; padding: .45rem .8rem; color: var(--page-text); background: var(--page-background); border: 2px solid var(--accent-4); border-radius: 999px; font-size: .9rem; }
-#music-toggle svg { width: 21px; height: 21px; }
-#music-toggle[aria-pressed="true"] { border-color: var(--accent-2); }
-body:has(dialog[open]) #music-toggle { visibility: hidden; }
 
-@media(max-width:48rem) { body:has(#music-toggle:not([hidden])) .contact { padding-block-end: 6rem; } }
+/* Keep the theme switch centered, with music immediately beside it. */
+.header-controls { position: absolute; left: 50%; transform: translateX(-50%); width: 80px; height: 44px; }
+#music-toggle { position: absolute; left: calc(100% + .25rem); top: 0; display: grid; place-items: center; width: 44px; height: 44px; padding: .45rem; border: 0; background: transparent; color: var(--page-text); }
+#music-toggle svg { width: 26px; height: 26px; overflow: visible; }
+#music-toggle[aria-pressed="true"] .music-muted-line { display: none; }
+:root[data-cards] .card-title { margin-block-end: -.15rem; }
