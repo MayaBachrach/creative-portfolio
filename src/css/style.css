@@ -330,3 +330,20 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 .project-page h2 > .handwritten-heading { height: auto; width: 100%; }
 .tag { border: 0; padding-inline: .15rem; text-decoration: underline; text-underline-offset: .25em; text-decoration-thickness: 1px; background: transparent; }
 @media(hover:hover) { .tag:hover { background: transparent; color: var(--panel-accent, var(--card-accent, var(--accent-2))); } }
+
+/* Tags remain in the content model for later restoration. */
+.tags { display: none; }
+/* A restrained hand-shaped panel, with the originating card's exact accent. */
+.project-page { clip-path: none; border-radius: 2.4% 2.8% 2.2% 2.7% / 3.4% 2.8% 3.2% 2.6%; --panel-background: var(--panel-accent); --panel-text: var(--page-background); --close-color: var(--page-background); padding: 2.5dvh 2%; }
+.project-page h2 { color: var(--panel-text); }
+.project-page-scroll { scrollbar-color: var(--panel-text) var(--panel-background); }
+.project-page-scroll::-webkit-scrollbar-thumb { background: var(--panel-text); }
+@media(min-width:49rem) {
+  .project-page h2 > .handwritten-heading { width: 100%; height: clamp(3.5rem, 7vw, 6rem); }
+}
+
+/* Reduce the original path's deviations while retaining its hand-drawn contour. */
+.project-page { clip-path: url(#panel-shape); border-radius: 0; padding: 6dvh 6%; }
+.hero { padding-block-end: 0; }
+.carousel-window { padding-block-end: 0; }
+.projects-section { padding-block-start: 2rem; }

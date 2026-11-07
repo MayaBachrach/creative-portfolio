@@ -161,7 +161,7 @@ function updatePanelAccent() {
     ? document.querySelector(`a[href="#project/${projectId}"]`)
     : null;
   const theme = getComputedStyle(source || document.documentElement);
-  const accent = theme.getPropertyValue(source ? "--outline-color" : "--accent-1").trim();
+  const accent = theme.getPropertyValue(source ? "--card-accent" : "--accent-1").trim();
   dialog.style.setProperty("--panel-accent", accent);
 }
 
@@ -207,9 +207,9 @@ function showRoute() {
       const x = Math.max(-120, Math.min(120, openingRect.left + openingRect.width / 2 - bounds.left - bounds.width / 2));
       const y = Math.max(-80, Math.min(80, openingRect.top + openingRect.height / 2 - bounds.top - bounds.height / 2));
       dialog.animate([
-        { transform: `translate(${x}px, ${y}px) scale(.76)`, opacity: .7 },
+        { transform: `translate(${x}px, ${y}px) scale(.88)`, opacity: 0 },
         { transform: "translate(0, 0) scale(1)", opacity: 1 },
-      ], { duration: 600, easing: "cubic-bezier(.16,1,.3,1)" });
+      ], { duration: 520, easing: "cubic-bezier(.22,1,.36,1)" });
     }
     openingRect = null;
   }
