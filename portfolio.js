@@ -440,6 +440,12 @@ document.querySelectorAll(".social-icon").forEach(link => {
 });
 
 function refreshThemeOutlines() {
+  const colorCount = Number(getComputedStyle(document.documentElement).getPropertyValue("--accent-count")) || 5;
+  document.querySelectorAll(".project-entry").forEach((entry, index) => {
+    const accent = `var(--accent-${index % colorCount + 1})`;
+    entry.style.setProperty("--outline-color", accent);
+    entry.style.setProperty("--card-accent", accent);
+  });
   updatePanelAccent();
   refreshCarouselColors();
   document.querySelectorAll(".project-card").forEach(card => changePencilOutline(card, "--outline-color", true));
