@@ -283,3 +283,5 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 .project-card { --outline-width: var(--card-outline-width, 9); }
 :root[data-cards="outline"] .card-content { padding: 0; isolation: isolate; }
 :root[data-cards="outline"] .card-content::after { inset: 0; z-index: 2; }
+
+:root[data-cards] .card-title { padding-block: 0; margin-block: 0 .3rem; }
