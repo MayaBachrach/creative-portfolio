@@ -1,6 +1,6 @@
 // Add future animation files here. Each item accepts image or video media.
 const carouselItems = [
-  { type: "image", src: "./assets/dj-mayu.png", alt: "DJ Mayu, איור של מאיה" },
+  { type: "image", src: "./assets/dj-mayu.png", frames: ["./assets/dj-mayu.png"], alt: "DJ Mayu, איור של מאיה" },
 ];
 const carouselSettings = { minimumTiles: 6, secondsPerTile: 7 };
 
@@ -8,10 +8,9 @@ const carouselSettings = { minimumTiles: 6, secondsPerTile: 7 };
 const projects = [
   {
     id: "mix", title: "מיקס והפקה", cover: "./assets/dj-mayu.png", contain: true,
-    note: "איור זמני — מדיית הפרויקט תתווסף בהמשך",
-    description: "מקום לרמיקסים ולעבודות ההפקה המוזיקלית. כרגע מוצג איור DJ Mayu ככיסוי זמני.",
+    description: "מיקס, רמיקסים והפקה מוזיקלית.",
     tags: ["מוזיקה", "מיקס", "הפקה"],
-    media: [{ type: "image", src: "./assets/dj-mayu.png", alt: "איור DJ Mayu", caption: "איור זמני לכיסוי הפרויקט", tags: ["איור", "מוזיקה"] }],
+    media: [{ type: "image", src: "./assets/dj-mayu.png", alt: "איור DJ Mayu", caption: "DJ Mayu", tags: ["איור", "מוזיקה"] }],
   },
   {
     id: "social", title: "סושיאל", cover: "./assets/social-1.webp",
@@ -56,6 +55,7 @@ const detailMedia = document.querySelector("#detail-media");
 const projectTitle = document.querySelector("#project-title");
 let previousFocus;
 let openedFromCard = false;
+let openingRect;
 
 function element(tag, className, text) {
   const node = document.createElement(tag);
@@ -81,6 +81,7 @@ function renderCards() {
     card.setAttribute("aria-haspopup", "dialog");
     card.addEventListener("click", () => {
       previousFocus = card;
+      openingRect = card.getBoundingClientRect();
       openedFromCard = true;
     });
     const heading = element("h2", "card-title", project.title);
@@ -167,7 +168,19 @@ function showRoute() {
 
   stopDetailVideos();
   detailMedia.replaceChildren(...media.map(mediaFigure));
-  if (!dialog.open) dialog.showModal();
+  if (!dialog.open) {
+    dialog.showModal();
+    if (openingRect && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const bounds = dialog.getBoundingClientRect();
+      const x = openingRect.left + openingRect.width / 2 - bounds.left - bounds.width / 2;
+      const y = openingRect.top + openingRect.height / 2 - bounds.top - bounds.height / 2;
+      dialog.animate([
+        { transform: `translate(${x}px, ${y}px) scale(${openingRect.width / bounds.width}, ${openingRect.height / bounds.height})`, opacity: .6 },
+        { transform: "translate(0, 0) scale(1)", opacity: 1 },
+      ], { duration: 420, easing: "cubic-bezier(.2,.8,.2,1)" });
+    }
+    openingRect = null;
+  }
   dialog.scrollTop = 0;
   projectTitle.focus({ preventScroll: true });
 }
@@ -202,13 +215,22 @@ function renderCarousel() {
       const item = carouselItems[index % carouselItems.length];
       const tile = element("div", "carousel-tile");
       const media = element(item.type === "video" ? "video" : "img");
-      media.src = item.src;
+      media.src = item.frames?.[0] || item.src;
       if (item.type === "video") {
         media.muted = true;
         media.loop = true;
         media.playsInline = true;
       } else {
         media.alt = "";
+      }
+      // Supply successive drawing files in frames to replace the gentle sway with frame animation.
+      if (item.frames?.length > 1) {
+        let frame = 0;
+        setInterval(() => {
+          if (carousel.classList.contains("is-paused")) return;
+          frame = (frame + 1) % item.frames.length;
+          media.src = item.frames[frame];
+        }, item.frameDuration || 160);
       }
       tile.append(media);
       set.append(tile);

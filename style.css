@@ -29,51 +29,55 @@ h1 { display: flex; align-items: baseline; gap: .22em; font-size: clamp(3.2rem, 
 .carousel-window { direction: ltr; overflow: hidden; padding-block: 2rem 1rem; }
 .carousel-track { display: flex; direction: ltr; width: max-content; animation: drift var(--carousel-duration, 40s) linear infinite; }
 .carousel-set { display: flex; gap: clamp(1.2rem, 3vw, 3rem); padding-inline-end: clamp(1.2rem, 3vw, 3rem); }
-.carousel-tile { position: relative; width: clamp(11rem, 22vw, 21rem); aspect-ratio: 1; background: var(--lime); flex: none; }
+.carousel-tile { position: relative; width: clamp(11rem, 22vw, 21rem); aspect-ratio: 1; flex: none; }
+.carousel-tile::before { content: ""; position: absolute; inset: -5%; background: var(--lime); clip-path: polygon(50% 0%, 61% 31%, 91% 10%, 73% 39%, 100% 50%, 71% 60%, 91% 90%, 61% 71%, 50% 100%, 39% 71%, 9% 90%, 29% 60%, 0% 50%, 29% 39%, 9% 10%, 39% 31%); transform: rotate(-8deg); }
+.carousel-tile img { animation: dj-groove 2.4s ease-in-out infinite; transform-origin: 50% 80%; }
+.carousel-tile:nth-child(even) img { animation-delay: -1.2s; }
+@keyframes dj-groove { 0%, 100% { transform: translateY(1%) rotate(-5deg); } 50% { transform: translateY(-4%) rotate(4deg); } }
+.carousel.is-paused .carousel-tile img { animation-play-state: paused; }
 .carousel-tile img, .carousel-tile video { display: block; width: 111%; height: 111%; object-fit: contain; position: absolute; bottom: -1%; left: -5%; transform: rotate(-5deg); }
-.carousel-tile:nth-child(even) img, .carousel-tile:nth-child(even) video { transform: rotate(5deg); }
+.carousel-tile:nth-child(even) video { transform: rotate(5deg); }
 @keyframes drift { to { transform: translateX(-50%); } }
 .carousel.is-paused .carousel-track, .carousel:focus-within .carousel-track { animation-play-state: paused; }
 .projects-section { padding: clamp(2.5rem, 6vw, 6rem) var(--gutter); }
 .project-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 2rem); }
-.project-card { min-width: 0; position: relative; display: block; background: var(--lime); padding: clamp(.8rem, 1.5vw, 1.5rem); text-decoration: none; transition: transform 180ms ease, box-shadow 180ms ease; }
-.card-title { position: relative; display: table; font-size: clamp(1.25rem, 1.8vw, 2rem); font-weight: 900; line-height: 1.2; padding: .16em .4em; border: 3px solid var(--pink); background: var(--pink); margin: 0 auto 1.25rem; }
+.project-card { min-width: 0; position: relative; display: block; background: var(--pink); padding: clamp(.8rem, 1.5vw, 1.5rem); text-decoration: none; transition: transform 180ms ease, box-shadow 180ms ease; }
+.card-title { position: relative; display: table; font-size: clamp(1.25rem, 1.8vw, 2rem); font-weight: 900; line-height: 1.2; padding: .16em .4em; border: 3px solid var(--lime); background: var(--lime); margin: 0 auto 1.25rem; }
 .card-picture { padding: clamp(.5rem, 1vw, .85rem); background: var(--white); aspect-ratio: 1; }
 .card-picture img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .card-picture.contain img { object-fit: contain; }
 .card-note { font-size: .9rem; text-align: center; margin-block-start: .65rem; }
-.project-card:focus-visible, .project-card.is-in-view { transform: translateY(-6px); box-shadow: 7px 7px 0 var(--pink); }
+.project-card:focus-visible, .project-card.is-in-view { transform: translateY(-6px); box-shadow: 7px 7px 0 var(--lime); }
 .project-card:active { transform: scale(.98); }
 .tags { display: flex; flex-wrap: wrap; gap: .45rem; margin-block: 1rem; }
 .tag { display: inline-flex; align-items: center; min-height: 44px; padding: .25rem .7rem; border: 1px solid var(--ink); background: var(--white); text-decoration: none; font-size: 1rem; transition: background 160ms ease, transform 160ms ease; }
 .contact { background: var(--ink); color: var(--white); padding: clamp(2.5rem, 6vw, 5rem) var(--gutter) 1.5rem; text-align: center; }
 .contact h2 { color: var(--lime); font-size: clamp(2.5rem, 5vw, 5.5rem); font-weight: 800; letter-spacing: -.045em; line-height: 1.3; white-space: nowrap; }
 .contact-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(.4rem, 2vw, 1rem); max-width: 38rem; margin: 1.7rem auto 0; }
-.contact-button { display: flex; min-width: 0; align-items: stretch; border: 2px solid var(--pink); background: var(--pink); color: var(--ink); }
+.contact-button { display: flex; min-width: 0; align-items: stretch; border: 2px solid var(--lime); background: var(--lime); color: var(--ink); }
 .contact-button a, .contact-button button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; }
 .contact-button a { flex: 1; min-width: 0; padding: .5rem 1.2rem; text-decoration: none; font-weight: 600; }
 .contact-button button { width: 48px; background: transparent; border: 0; border-inline-start: 1px solid var(--ink); color: var(--ink); flex: none; }
 .contact-button svg { width: 20px; height: 20px; }
 .copy-status { min-height: 1.6em; margin-block-start: 1rem; }
-.project-page { border: 0; width: 100%; max-width: none; height: 100%; max-height: none; margin: 0; padding: 0; background: var(--white); color: var(--ink); overflow-y: auto; }
-.project-page[open] { animation: expand-page 220ms ease-out; }
-.project-page::backdrop { background: var(--ink); }
-@keyframes expand-page { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: scale(1); } }
-.project-page-header { display: flex; justify-content: flex-start; position: sticky; top: 0; padding: .5rem var(--gutter); background: var(--white); z-index: 1; border-bottom: 2px solid var(--pink); }
+.project-page { border: 0; width: min(92vw, 76rem); max-width: none; height: 88dvh; max-height: 88dvh; margin: auto; padding: 0; background: var(--pink); color: var(--ink); overflow-y: auto; box-shadow: 12px 12px 0 var(--lime); transform-origin: center; }
+.project-page[open] { display: block; }
+.project-page::backdrop { background: rgb(27 16 28 / 55%); backdrop-filter: blur(5px); }
+.project-page-header { display: flex; justify-content: flex-start; position: sticky; top: 0; padding: .5rem var(--gutter); background: var(--pink); z-index: 1; }
 .project-page-header button { background: transparent; border: 0; min-height: 44px; font-weight: 700; }
-.project-page-content { max-width: 90rem; margin: auto; padding: clamp(1.5rem, 4vw, 4rem) var(--gutter); }
-.project-page h2 { font-size: clamp(2.2rem, 6vw, 5rem); line-height: 1.15; font-weight: 900; }
+.project-page-content { max-width: 90rem; margin: auto; padding: clamp(1rem, 3vw, 3rem); }
+.project-page h2 { display: table; background: var(--lime); padding: .12em .25em; font-size: clamp(2.2rem, 6vw, 5rem); line-height: 1.15; font-weight: 900; }
 .project-description { max-width: 48rem; margin-block: 1rem; }
-.detail-media { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 1rem; margin-block-start: 2rem; }
-.media-item { min-width: 0; }
+.detail-media { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 1rem; margin-block-start: 2rem; }
+.media-item { min-width: 0; padding: clamp(.5rem, 1vw, 1rem); background: var(--white); }
 .media-item img, .media-item video { display: block; width: 100%; height: auto; background: var(--lime); }
 .media-item figcaption { font-size: .95rem; padding-block: .45rem; }
 .media-item .tags { margin-block: .3rem 1rem; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 @media (hover: hover) and (pointer: fine) {
-  .project-card:hover { transform: translateY(-6px); box-shadow: 7px 7px 0 var(--pink); }
-  .tag:hover { background: var(--pink); transform: translateY(-2px); }
-  .contact-button a:hover, .contact-button button:hover { background: var(--pink); color: var(--ink); }
+  .project-card:hover { transform: translateY(-6px); box-shadow: 7px 7px 0 var(--lime); }
+  .tag:hover { background: var(--lime); transform: translateY(-2px); }
+  .contact-button a:hover, .contact-button button:hover { background: var(--white); color: var(--ink); }
   .carousel:hover .carousel-track { animation-play-state: paused; }
 }
 @media (max-width: 48rem) {
