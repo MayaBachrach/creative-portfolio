@@ -51,10 +51,11 @@
   });
   document.addEventListener("DOMContentLoaded", () => {
     updateTheme();
-    document.querySelector("#theme-toggle").addEventListener("click", () => {
+    document.querySelector("#theme-toggle").addEventListener("click", (event) => {
       preference = currentMode() === "dark" ? "light" : "dark";
       try { localStorage.setItem(storageKey, preference); } catch {}
       updateTheme();
+      if (event.detail > 0) event.currentTarget.blur();
     });
   });
 })();

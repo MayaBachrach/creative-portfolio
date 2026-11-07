@@ -214,6 +214,10 @@ h1 { display: flex; align-items: baseline; gap: .22em; font-size: clamp(3.2rem, 
 .theme-toggle-sun { left: 9px; }
 .theme-toggle-moon { right: 9px; }
 .theme-toggle[aria-checked="false"] .theme-toggle-sun, .theme-toggle[aria-checked="true"] .theme-toggle-moon { color: var(--page-text); }
+.site-header { position: relative; }
+.site-header .theme-toggle { position: absolute; left: 50%; transform: translateX(-50%); box-shadow: none; -webkit-tap-highlight-color: transparent; }
+.theme-toggle:focus:not(:focus-visible) { outline: none; }
+@media(max-width: 23rem) { .site-header .wordmark { font-size: .78rem; } }
 @media(prefers-reduced-motion: reduce) { .theme-toggle-thumb { transition: none; } }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .greeting { color: var(--accent-1); }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .intro-name { color: var(--accent-3); }
