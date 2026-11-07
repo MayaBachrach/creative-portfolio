@@ -252,3 +252,13 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 
 /* White lettering only inside the blue hero name label in light mode. */
 :root[data-theme="crayons"] .intro-name .name { color: #fff; }
+
+/* Canva outlines: monochrome masks inherit the exact active palette color. */
+.canva-word, .canva-letter { display: inline-block; height: 1em; background: currentColor; mask: var(--letter-art) center / 100% 100% no-repeat; -webkit-mask: var(--letter-art) center / 100% 100% no-repeat; vertical-align: bottom; }
+.canva-he { width: .7567em; --letter-art: url('./assets/title-he.svg'); }
+.canva-yod { width: .3152em; --letter-art: url('./assets/title-yod.svg'); }
+.canva-zot { width: 2.2331em; --letter-art: url('./assets/title-zot.svg'); }
+.canva-maya { width: 3.0477em; --letter-art: url('./assets/title-maya.svg'); }
+.greeting > span { display: inline-flex; direction: rtl; gap: .015em; vertical-align: bottom; }
+.name-line { display: inline-flex; align-items: center; gap: .12em; }
+.name:has(.canva-word) { line-height: 1; }

@@ -384,7 +384,7 @@ function fitGreeting() {
   }
   greetingText.style.transform = "";
   const measure = count => {
-    greetingText.textContent = "ה" + "י".repeat(count);
+    greetingText.innerHTML = '<i class="canva-letter canva-he"></i>' + '<i class="canva-letter canva-yod"></i>'.repeat(count);
     return greetingText.getBoundingClientRect().width;
   };
   let low = 1;
