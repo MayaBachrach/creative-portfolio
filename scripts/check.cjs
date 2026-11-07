@@ -6,7 +6,7 @@ const root = path.resolve(__dirname, '..');
 const read = p => fs.readFileSync(path.join(root, p), 'utf8');
 const context = { window: {} };
 vm.createContext(context);
-for (const file of ['src/config/site-config.js', 'src/data/content.js', 'src/data/lettering.js', 'src/data/shapes.js', 'src/js/shapes.js']) vm.runInContext(read(file), context);
+for (const file of ['src/config/site-config.js', 'src/data/content.js', 'src/data/lettering.js', 'src/data/latin-lettering.js', 'src/data/shapes.js', 'src/js/shapes.js']) vm.runInContext(read(file), context);
 const { projects, carouselItems } = context.window.PORTFOLIO_CONTENT;
 assert.equal(new Set(projects.map(p => p.id)).size, projects.length);
 for (const project of projects) for (const char of project.title) {
@@ -71,3 +71,6 @@ const appSource = read("src/js/portfolio.js");
 vm.runInContext(appSource.slice(appSource.indexOf("function desktopColumnCount"), appSource.indexOf("function renderCards")), columnsContext);
 for (const [count, columns] of [[8,4],[9,3],[10,5],[12,4],[15,5]]) assert.equal(columnsContext.desktopColumnCount(count), columns);
 console.log("Passed: automatic full desktop rows for supported counts.");
+
+for (const char of "DJMAYABACHRACH") assert(context.window.PORTFOLIO_LETTERING[char], "Missing supplied English letter: " + char);
+console.log("Passed: supplied English glyphs for DJ and MAYA BACHRACH.");

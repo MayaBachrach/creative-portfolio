@@ -306,3 +306,9 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 :root[data-cards] .card-title { margin-block-end: -.45rem; }
 
 @media(max-width:23rem) { .site-header { min-height: 104px; padding-block-end: 52px; } .header-controls { top: 52px; } }
+
+/* Supplied English lettering shares the same renderer and theme colors. */
+.wordmark .handwritten-heading { width: clamp(7rem, 12vw, 10rem); height: 2rem; }
+
+/* Common lettering scale follows the longest project title at every card width. */
+.card-title > .handwritten-heading { height: auto; width: 100%; }
