@@ -75,13 +75,13 @@ function renderTags(container, tags) {
 }
 
 const pencilOutlines = ["M5 8 Q80 1 195 6 L192 194 Q95 199 7 191 Z","M9 4 Q103 10 194 3 L198 191 Q92 188 4 197 Z","M4 6 L190 3 Q200 98 194 195 L8 198 Q1 100 4 6","M7 10 Q90 0 197 7 L191 198 Q99 193 3 190 Z","M10 3 L196 8 Q189 100 198 192 L4 196 Z","M3 9 Q100 4 193 4 L197 197 Q100 190 7 195 Z","M8 3 Q103 9 198 5 L191 194 Q99 201 4 192 Z","M4 4 L193 9 Q201 95 195 190 L9 198 Q2 90 4 4"];
-function changePencilOutline(card, colorToken = "--outline-color") {
+function changePencilOutline(card, colorToken = "--outline-color", retainShape = false) {
   const previous = Number(card.dataset.outline ?? -1);
   const offset = 1 + Math.floor(Math.random() * (pencilOutlines.length - 1));
-  const index = (previous + offset + pencilOutlines.length) % pencilOutlines.length;
+  const index = retainShape && previous >= 0 ? previous : (previous + offset + pencilOutlines.length) % pencilOutlines.length;
   card.dataset.outline = index;
   const path = pencilOutlines[index];
-  const theme = getComputedStyle(document.documentElement);
+  const theme = getComputedStyle(card);
   const color = theme.getPropertyValue(colorToken).trim();
   const strokeWidth = Number(theme.getPropertyValue("--outline-width")) || 2.8;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="none"><g fill="none" stroke="${color}" stroke-linecap="round" stroke-linejoin="round"><path d="${path}" vector-effect="non-scaling-stroke" stroke-width="${strokeWidth}"/><path d="${path}" transform="translate(1.5 -1)" vector-effect="non-scaling-stroke" stroke-width="${strokeWidth * .33}" opacity=".65"/><path d="${path}" transform="translate(-1 1.8)" vector-effect="non-scaling-stroke" stroke-width="${strokeWidth * .25}" opacity=".45" stroke-dasharray="12 2 6 1"/></g></svg>`;
@@ -323,8 +323,15 @@ function fitGreeting() {
 renderCards();
 document.querySelectorAll(".social-icon").forEach(link => {
   changePencilOutline(link, "--social-outline");
-  link.addEventListener("pointerenter", () => changePencilOutline(link, "--social-outline"));
 });
+
+function refreshThemeOutlines() {
+  document.querySelectorAll(".project-card").forEach(card => changePencilOutline(card, "--outline-color", true));
+  document.querySelectorAll(".social-icon").forEach(link => changePencilOutline(link, "--social-outline", true));
+}
+document.addEventListener("portfolio-theme-change", refreshThemeOutlines);
+// Cards inherit their individual colors from the completed grid.
+refreshThemeOutlines();
 
 // On touch screens, highlight the card closest to the center of the viewport.
 const touchLayout = matchMedia("(hover: none)");
