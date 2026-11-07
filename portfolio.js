@@ -81,8 +81,10 @@ function changePencilOutline(card, colorToken = "--outline-color") {
   const index = (previous + offset + pencilOutlines.length) % pencilOutlines.length;
   card.dataset.outline = index;
   const path = pencilOutlines[index];
-  const color = getComputedStyle(document.documentElement).getPropertyValue(colorToken).trim();
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="none"><g fill="none" stroke="${color}" stroke-linecap="round" stroke-linejoin="round"><path d="${path}" stroke-width="2.2"/><path d="${path}" transform="translate(1.5 -1)" stroke-width=".8" opacity=".65"/><path d="${path}" transform="translate(-1 1.8)" stroke-width=".6" opacity=".45" stroke-dasharray="12 2 6 1"/></g></svg>`;
+  const theme = getComputedStyle(document.documentElement);
+  const color = theme.getPropertyValue(colorToken).trim();
+  const strokeWidth = Number(theme.getPropertyValue("--outline-width")) || 2.8;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="none"><g fill="none" stroke="${color}" stroke-linecap="round" stroke-linejoin="round"><path d="${path}" vector-effect="non-scaling-stroke" stroke-width="${strokeWidth}"/><path d="${path}" transform="translate(1.5 -1)" vector-effect="non-scaling-stroke" stroke-width="${strokeWidth * .33}" opacity=".65"/><path d="${path}" transform="translate(-1 1.8)" vector-effect="non-scaling-stroke" stroke-width="${strokeWidth * .25}" opacity=".45" stroke-dasharray="12 2 6 1"/></g></svg>`;
   card.style.setProperty("--pencil-outline", `url("data:image/svg+xml,${encodeURIComponent(svg)}")`);
 }
 
