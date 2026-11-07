@@ -94,7 +94,6 @@ function renderCards() {
     picture.append(image);
     card.append(heading, picture);
     if (project.note) card.append(element("p", "card-note", project.note));
-    card.append(element("span", "card-invite", "לפתיחת הפרויקט +"));
     const entry = element("article", "project-entry");
     const tags = element("div", "tags");
     tags.setAttribute("aria-label", "תגיות הפרויקט");
@@ -220,21 +219,15 @@ function renderCarousel() {
 
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 const carousel = document.querySelector(".carousel");
-const motionControl = document.querySelector("#motion-control");
-let userPaused = false;
 
 function updateCarouselMotion() {
-  const paused = userPaused || reducedMotion.matches || document.hidden;
+  const paused = reducedMotion.matches || document.hidden;
   carousel.classList.toggle("is-paused", paused);
-  motionControl.setAttribute("aria-pressed", String(paused));
-  motionControl.textContent = paused ? "הפעלת התנועה" : "השהיית התנועה";
-  motionControl.disabled = reducedMotion.matches;
   carousel.querySelectorAll("video").forEach(video => {
     if (paused) video.pause();
     else video.play().catch(() => {});
   });
 }
-motionControl.addEventListener("click", () => { userPaused = !userPaused; updateCarouselMotion(); });
 reducedMotion.addEventListener("change", updateCarouselMotion);
 document.addEventListener("visibilitychange", updateCarouselMotion);
 
@@ -274,6 +267,34 @@ function fitGreeting() {
 }
 
 renderCards();
+
+// On touch screens, highlight the card closest to the center of the viewport.
+const touchLayout = matchMedia("(hover: none)");
+const cards = [...document.querySelectorAll(".project-card")];
+let highlightFrame = 0;
+function updateTouchHighlight() {
+  highlightFrame = 0;
+  let closestCard;
+  let shortestDistance = Infinity;
+  if (touchLayout.matches) {
+    for (const card of cards) {
+      const rect = card.getBoundingClientRect();
+      const distance = Math.abs(rect.top + rect.height / 2 - innerHeight / 2);
+      if (rect.bottom > 0 && rect.top < innerHeight && distance < shortestDistance) {
+        closestCard = card;
+        shortestDistance = distance;
+      }
+    }
+  }
+  cards.forEach(card => card.classList.toggle("is-in-view", card === closestCard));
+}
+function scheduleTouchHighlight() {
+  if (!highlightFrame) highlightFrame = requestAnimationFrame(updateTouchHighlight);
+}
+addEventListener("scroll", scheduleTouchHighlight, { passive: true });
+addEventListener("resize", scheduleTouchHighlight);
+touchLayout.addEventListener("change", scheduleTouchHighlight);
+updateTouchHighlight();
 renderCarousel();
 updateCarouselMotion();
 showRoute();
