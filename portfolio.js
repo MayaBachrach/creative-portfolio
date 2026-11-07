@@ -55,6 +55,7 @@ const detailMedia = document.querySelector("#detail-media");
 const projectTitle = document.querySelector("#project-title");
 let previousFocus;
 let openedFromCard = false;
+let openedWithKeyboard = false;
 let openingRect;
 
 function element(tag, className, text) {
@@ -104,7 +105,8 @@ function renderCards() {
     changePencilOutline(card);
     card.addEventListener("pointerenter", () => changePencilOutline(card));
     card.addEventListener("focus", () => changePencilOutline(card));
-    card.addEventListener("click", () => {
+    card.addEventListener("click", event => {
+      openedWithKeyboard = event.detail === 0;
       previousFocus = card;
       openingRect = card.getBoundingClientRect();
       openedFromCard = true;
@@ -164,6 +166,11 @@ function stopDetailVideos() {
   detailMedia.querySelectorAll("video").forEach(video => video.pause());
 }
 
+function restoreProjectFocus() {
+  if (openedWithKeyboard) previousFocus?.focus({ preventScroll: true });
+  else previousFocus?.blur();
+}
+
 function updatePanelAccent() {
   const projectId = dialog.dataset.project;
   const source = projectId
@@ -179,7 +186,7 @@ function showRoute() {
   if (kind !== "project" && kind !== "tag") {
     stopDetailVideos();
     dialog.close();
-    previousFocus?.focus({ preventScroll: true });
+    restoreProjectFocus();
     return;
   }
 
@@ -243,7 +250,7 @@ async function closeProject() {
     history.back();
   } else {
     history.replaceState(null, "", location.pathname + location.search);
-    previousFocus?.focus({ preventScroll: true });
+    restoreProjectFocus();
   }
   openedFromCard = false;
 }
@@ -262,14 +269,29 @@ dialog.addEventListener("click", event => {
 });
 window.addEventListener("hashchange", showRoute);
 
+function carouselColorIndices(count) {
+  const themeColorCount = Number(getComputedStyle(document.documentElement).getPropertyValue("--accent-count"));
+  const colorCount = themeColorCount || carouselSettings.colorCount;
+  const colors = Array.from({ length: count }, (_, index) => index % colorCount);
+  if (count > 1 && colors[count - 1] === colors[0]) {
+    colors[count - 1] = (colors[count - 1] + 1) % colorCount;
+  }
+  return colors;
+}
+
+function refreshCarouselColors() {
+  document.querySelectorAll(".carousel-set").forEach(set => {
+    const colors = carouselColorIndices(set.children.length);
+    [...set.children].forEach((tile, index) => {
+      tile.style.setProperty("--carousel-color", `var(--accent-${colors[index] + 1})`);
+    });
+  });
+}
+
 function renderCarousel() {
   const track = document.querySelector("#carousel-track");
   const count = Math.max(carouselSettings.minimumTiles, carouselItems.length);
-  const colorIndices = Array.from({ length: count }, (_, index) => index % carouselSettings.colorCount);
-  // The duplicate track must also join without repeating a color at the seam.
-  if (count > 1 && colorIndices[count - 1] === colorIndices[0]) {
-    colorIndices[count - 1] = (colorIndices[count - 1] + 1) % carouselSettings.colorCount;
-  }
+  const colorIndices = carouselColorIndices(count);
   track.style.setProperty("--carousel-duration", count * carouselSettings.secondsPerTile + "s");
   for (let group = 0; group < 2; group++) {
     const set = element("div", "carousel-set");
@@ -357,6 +379,7 @@ document.querySelectorAll(".social-icon").forEach(link => {
 
 function refreshThemeOutlines() {
   updatePanelAccent();
+  refreshCarouselColors();
   document.querySelectorAll(".project-card").forEach(card => changePencilOutline(card, "--outline-color", true));
   document.querySelectorAll(".social-icon").forEach(link => changePencilOutline(link, "--social-outline", true));
 }

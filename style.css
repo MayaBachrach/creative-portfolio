@@ -57,19 +57,21 @@
   --tag-text: #222028;
   --contact-background: #fff;
   --contact-title: var(--accent-1);
-  --name-background: #e7ac00;
+  --name-background: #FCE883;
   --name-text: #222028;
   --media-background: #fff;
   --media-text: #222028;
   --close-color: #222028;
   --icon-color: #222028;
-  --accent-1: #ec3e54;
-  --accent-2: #325ee8;
-  --accent-3: #e7ac00;
-  --accent-4: #15996f;
-  --accent-5: #935bd2;
-  --outline-color: #15996f;
-  --social-outline: #ec3e54;
+  --accent-1: #EE204D;
+  --accent-2: #1F75FE;
+  --accent-3: #FCE883;
+  --accent-4: #1CAC78;
+  --accent-5: #926EAE;
+  --accent-6: #FF7538;
+  --accent-count: 6;
+  --outline-color: #1CAC78;
+  --social-outline: #EE204D;
 }
 :root[data-theme="markers"] {
   color-scheme: dark;
