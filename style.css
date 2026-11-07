@@ -120,9 +120,9 @@ button:focus-visible, a:focus-visible { outline: 3px solid currentColor; outline
 .hero { color: var(--hero-text); background: var(--hero-background); padding-block: clamp(2rem, 5vw, 5rem) 1rem; overflow: hidden; }
 .hero-intro { padding-inline: var(--gutter); }
 h1 { display: flex; align-items: baseline; gap: .22em; font-size: clamp(3.2rem, 7.7vw, 8.6rem); line-height: 1.15; letter-spacing: -.055em; font-weight: 900; }
-.greeting { flex: 1; display: block; min-width: 0; overflow: clip; white-space: nowrap; }
+.greeting { flex: 1; display: flex; align-items: center; min-width: 0; overflow: clip; white-space: nowrap; }
 .greeting span { display: inline-block; transform-origin: right center; }
-.intro-name { flex: none; white-space: nowrap; }
+.intro-name { flex: none; display: flex; align-items: center; white-space: nowrap; }
 .name { color: var(--name-text); display: inline-block; background: var(--name-background); padding-inline: .1em .14em; transform: rotate(-3deg); }
 .hero-intro > p { text-align: center; font-size: clamp(1.1rem, 2.15vw, 1.8rem); font-weight: 600; margin-block: 1.1rem 0; }
 .carousel { margin-block-start: clamp(2rem, 5vw, 4rem); }
@@ -259,16 +259,17 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 .canva-yod { width: .3476em; --letter-art: url('./assets/title-yod.svg?v=15'); }
 .canva-zot { width: 2.3965em; --letter-art: url('./assets/title-zot.svg?v=15'); }
 .canva-maya { width: 3.2668em; --letter-art: url('./assets/title-maya.svg?v=15'); }
-.greeting > span { display: inline-flex; direction: rtl; gap: .015em; vertical-align: bottom; }
-.name-line { display: inline-flex; align-items: center; gap: .12em; }
-.name:has(.canva-word) { line-height: 1; }
+.greeting > span { display: flex; flex: none; direction: rtl; gap: .015em; }
+.canva-letter { flex: none; }
+.name-line { display: flex; align-items: center; gap: .12em; }
+.name:has(.canva-word) { display: flex; align-items: center; line-height: 1; }
 #intro-title { display: flex; flex-wrap: nowrap; align-items: center; gap: .22em; }
 #intro-title .intro-name { width: auto; }
 #intro-title .greeting { width: auto; }
 
-/* Optional filled-chalk version: ?cards=filled. The outline version stays the default. */
-:root[data-cards="filled"] .project-card { background: transparent; }
+/* Optional solid-color version: ?cards=filled. The outline version stays available. */
+:root[data-cards="filled"] .project-card { background: transparent; padding-block-start: var(--filled-card-top-padding, 2rem); }
 :root[data-cards="filled"] .project-card::before { content: ""; position: absolute; inset: -5px; background: var(--chalk-fill) center / 100% 100% no-repeat; pointer-events: none; }
 :root[data-cards="filled"] .project-card::after { display: none; }
 :root[data-cards="filled"] .project-card > * { position: relative; }
-:root[data-cards="filled"] .card-title { color: #fff; }
+:root[data-cards="filled"] .card-title { color: var(--filled-card-title); }

@@ -1,7 +1,8 @@
 (() => {
   // Light and dark now use the two selected multicolor palettes.
   const { themeNames, themeFamilies, palettePresets, paletteNames, typography, designTokens } = window.PORTFOLIO_CONFIG;
-  document.documentElement.dataset.cards = new URLSearchParams(location.search).get("cards") === "filled" ? "filled" : window.PORTFOLIO_CONFIG.presentation.defaultCards;
+  const cardVariant = new URLSearchParams(location.search).get("cards");
+  document.documentElement.dataset.cards = ["filled", "outline"].includes(cardVariant) ? cardVariant : window.PORTFOLIO_CONFIG.presentation.defaultCards;
   Object.entries({ ...designTokens, "--font-heading": typography.headings, "--font-body": typography.body }).forEach(([name, value]) => document.documentElement.style.setProperty(name, value));
   const storageKey = "maya-portfolio-color-mode";
   const systemScheme = matchMedia("(prefers-color-scheme: dark)");
@@ -25,6 +26,7 @@
 
   function updateTheme() {
     const mode = currentMode();
+    document.documentElement.style.setProperty("--filled-card-title", window.PORTFOLIO_CONFIG.filledCardTheme[mode].title);
     document.documentElement.dataset.theme = themeNames[mode];
     document.documentElement.dataset.themeFamily = themeFamilies[themeNames[mode]];
     const palette = palettePresets[paletteNames[mode]];

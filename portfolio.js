@@ -145,7 +145,7 @@ function changePencilOutline(card, colorToken = "--outline-color", retainShape =
   const filterId = "chalk-grain-" + (++chalkFilterId);
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="none"><defs><filter id="${filterId}" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="3" seed="12" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="${roughness}" xChannelSelector="R" yChannelSelector="G" result="rough"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 ${grain} 0 0 0 ${1 - grain}" result="chalk"/><feComponentTransfer in="chalk" result="opaque-grain"><feFuncA type="discrete" tableValues="0 0 0 0 0 1 1 1"/></feComponentTransfer><feComposite in="rough" in2="opaque-grain" operator="in"/></filter></defs><path d="${path}" fill="none" stroke="${color}" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" stroke-width="${strokeWidth}" filter="url(#${filterId})"/></svg>`;
   if (card.classList.contains("project-card")) {
-    const filled = svg.replace('fill="none" stroke=', `fill="${color}" stroke=`);
+    const filled = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="none"><path d="${path}" fill="${color}" stroke="${color}" stroke-width="${strokeWidth}" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>`;
     card.style.setProperty("--chalk-fill", `url("data:image/svg+xml,${encodeURIComponent(filled)}")`);
   }
   if (card.classList.contains("social-icon")) {
