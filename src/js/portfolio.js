@@ -183,14 +183,14 @@ function showRoute() {
   if (kind === "project" && project) {
     dialog.dataset.project = project.id;
     updatePanelAccent();
-    projectTitle.textContent = project.title;
+    window.renderPortfolioLettering(projectTitle, project.title);
     document.querySelector("#project-description").textContent = project.description;
     renderTags(document.querySelector("#project-tags"), project.tags);
     media = project.media;
   } else if (kind === "tag") {
     delete dialog.dataset.project;
     updatePanelAccent();
-    projectTitle.textContent = value;
+    window.renderPortfolioLettering(projectTitle, value);
     document.querySelector("#project-description").textContent = "כל העבודות עם התגית ״" + value + "״";
     document.querySelector("#project-tags").replaceChildren();
     media = [...new Map(projects.flatMap(item => item.media).filter(item => item.tags.includes(value)).map(item => [item.src, item])).values()];
@@ -213,7 +213,7 @@ function showRoute() {
     }
     openingRect = null;
   }
-  dialog.scrollTop = 0;
+  dialog.querySelector(".project-page-scroll").scrollTop = 0;
   projectTitle.focus({ preventScroll: true });
 }
 
