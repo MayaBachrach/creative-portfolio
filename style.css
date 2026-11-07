@@ -9,6 +9,9 @@
   --outline-color: var(--lime);
   --outline-width: 2.8;
   --social-outline: var(--pink);
+  --primary-color: var(--pink);
+  --secondary-color: var(--lime);
+  --media-padding: clamp(.5rem, 1vw, .85rem);
   --page-background: var(--white);
   --page-text: var(--ink);
   --hero-background: var(--pink);
@@ -36,6 +39,7 @@
   --accent-5: var(--pink);
   --gutter: clamp(1rem, 4.5vw, 5rem);
 }
+:root[data-theme-family="multicolor"] { --media-padding: 0; }
 :root[data-theme="pink-white"] { --on-pink: #fff; --card-text: #fff; --panel-text: #fff; }
 
 /* Original pink/lime palettes remain available as pink-dark and pink-white. */
@@ -142,7 +146,7 @@ h1 { display: flex; align-items: baseline; gap: .22em; font-size: clamp(3.2rem, 
 .project-page::-webkit-scrollbar-thumb { background: var(--panel-accent, var(--accent-2)); border: 2px solid var(--panel-background); border-radius: 8px; }
 .project-card { min-width: 0; position: relative; display: block; background: var(--card-background); color: var(--card-text); padding: clamp(.8rem, 1.5vw, 1.5rem); text-decoration: none; transition: transform 180ms ease, box-shadow 180ms ease; }
 .card-title { color: var(--card-text); position: relative; display: table; font-size: clamp(1.25rem, 1.8vw, 2rem); font-weight: 900; line-height: 1.2; padding: .16em 0; border: 0; background: transparent; margin: 0 auto 1.25rem; }
-.card-picture { padding: clamp(.5rem, 1vw, .85rem); background: var(--media-background); aspect-ratio: 1; }
+.card-picture { padding: var(--media-padding); background: var(--media-background); aspect-ratio: 1; }
 .card-picture img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .card-picture.contain img { object-fit: contain; }
 .card-note { font-size: .9rem; text-align: center; margin-block-start: .65rem; }
@@ -164,7 +168,7 @@ h1 { display: flex; align-items: baseline; gap: .22em; font-size: clamp(3.2rem, 
 .project-page h2 { color: var(--name-text); display: table; background: var(--panel-accent, var(--name-background)); padding: .12em .25em; font-size: clamp(2.2rem, 6vw, 5rem); line-height: 1.15; font-weight: 900; }
 .project-description { max-width: 48rem; margin-block: 1rem; }
 .detail-media { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 1rem; margin-block-start: 2rem; }
-.media-item { color: var(--media-text); min-width: 0; padding: clamp(.5rem, 1vw, 1rem); background: var(--media-background); }
+.media-item { color: var(--media-text); min-width: 0; padding: var(--media-padding); background: var(--media-background); }
 .media-item img, .media-item video { display: block; width: 100%; height: auto; background: var(--media-background); }
 .media-item figcaption { font-size: .95rem; padding-block: .45rem; }
 .media-item .tags { margin-block: .3rem 1rem; }
@@ -217,3 +221,7 @@ h1 { display: flex; align-items: baseline; gap: .22em; font-size: clamp(3.2rem, 
 :root[data-theme="markers"] .carousel-tile img, :root[data-theme="markers"] .carousel-tile video { filter: brightness(0) invert(1); }
 
 :root:is([data-theme="crayons"], [data-theme="markers"]) .carousel-tile::before { background: var(--carousel-color, var(--accent-1)); }
+
+:root[data-theme="markers"] .theme-drawing { filter: brightness(0) invert(1); }
+
+:root[data-theme-family="multicolor"] { --media-background: var(--panel-background); --media-text: var(--panel-text); }

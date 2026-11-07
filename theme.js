@@ -2,6 +2,12 @@
   // The original palette is preserved as "pink-dark" (and "pink-white").
   // Light and dark now use the two selected multicolor palettes.
   const themeNames = { light: "crayons", dark: "markers" };
+  const themeFamilies = {
+    crayons: "multicolor",
+    markers: "multicolor",
+    "pink-dark": "guided",
+    "pink-white": "guided",
+  };
   const storageKey = "maya-portfolio-color-mode";
   const systemScheme = matchMedia("(prefers-color-scheme: dark)");
   let preference = null;
@@ -30,6 +36,7 @@
   function updateTheme() {
     const mode = currentMode();
     document.documentElement.dataset.theme = themeNames[mode];
+    document.documentElement.dataset.themeFamily = themeFamilies[themeNames[mode]];
     const toggle = document.querySelector("#theme-toggle");
     if (toggle) {
       toggle.textContent = mode === "dark" ? "מצב בהיר ☀" : "מצב כהה ☾";

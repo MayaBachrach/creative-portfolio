@@ -113,6 +113,7 @@ function renderCards() {
     const picture = element("div", "card-picture" + (project.contain ? " contain" : ""));
     const image = element("img");
     image.src = project.cover;
+    if (project.cover.endsWith("/dj-mayu.png")) image.classList.add("theme-drawing");
     image.alt = project.title;
     image.width = 600;
     image.height = 600;
@@ -133,6 +134,7 @@ function mediaFigure(item) {
   const figure = element("figure", "media-item");
   const media = element(item.type === "video" ? "video" : "img");
   media.src = item.src;
+  if (item.src.endsWith("/dj-mayu.png")) media.classList.add("theme-drawing");
   if (item.type === "video") {
     media.controls = true;
     media.playsInline = true;
