@@ -7,13 +7,13 @@ const carouselSettings = { minimumTiles: 6, secondsPerTile: 7, colorCount: 5 };
 // Add another project object to extend the home page.
 const projects = [
   {
-    id: "mix", title: "מיקס והפקה", cover: "./assets/dj-mayu.png", contain: true,
+    id: "mix", title: "הפקה מוזיקלית ומיקס", cover: "./assets/dj-mayu.png", contain: true,
     description: "מיקס, רמיקסים והפקה מוזיקלית.",
     tags: ["מוזיקה", "מיקס", "הפקה"],
     media: [{ type: "image", src: "./assets/dj-mayu.png", alt: "איור DJ Mayu", caption: "DJ Mayu", tags: ["איור", "מוזיקה"] }],
   },
   {
-    id: "social", title: "סושיאל", cover: "./assets/social-1.webp",
+    id: "social", title: "תוכן וסושיאל", cover: "./assets/social-1.webp",
     description: "שני סרטוני סושיאל. התפקיד שלי הוא הופעה מול מצלמה ואלתור. הקונספט והעריכה נעשו על ידי אחרים.",
     tags: ["סושיאל", "הופעה מול מצלמה", "אלתור"],
     media: [1, 2].map(number => ({
@@ -22,7 +22,7 @@ const projects = [
     })),
   },
   {
-    id: "set-design", title: "עיצוב תפאורה", cover: "./assets/lobby-3.webp",
+    id: "set-design", title: "עיצוב תפאורה וחלל", cover: "./assets/lobby-3.webp",
     description: "עיצוב לובי, תפאורה ואביזרים. מהעבודה בסדנה ופרטי החיבורים ועד למיצגים בחלל המלון.",
     tags: ["תפאורה", "עיצוב חלל", "אביזרים", "עבודת יד"],
     media: [
@@ -47,6 +47,26 @@ const projects = [
       { type: "image", src: "./assets/dj-mayu.png", alt: "DJ Mayu — איור של דמות מתקלטת", caption: "DJ Mayu", tags: ["איור", "מוזיקה", "עיצוב גרפי"] },
       { type: "image", src: "./assets/picky.png", alt: "האייקון של PICKY", caption: "PICKY", link: "https://github.com/MayaBachrach/picky", tags: ["עיצוב גרפי", "עיצוב ממשק", "כלי צבע"] },
     ],
+  },
+  {
+    id: "performance", title: "הופעה ופרפורמנס", cover: "./assets/social-2.webp",
+    description: "הופעה מול מצלמה ואלתור.", tags: ["הופעה", "אלתור", "מול מצלמה"],
+    media: [{ type: "video", src: "./assets/social-2.mp4", poster: "./assets/social-2.webp", alt: "הופעה מול מצלמה", tags: ["הופעה", "אלתור", "מול מצלמה"] }],
+  },
+  {
+    id: "animation", title: "איור ואנימציה", cover: "./assets/dj-mayu.png", contain: true,
+    description: "איורים, דמויות ותנועה.", tags: ["איור", "אנימציה", "דמויות"],
+    media: [{ type: "image", src: "./assets/dj-frame-2.svg", alt: "DJ Mayu — פריים מתוך האיור", tags: ["איור", "אנימציה", "דמויות"] }],
+  },
+  {
+    id: "concepts", title: "פיתוח קונספטים", cover: "./assets/picky.png", contain: true,
+    description: "מרעיון ראשוני לכיוון ברור: פיתוח רעיונות, סיפורים ושפה חזותית.", tags: ["קונספט", "רעיונאות", "פיתוח רעיון"],
+    media: [{ type: "image", src: "./assets/picky.png", alt: "PICKY — תמונה לסידור המשבצת", tags: ["קונספט", "רעיונאות"] }],
+  },
+  {
+    id: "creative", title: "קריאייטיב", cover: "./assets/lobby-2.webp",
+    description: "רעיונות וחיבורים בין תוכן, עיצוב וחוויה.", tags: ["קריאייטיב", "שפה חזותית", "חוויה"],
+    media: [{ type: "image", src: "./assets/lobby-2.webp", alt: "תמונת אווירה למשבצת הקריאייטיב", tags: ["קריאייטיב", "חוויה"] }],
   },
 ];
 
@@ -112,6 +132,10 @@ function changePencilOutline(card, colorToken = "--outline-color", retainShape =
   const roughness = Number(theme.getPropertyValue("--outline-roughness")) || 1.3;
   const filterId = "chalk-grain-" + (++chalkFilterId);
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="none"><defs><filter id="${filterId}" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="3" seed="12" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="${roughness}" xChannelSelector="R" yChannelSelector="G" result="rough"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 ${grain} 0 0 0 ${1 - grain}" result="chalk"/><feComponentTransfer in="chalk" result="opaque-grain"><feFuncA type="discrete" tableValues="0 0 0 0 0 1 1 1"/></feComponentTransfer><feComposite in="rough" in2="opaque-grain" operator="in"/></filter></defs><path d="${path}" fill="none" stroke="${color}" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" stroke-width="${strokeWidth}" filter="url(#${filterId})"/></svg>`;
+  if (card.classList.contains("project-card")) {
+    const filled = svg.replace('fill="none" stroke=', `fill="${color}" stroke=`);
+    card.style.setProperty("--chalk-fill", `url("data:image/svg+xml,${encodeURIComponent(filled)}")`);
+  }
   if (card.classList.contains("social-icon")) {
     const visibleFrame = svg.replace("<svg ", '<svg class="pencil-frame" aria-hidden="true" ');
     const existingFrame = card.querySelector(".pencil-frame");
@@ -371,22 +395,22 @@ document.addEventListener("visibilitychange", updateCarouselMotion);
 const greeting = document.querySelector(".greeting");
 const greetingText = greeting.querySelector("span");
 function fitGreeting() {
-  const availableWidth = greeting.clientWidth;
-  if (!availableWidth) return;
   const heading = document.querySelector("#intro-title");
   const nameLine = document.querySelector(".name-line");
-  if (matchMedia("(max-width: 48rem)").matches) {
-    const currentSize = parseFloat(getComputedStyle(heading).fontSize);
-    const fittedSize = currentSize * availableWidth / nameLine.getBoundingClientRect().width;
-    heading.style.fontSize = fittedSize.toFixed(2) + "px";
-  } else {
-    heading.style.fontSize = "";
-  }
+  heading.style.fontSize = "";
   greetingText.style.transform = "";
   const measure = count => {
     greetingText.innerHTML = '<i class="canva-letter canva-he"></i>' + '<i class="canva-letter canva-yod"></i>'.repeat(count);
     return greetingText.getBoundingClientRect().width;
   };
+  const currentSize = parseFloat(getComputedStyle(heading).fontSize);
+  const gap = parseFloat(getComputedStyle(heading).columnGap) || 0;
+  const minimumWidth = nameLine.getBoundingClientRect().width + measure(2) + gap;
+  if (minimumWidth > heading.clientWidth) {
+    heading.style.fontSize = (currentSize * heading.clientWidth / minimumWidth).toFixed(2) + "px";
+  }
+  const availableWidth = greeting.clientWidth;
+  if (!availableWidth) return;
   let low = 1;
   let high = 2;
   while (measure(high) <= availableWidth) high *= 2;

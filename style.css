@@ -255,10 +255,20 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 
 /* Canva outlines: monochrome masks inherit the exact active palette color. */
 .canva-word, .canva-letter { display: inline-block; height: 1em; background: currentColor; mask: var(--letter-art) center / 100% 100% no-repeat; -webkit-mask: var(--letter-art) center / 100% 100% no-repeat; vertical-align: bottom; }
-.canva-he { width: .7567em; --letter-art: url('./assets/title-he.svg'); }
-.canva-yod { width: .3152em; --letter-art: url('./assets/title-yod.svg'); }
-.canva-zot { width: 2.2331em; --letter-art: url('./assets/title-zot.svg'); }
-.canva-maya { width: 3.0477em; --letter-art: url('./assets/title-maya.svg'); }
+.canva-he { width: .8192em; --letter-art: url('./assets/title-he.svg?v=15'); }
+.canva-yod { width: .3476em; --letter-art: url('./assets/title-yod.svg?v=15'); }
+.canva-zot { width: 2.3965em; --letter-art: url('./assets/title-zot.svg?v=15'); }
+.canva-maya { width: 3.2668em; --letter-art: url('./assets/title-maya.svg?v=15'); }
 .greeting > span { display: inline-flex; direction: rtl; gap: .015em; vertical-align: bottom; }
 .name-line { display: inline-flex; align-items: center; gap: .12em; }
 .name:has(.canva-word) { line-height: 1; }
+#intro-title { display: flex; flex-wrap: nowrap; align-items: center; gap: .22em; }
+#intro-title .intro-name { width: auto; }
+#intro-title .greeting { width: auto; }
+
+/* Optional filled-chalk version: ?cards=filled. The outline version stays the default. */
+:root[data-cards="filled"] .project-card { background: transparent; }
+:root[data-cards="filled"] .project-card::before { content: ""; position: absolute; inset: -5px; background: var(--chalk-fill) center / 100% 100% no-repeat; pointer-events: none; }
+:root[data-cards="filled"] .project-card::after { display: none; }
+:root[data-cards="filled"] .project-card > * { position: relative; }
+:root[data-cards="filled"] .card-title { color: #fff; }

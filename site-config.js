@@ -1,5 +1,7 @@
 // Central design settings. Use exact palette values; do not generate extra shades.
 window.PORTFOLIO_CONFIG = {
+  presentation: { defaultCards: "outline" },
+  favicons: { light: "./assets/favicon-light.svg?v=16", dark: "./assets/favicon-dark.svg?v=16" },
   themeNames: { light: "crayons", dark: "markers" },
   themeFamilies: {
     crayons: "multicolor",
