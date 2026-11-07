@@ -301,3 +301,5 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 #music-toggle svg { width: 21px; height: 21px; }
 #music-toggle[aria-pressed="true"] { border-color: var(--accent-2); }
 body:has(dialog[open]) #music-toggle { visibility: hidden; }
+
+@media(max-width:48rem) { body:has(#music-toggle:not([hidden])) .contact { padding-block-end: 6rem; } }
