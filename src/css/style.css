@@ -312,3 +312,7 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 
 /* Common lettering scale follows the longest project title at every card width. */
 .card-title > .handwritten-heading { height: auto; width: 100%; }
+
+/* Keep the final project row close to the contact section. */
+.projects-section { padding-block-end: 1rem; }
+.contact { padding-block-start: 1rem; }
