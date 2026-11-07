@@ -58,3 +58,9 @@ for (const shapes of Object.values(context.window.PORTFOLIO_SHAPES)) {
   }
 }
 console.log("Passed: every approved square and star is used once per shuffled bag.");
+
+for (const folder of ["src/js", "src/data", "src/config"]) {
+ for (const name of fs.readdirSync(path.join(root, folder))) if (name.endsWith(".js")) new vm.Script(read(folder + "/" + name));
+}
+for (const char of "בואו ניצור משהו יפה ביחד(:)") if (char !== " ") assert(context.window.PORTFOLIO_LETTERING[char], "Missing footer glyph: " + char);
+console.log("Passed: all JavaScript syntax and contact lettering glyphs.");

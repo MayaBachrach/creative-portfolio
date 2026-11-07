@@ -27,31 +27,35 @@ function renderTags(container, tags) {
 
 const squareShapes = window.PORTFOLIO_SHAPES.square;
 const nextSquareShape = window.createPortfolioShapePicker(squareShapes.length);
-let chalkFilterId = 0;
+function insetFramePath(path, scale) {
+  let coordinate = 0;
+  return path.replace(/-?\d*\.?\d+/g, value => {
+    coordinate++;
+    return (100 + (Number(value) - 100) * scale).toFixed(2);
+  });
+}
 function changePencilOutline(card, colorToken = "--outline-color", retainShape = false) {
   const previous = Number(card.dataset.outline ?? -1);
   const index = retainShape && previous >= 0 ? previous : nextSquareShape(previous);
   card.dataset.outline = index;
   const theme = getComputedStyle(card);
-  const path = squareShapes[index];
+  const outer = squareShapes[index];
+  const scale = Number(theme.getPropertyValue("--frame-inner-scale")) || .82;
+  const inner = insetFramePath(squareShapes[(index + 3) % squareShapes.length], scale);
+  const imageOpening = insetFramePath(squareShapes[(index + 3) % squareShapes.length], scale + .012);
   const color = theme.getPropertyValue(colorToken).trim();
-  const strokeWidth = Number(theme.getPropertyValue("--outline-width")) || 3.8;
-  const grain = Number(theme.getPropertyValue("--outline-grain")) || .55;
-  const roughness = Number(theme.getPropertyValue("--outline-roughness")) || 1.3;
-  const filterId = "chalk-grain-" + (++chalkFilterId);
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="12 12 176 176" preserveAspectRatio="none"><defs><filter id="${filterId}" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="3" seed="12" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="${roughness}" xChannelSelector="R" yChannelSelector="G" result="rough"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 ${grain} 0 0 0 ${1 - grain}" result="chalk"/><feComponentTransfer in="chalk" result="opaque-grain"><feFuncA type="discrete" tableValues="0 0 0 0 0 1 1 1"/></feComponentTransfer><feComposite in="rough" in2="opaque-grain" operator="in"/></filter></defs><path d="${path}" fill="none" stroke="${color}" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" stroke-width="${strokeWidth}" filter="url(#${filterId})"/></svg>`;
+  const wrap = content => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="12 12 176 176" preserveAspectRatio="none">' + content + '</svg>';
+  const frame = wrap('<path d="' + outer + ' ' + inner + '" fill="' + color + '" fill-rule="evenodd"/>');
   if (card.classList.contains("project-card")) {
-    const filled = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="12 12 176 176" preserveAspectRatio="none"><path d="${path}" fill="${color}" stroke="${color}" stroke-width="${strokeWidth}" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>`;
-    card.style.setProperty("--chalk-fill", `url("data:image/svg+xml,${encodeURIComponent(filled)}")`);
-  }
-  if (card.classList.contains("social-icon")) {
-    const visibleFrame = svg.replace("<svg ", '<svg class="pencil-frame" aria-hidden="true" ');
+    card.style.setProperty("--chalk-fill", 'url("data:image/svg+xml,' + encodeURIComponent(wrap('<path d="' + outer + '" fill="' + color + '"/>')) + '")');
+    card.style.setProperty("--picture-mask", 'url("data:image/svg+xml,' + encodeURIComponent(wrap('<path d="' + imageOpening + '" fill="white"/>')) + '")');
+    card.style.setProperty("--pencil-outline", 'url("data:image/svg+xml,' + encodeURIComponent(frame) + '")');
+  } else {
+    const visibleFrame = frame.replace('<svg ', '<svg class="pencil-frame" aria-hidden="true" ');
     const existingFrame = card.querySelector(".pencil-frame");
     if (existingFrame) existingFrame.outerHTML = visibleFrame;
     else card.insertAdjacentHTML("beforeend", visibleFrame);
     card.classList.add("has-pencil-frame");
-  } else {
-    card.style.setProperty("--pencil-outline", `url("data:image/svg+xml,${encodeURIComponent(svg)}")`);
   }
 }
 
@@ -341,6 +345,12 @@ function fitGreeting() {
   greetingText.style.transform = "scaleX(" + availableWidth / measure(low) + ")";
 }
 
+function renderContactLettering() {
+  const text = matchMedia("(max-width: 48rem)").matches ? "בואו ניצור\nמשהו יפה ביחד" : "בואו ניצור משהו יפה ביחד";
+  window.renderPortfolioLettering(document.querySelector("#contact-lettering"), text);
+}
+renderContactLettering();
+matchMedia("(max-width: 48rem)").addEventListener("change", renderContactLettering);
 document.querySelectorAll("[data-lettering]").forEach(node => window.renderPortfolioLettering(node, node.dataset.lettering));
 renderCards();
 document.querySelectorAll(".social-icon").forEach(link => {

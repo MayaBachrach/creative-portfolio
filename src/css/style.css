@@ -286,10 +286,16 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 
 :root[data-cards] .card-title { padding-block: 0; margin-block: 0 .3rem; }
 
-/* Contact lettering keeps the original smile isolated from RTL text. */
-.contact h2 { display: flex; align-items: center; justify-content: center; gap: .12em; }
-.footer-lead { display: block; min-width: 0; flex: .9; }
-.footer-ending { display: flex; align-items: center; gap: .12em; min-width: 0; flex: 1.4; }
-.footer-tail { display: block; min-width: 0; flex: 1; }
-.contact .handwritten-heading { width: 100%; height: auto; max-height: 7rem; }
-@media(max-width:48rem) { .contact h2 { flex-wrap: wrap; gap: 0; } .footer-lead, .footer-ending { flex: 0 0 100%; } .contact .handwritten-heading { height: 4rem; max-height: none; } }
+
+/* Solid irregular rings and their photo openings share the same geometry. */
+:root[data-cards="outline"] .card-picture { -webkit-mask: var(--picture-mask) center / 100% 100% no-repeat; mask: var(--picture-mask) center / 100% 100% no-repeat; }
+.contact h2 { display: flex; align-items: center; justify-content: center; gap: .1em; color: var(--contact-title); }
+.footer-text { display: block; flex: 1; min-width: 0; max-width: 65rem; }
+.contact .handwritten-heading { width: 100%; height: clamp(4rem, 8vw, 7rem); }
+.contact .smile { display: block; flex: 0 0 .65em; width: .65em; }
+@media(max-width:48rem) { .contact h2 { align-items: flex-end; } .contact .footer-text > svg { height: 8rem; } .contact .smile > svg { height: 4rem; } }
+
+@media(hover:hover) and (pointer:fine) {
+  html, body { cursor: var(--site-cursor, auto); }
+  a[href], button, [role="button"], [role="switch"] { cursor: var(--site-cursor-link, pointer); }
+}

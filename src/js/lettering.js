@@ -7,8 +7,13 @@ window.renderPortfolioLettering = function (heading, text) {
   svg.setAttribute("aria-hidden", "true");
   svg.setAttribute("focusable", "false");
   svg.classList.add("handwritten-heading");
+  const lines = text.split("\n");
+  const layout = [];
+  for (const [lineIndex, line] of lines.entries()) {
   let cursor = 0;
-  for (const char of [...text].reverse()) {
+  const lineGroup = document.createElementNS(ns, "g");
+  const characters = heading.dataset.letteringDirection === "ltr" ? [...line] : [...line].reverse();
+  for (const char of characters) {
     if (char === " ") { cursor += 28; continue; }
     const glyph = glyphs[char];
     if (glyph) {
@@ -20,7 +25,7 @@ window.renderPortfolioLettering = function (heading, text) {
         path.setAttribute("fill", "currentColor");
         group.append(path);
       }
-      svg.append(group);
+      lineGroup.append(group);
       cursor += glyph.width + 7;
     } else {
       const fallback = document.createElementNS(ns, "text");
@@ -30,11 +35,18 @@ window.renderPortfolioLettering = function (heading, text) {
       fallback.setAttribute("font-family", window.PORTFOLIO_CONFIG.typography.headings);
       fallback.setAttribute("fill", "currentColor");
       fallback.textContent = char;
-      svg.append(fallback);
+      lineGroup.append(fallback);
       cursor += 64;
     }
   }
-  svg.setAttribute("viewBox", `0 0 ${cursor} 130`);
+  layout.push({ lineGroup, width: cursor, lineIndex });
+  }
+  const width = Math.max(...layout.map(item => item.width));
+  for (const item of layout) {
+    item.lineGroup.setAttribute("transform", `translate(${(width - item.width) / 2} ${item.lineIndex * 110})`);
+    svg.append(item.lineGroup);
+  }
+  svg.setAttribute("viewBox", `0 0 ${width} ${(lines.length - 1) * 110 + 130}`);
   heading.setAttribute("aria-label", text);
   heading.replaceChildren(svg);
 };
