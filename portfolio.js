@@ -68,6 +68,18 @@ const projects = [
     description: "רעיונות וחיבורים בין תוכן, עיצוב וחוויה.", tags: ["קריאייטיב", "שפה חזותית", "חוויה"],
     media: [{ type: "image", src: "./assets/lobby-2.webp", alt: "תמונת אווירה למשבצת הקריאייטיב", tags: ["קריאייטיב", "חוויה"] }],
   },
+  {
+    id: "storytelling", title: "סטוריטלינג", cover: "./assets/social-1.webp",
+    description: "סיפורים, דמויות ונרטיבים — מהרעיון ועד לאופן שבו הסיפור פוגש את הקהל.",
+    tags: ["סטוריטלינג", "סיפור", "דמויות"],
+    media: [{ type: "image", src: "./assets/social-1.webp", alt: "תמונת אווירה למשבצת הסטוריטלינג", tags: ["סטוריטלינג", "סיפור"] }],
+  },
+  {
+    id: "app-development", title: "פיתוח אפליקציות", cover: "./assets/picky.png", contain: true,
+    description: "מוצרים דיגיטליים, ממשקים וכלים אינטראקטיביים.",
+    tags: ["פיתוח אפליקציות", "ממשק משתמש", "מוצרים דיגיטליים"],
+    media: [{ type: "image", src: "./assets/picky.png", alt: "PICKY — תמונה למשבצת הפיתוח", tags: ["פיתוח אפליקציות", "מוצרים דיגיטליים"] }],
+  },
 ];
 
 const dialog = document.querySelector("#project-page");
