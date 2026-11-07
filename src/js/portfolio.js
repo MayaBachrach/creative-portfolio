@@ -106,6 +106,14 @@ function renderCards() {
     entry.append(card, tags);
     return entry;
   }));
+    const titleSvgs = [...document.querySelectorAll(".card-title .handwritten-heading")];
+    const longest = Math.max(...titleSvgs.map(svg => svg.viewBox.baseVal.width));
+    for (const svg of titleSvgs) {
+      const width = svg.viewBox.baseVal.width;
+      svg.setAttribute("viewBox", [-(longest - width) / 2, 0, longest, 130].join(" "));
+      svg.style.aspectRatio = longest + " / 130";
+    }
+
 }
 
 function mediaFigure(item) {
