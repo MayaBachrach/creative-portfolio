@@ -75,13 +75,14 @@ function renderTags(container, tags) {
 }
 
 const pencilOutlines = ["M5 8 Q80 1 195 6 L192 194 Q95 199 7 191 Z","M9 4 Q103 10 194 3 L198 191 Q92 188 4 197 Z","M4 6 L190 3 Q200 98 194 195 L8 198 Q1 100 4 6","M7 10 Q90 0 197 7 L191 198 Q99 193 3 190 Z","M10 3 L196 8 Q189 100 198 192 L4 196 Z","M3 9 Q100 4 193 4 L197 197 Q100 190 7 195 Z","M8 3 Q103 9 198 5 L191 194 Q99 201 4 192 Z","M4 4 L193 9 Q201 95 195 190 L9 198 Q2 90 4 4"];
-function changePencilOutline(card) {
+function changePencilOutline(card, colorToken = "--outline-color") {
   const previous = Number(card.dataset.outline ?? -1);
   const offset = 1 + Math.floor(Math.random() * (pencilOutlines.length - 1));
   const index = (previous + offset + pencilOutlines.length) % pencilOutlines.length;
   card.dataset.outline = index;
   const path = pencilOutlines[index];
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="none"><g fill="none" stroke="#d6ff43" stroke-linecap="round" stroke-linejoin="round"><path d="${path}" stroke-width="2.2"/><path d="${path}" transform="translate(1.5 -1)" stroke-width=".8" opacity=".65"/><path d="${path}" transform="translate(-1 1.8)" stroke-width=".6" opacity=".45" stroke-dasharray="12 2 6 1"/></g></svg>`;
+  const color = getComputedStyle(document.documentElement).getPropertyValue(colorToken).trim();
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="none"><g fill="none" stroke="${color}" stroke-linecap="round" stroke-linejoin="round"><path d="${path}" stroke-width="2.2"/><path d="${path}" transform="translate(1.5 -1)" stroke-width=".8" opacity=".65"/><path d="${path}" transform="translate(-1 1.8)" stroke-width=".6" opacity=".45" stroke-dasharray="12 2 6 1"/></g></svg>`;
   card.style.setProperty("--pencil-outline", `url("data:image/svg+xml,${encodeURIComponent(svg)}")`);
 }
 
@@ -186,14 +187,12 @@ function showRoute() {
     dialog.showModal();
     if (openingRect && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
       const bounds = dialog.getBoundingClientRect();
-      const top = Math.max(0, Math.min(bounds.height * .35, openingRect.top - bounds.top));
-      const right = Math.max(0, Math.min(bounds.width * .35, bounds.right - openingRect.right));
-      const bottom = Math.max(0, Math.min(bounds.height * .35, bounds.bottom - openingRect.bottom));
-      const left = Math.max(0, Math.min(bounds.width * .35, openingRect.left - bounds.left));
+      const x = Math.max(-120, Math.min(120, openingRect.left + openingRect.width / 2 - bounds.left - bounds.width / 2));
+      const y = Math.max(-80, Math.min(80, openingRect.top + openingRect.height / 2 - bounds.top - bounds.height / 2));
       dialog.animate([
-        { clipPath: `inset(${top}px ${right}px ${bottom}px ${left}px round 8px)`, opacity: .35, transform: "translateY(12px)" },
-        { clipPath: "inset(0px 0px 0px 0px round 0px)", opacity: 1, transform: "translateY(0)" },
-      ], { duration: 540, easing: "cubic-bezier(.22,1,.36,1)" });
+        { transform: `translate(${x}px, ${y}px) scale(.76)`, opacity: .7 },
+        { transform: "translate(0, 0) scale(1)", opacity: 1 },
+      ], { duration: 600, easing: "cubic-bezier(.16,1,.3,1)" });
     }
     openingRect = null;
   }
@@ -289,20 +288,6 @@ function updateCarouselMotion() {
 reducedMotion.addEventListener("change", updateCarouselMotion);
 document.addEventListener("visibilitychange", updateCarouselMotion);
 
-const copyIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="1"/><path d="M15 8V4H4v11h4"/></svg>';
-document.querySelectorAll("[data-copy]").forEach(button => {
-  button.innerHTML = copyIcon;
-  button.addEventListener("click", async () => {
-    const status = document.querySelector("#copy-status");
-    try {
-      await navigator.clipboard.writeText(button.dataset.copy);
-      status.textContent = "הועתק — " + button.dataset.copy;
-    } catch {
-      status.textContent = "אפשר להעתיק ידנית — " + button.dataset.copy;
-    }
-  });
-});
-
 const greeting = document.querySelector(".greeting");
 const greetingText = greeting.querySelector("span");
 function fitGreeting() {
@@ -334,6 +319,10 @@ function fitGreeting() {
 }
 
 renderCards();
+document.querySelectorAll(".social-icon").forEach(link => {
+  changePencilOutline(link, "--social-outline");
+  link.addEventListener("pointerenter", () => changePencilOutline(link, "--social-outline"));
+});
 
 // On touch screens, highlight the card closest to the center of the viewport.
 const touchLayout = matchMedia("(hover: none)");
