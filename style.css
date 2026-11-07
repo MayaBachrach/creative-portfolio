@@ -214,7 +214,7 @@ h1 { display: flex; align-items: baseline; gap: .22em; font-size: clamp(3.2rem, 
 :root:is([data-theme="crayons"], [data-theme="markers"]) .project-entry:nth-child(4n + 3) { --outline-color: var(--accent-3); --card-accent: var(--accent-3); }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .project-entry:nth-child(4n) { --outline-color: var(--accent-4); --card-accent: var(--accent-4); }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .project-card::after { opacity: 1; }
-:root:is([data-theme="crayons"], [data-theme="markers"]) .card-title { color: color-mix(in srgb, var(--card-accent) 75%, var(--page-text)); }
+:root:is([data-theme="crayons"], [data-theme="markers"]) .card-title { color: var(--card-accent); }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .social-icon:nth-child(1) { --social-outline: var(--footer-accent-1); }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .social-icon:nth-child(2) { --social-outline: var(--footer-accent-2); }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .social-icon:nth-child(3) { --social-outline: var(--footer-accent-3); }
@@ -227,3 +227,12 @@ h1 { display: flex; align-items: baseline; gap: .22em; font-size: clamp(3.2rem, 
 :root[data-theme="markers"] .theme-drawing { filter: brightness(0) invert(1); }
 
 :root[data-theme-family="multicolor"] { --media-background: var(--panel-background); --media-text: var(--panel-text); }
+
+/* Surface treatments live with the theme and can be removed by setting these to none. */
+:root { --surface-texture: none; --surface-texture-size: 320px 320px; }
+:root[data-theme="crayons"] { --surface-texture: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22320%22%20viewBox%3D%220%200%20320%20320%22%3E%3Cfilter%20id%3D%22grain%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.72%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%20seed%3D%228%22%2F%3E%3CfeColorMatrix%20type%3D%22saturate%22%20values%3D%220%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22320%22%20height%3D%22320%22%20filter%3D%22url(%23grain)%22%20opacity%3D%22.026%22%2F%3E%3Cpath%20d%3D%22M-20%2065Q130%2044%20345%2057M-20%20248Q140%20227%20345%20236%22%20fill%3D%22none%22%20stroke%3D%22%23374151%22%20stroke-width%3D%2222%22%20opacity%3D%22.007%22%2F%3E%3C%2Fsvg%3E"); }
+:root[data-theme="markers"] { --surface-texture: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22320%22%20height%3D%22320%22%20viewBox%3D%220%200%20320%20320%22%3E%3Cfilter%20id%3D%22grain%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.72%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%20seed%3D%228%22%2F%3E%3CfeColorMatrix%20type%3D%22saturate%22%20values%3D%220%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22320%22%20height%3D%22320%22%20filter%3D%22url(%23grain)%22%20opacity%3D%22.06%22%2F%3E%3Cpath%20d%3D%22M-20%2074Q170%2057%20350%2078M-15%20246Q150%20261%20340%20241%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%223%22%20opacity%3D%22.009%22%2F%3E%3C%2Fsvg%3E"); }
+body, .hero, .project-card, .project-page, .project-page-header, .contact {
+  background-image: var(--surface-texture);
+  background-size: var(--surface-texture-size);
+}
