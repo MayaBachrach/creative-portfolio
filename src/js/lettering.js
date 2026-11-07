@@ -12,7 +12,8 @@ window.renderPortfolioLettering = function (heading, text) {
   for (const [lineIndex, line] of lines.entries()) {
   let cursor = 0;
   const lineGroup = document.createElementNS(ns, "g");
-  const characters = heading.dataset.letteringDirection === "ltr" ? [...line] : [...line].reverse();
+  const units = line.match(/[A-Za-z0-9]+|./gu) || [];
+  const characters = heading.dataset.letteringDirection === "ltr" ? units : units.reverse();
   for (const char of characters) {
     if (char === " ") { cursor += 28; continue; }
     const glyph = glyphs[char];
@@ -34,9 +35,11 @@ window.renderPortfolioLettering = function (heading, text) {
       fallback.setAttribute("font-size", "96");
       fallback.setAttribute("font-family", window.PORTFOLIO_CONFIG.typography.headings);
       fallback.setAttribute("fill", "currentColor");
+      fallback.setAttribute("direction", "ltr");
+      fallback.setAttribute("text-anchor", "start");
       fallback.textContent = char;
       lineGroup.append(fallback);
-      cursor += 64;
+      cursor += 64 * char.length;
     }
   }
   layout.push({ lineGroup, width: cursor, lineIndex });
