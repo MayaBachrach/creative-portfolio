@@ -7,9 +7,10 @@
   --on-pink: var(--ink);
   --icon-color: var(--white);
   --outline-color: var(--lime);
-  --outline-width: 2.8;
+  --outline-width: 3.8;
   --outline-grain: .55;
-  --outline-roughness: .8;
+  --outline-roughness: 1.3;
+  --outline-wobble: 1.4;
   --social-outline: var(--pink);
   --primary-color: var(--pink);
   --secondary-color: var(--lime);

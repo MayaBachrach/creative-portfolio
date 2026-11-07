@@ -75,19 +75,41 @@ function renderTags(container, tags) {
   container.replaceChildren(...tags.map(tagLink));
 }
 
-const pencilOutlines = ["M5 8 Q80 1 195 6 L192 194 Q95 199 7 191 Z","M9 4 Q103 10 194 3 L198 191 Q92 188 4 197 Z","M4 6 L190 3 Q200 98 194 195 L8 198 Q1 100 4 6","M7 10 Q90 0 197 7 L191 198 Q99 193 3 190 Z","M10 3 L196 8 Q189 100 198 192 L4 196 Z","M3 9 Q100 4 193 4 L197 197 Q100 190 7 195 Z","M8 3 Q103 9 198 5 L191 194 Q99 201 4 192 Z","M4 4 L193 9 Q201 95 195 190 L9 198 Q2 90 4 4"];
+const chalkVariantCount = 8;
 let chalkFilterId = 0;
+// Eight stable hand-drawn contours, each a single closed stroke.
+// Small irregular bends model a chalk stick dragged across a board.
+function chalkContour(variant, wobble) {
+  const corners = [[7, 8], [192, 6], [194, 192], [6, 194]];
+  const points = [];
+  corners.forEach(([x, y], edge) => {
+    const [endX, endY] = corners[(edge + 1) % corners.length];
+    const length = Math.hypot(endX - x, endY - y);
+    const normalX = -(endY - y) / length;
+    const normalY = (endX - x) / length;
+    for (let step = 0; step < 18; step++) {
+      const t = step / 18;
+      const phase = variant * 1.73 + edge * 2.41;
+      const drift = Math.sin(t * Math.PI) * (Math.sin(phase) * 2.4);
+      const grain = (Math.sin(step * 2.31 + phase) * .65 + Math.sin(step * 4.7 + phase) * .35) * wobble;
+      const offset = drift + grain;
+      points.push([(x + (endX - x) * t + normalX * offset).toFixed(2), (y + (endY - y) * t + normalY * offset).toFixed(2)]);
+    }
+  });
+  return points.map(([x, y], i) => `${i ? "L" : "M"}${x} ${y}`).join(" ") + " Z";
+}
 function changePencilOutline(card, colorToken = "--outline-color", retainShape = false) {
   const previous = Number(card.dataset.outline ?? -1);
-  const offset = 1 + Math.floor(Math.random() * (pencilOutlines.length - 1));
-  const index = retainShape && previous >= 0 ? previous : (previous + offset + pencilOutlines.length) % pencilOutlines.length;
+  const offset = 1 + Math.floor(Math.random() * (chalkVariantCount - 1));
+  const index = retainShape && previous >= 0 ? previous : (previous + offset + chalkVariantCount) % chalkVariantCount;
   card.dataset.outline = index;
-  const path = pencilOutlines[index];
   const theme = getComputedStyle(card);
+  const wobble = Number(theme.getPropertyValue("--outline-wobble")) || 1.4;
+  const path = chalkContour(index, wobble);
   const color = theme.getPropertyValue(colorToken).trim();
-  const strokeWidth = Number(theme.getPropertyValue("--outline-width")) || 2.8;
+  const strokeWidth = Number(theme.getPropertyValue("--outline-width")) || 3.8;
   const grain = Number(theme.getPropertyValue("--outline-grain")) || .55;
-  const roughness = Number(theme.getPropertyValue("--outline-roughness")) || .8;
+  const roughness = Number(theme.getPropertyValue("--outline-roughness")) || 1.3;
   const filterId = "chalk-grain-" + (++chalkFilterId);
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="none"><defs><filter id="${filterId}" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="3" seed="12" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="${roughness}" xChannelSelector="R" yChannelSelector="G" result="rough"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 ${grain} 0 0 0 ${1 - grain}" result="chalk"/><feComposite in="rough" in2="chalk" operator="in"/></filter></defs><path d="${path}" fill="none" stroke="${color}" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" stroke-width="${strokeWidth}" filter="url(#${filterId})"/></svg>`;
   if (card.classList.contains("social-icon")) {

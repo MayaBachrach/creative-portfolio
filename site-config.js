@@ -17,5 +17,5 @@ window.PORTFOLIO_CONFIG = {
   },
   paletteNames: { light: "play-poster", dark: "neon-scribbles" },
   typography: { headings: '"Heebo", system-ui, sans-serif', body: '"Heebo", system-ui, sans-serif' },
-  designTokens: { "--outline-width": "2.8", "--outline-grain": ".55", "--outline-roughness": ".8", "--gutter": "clamp(1rem, 4.5vw, 5rem)" },
+  designTokens: { "--outline-width": "3.8", "--outline-grain": ".55", "--outline-roughness": "1.3", "--outline-wobble": "1.4", "--gutter": "clamp(1rem, 4.5vw, 5rem)" },
 };
