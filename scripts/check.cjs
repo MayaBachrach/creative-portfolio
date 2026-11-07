@@ -6,7 +6,7 @@ const root = path.resolve(__dirname, '..');
 const read = p => fs.readFileSync(path.join(root, p), 'utf8');
 const context = { window: {} };
 vm.createContext(context);
-for (const file of ['src/config/site-config.js', 'src/data/content.js', 'src/data/lettering.js']) vm.runInContext(read(file), context);
+for (const file of ['src/config/site-config.js', 'src/data/content.js', 'src/data/lettering.js', 'src/data/shapes.js', 'src/js/shapes.js']) vm.runInContext(read(file), context);
 const { projects, carouselItems } = context.window.PORTFOLIO_CONTENT;
 assert.equal(new Set(projects.map(p => p.id)).size, projects.length);
 for (const project of projects) for (const char of project.title) {
@@ -47,3 +47,14 @@ for (let size = 2; size <= 9; size++) {
   }
 }
 console.log(`Passed: ${projects.length} projects, local resources, and balanced looping palettes with 2–9 colors and 2–50 requested tiles.`);
+
+for (const shapes of Object.values(context.window.PORTFOLIO_SHAPES)) {
+  assert.equal(shapes.length, 10);
+  const pick = context.window.createPortfolioShapePicker(shapes.length);
+  for (let round = 0; round < 10; round++) {
+    const indices = Array.from({ length: shapes.length }, () => pick());
+    assert.equal(new Set(indices).size, shapes.length);
+    assert(indices.every(index => index >= 0 && index < shapes.length));
+  }
+}
+console.log("Passed: every approved square and star is used once per shuffled bag.");

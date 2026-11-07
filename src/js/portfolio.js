@@ -25,45 +25,23 @@ function renderTags(container, tags) {
   container.replaceChildren(...tags.map(tagLink));
 }
 
-const chalkVariantCount = 8;
+const squareShapes = window.PORTFOLIO_SHAPES.square;
+const nextSquareShape = window.createPortfolioShapePicker(squareShapes.length);
 let chalkFilterId = 0;
-// Eight stable hand-drawn contours, each a single closed stroke.
-// Small irregular bends model a chalk stick dragged across a board.
-function chalkContour(variant, wobble) {
-  const corners = [[7, 8], [192, 6], [194, 192], [6, 194]];
-  const points = [];
-  corners.forEach(([x, y], edge) => {
-    const [endX, endY] = corners[(edge + 1) % corners.length];
-    const length = Math.hypot(endX - x, endY - y);
-    const normalX = -(endY - y) / length;
-    const normalY = (endX - x) / length;
-    for (let step = 0; step < 18; step++) {
-      const t = step / 18;
-      const phase = variant * 1.73 + edge * 2.41;
-      const drift = Math.sin(t * Math.PI) * (Math.sin(phase) * 1.2);
-      const grain = (Math.sin(step * 2.31 + phase) * .65 + Math.sin(step * 4.7 + phase) * .35) * wobble;
-      const offset = drift + grain;
-      points.push([(x + (endX - x) * t + normalX * offset).toFixed(2), (y + (endY - y) * t + normalY * offset).toFixed(2)]);
-    }
-  });
-  return points.map(([x, y], i) => `${i ? "L" : "M"}${x} ${y}`).join(" ") + " Z";
-}
 function changePencilOutline(card, colorToken = "--outline-color", retainShape = false) {
   const previous = Number(card.dataset.outline ?? -1);
-  const offset = 1 + Math.floor(Math.random() * (chalkVariantCount - 1));
-  const index = retainShape && previous >= 0 ? previous : (previous + offset + chalkVariantCount) % chalkVariantCount;
+  const index = retainShape && previous >= 0 ? previous : nextSquareShape(previous);
   card.dataset.outline = index;
   const theme = getComputedStyle(card);
-  const wobble = Number(theme.getPropertyValue("--outline-wobble")) || .65;
-  const path = chalkContour(index, wobble);
+  const path = squareShapes[index];
   const color = theme.getPropertyValue(colorToken).trim();
   const strokeWidth = Number(theme.getPropertyValue("--outline-width")) || 3.8;
   const grain = Number(theme.getPropertyValue("--outline-grain")) || .55;
   const roughness = Number(theme.getPropertyValue("--outline-roughness")) || 1.3;
   const filterId = "chalk-grain-" + (++chalkFilterId);
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="none"><defs><filter id="${filterId}" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="3" seed="12" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="${roughness}" xChannelSelector="R" yChannelSelector="G" result="rough"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 ${grain} 0 0 0 ${1 - grain}" result="chalk"/><feComponentTransfer in="chalk" result="opaque-grain"><feFuncA type="discrete" tableValues="0 0 0 0 0 1 1 1"/></feComponentTransfer><feComposite in="rough" in2="opaque-grain" operator="in"/></filter></defs><path d="${path}" fill="none" stroke="${color}" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" stroke-width="${strokeWidth}" filter="url(#${filterId})"/></svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="12 12 176 176" preserveAspectRatio="none"><defs><filter id="${filterId}" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="3" seed="12" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="${roughness}" xChannelSelector="R" yChannelSelector="G" result="rough"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 ${grain} 0 0 0 ${1 - grain}" result="chalk"/><feComponentTransfer in="chalk" result="opaque-grain"><feFuncA type="discrete" tableValues="0 0 0 0 0 1 1 1"/></feComponentTransfer><feComposite in="rough" in2="opaque-grain" operator="in"/></filter></defs><path d="${path}" fill="none" stroke="${color}" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" stroke-width="${strokeWidth}" filter="url(#${filterId})"/></svg>`;
   if (card.classList.contains("project-card")) {
-    const filled = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="none"><path d="${path}" fill="${color}" stroke="${color}" stroke-width="${strokeWidth}" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>`;
+    const filled = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="12 12 176 176" preserveAspectRatio="none"><path d="${path}" fill="${color}" stroke="${color}" stroke-width="${strokeWidth}" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>`;
     card.style.setProperty("--chalk-fill", `url("data:image/svg+xml,${encodeURIComponent(filled)}")`);
   }
   if (card.classList.contains("social-icon")) {
@@ -273,15 +251,23 @@ function refreshCarouselColors() {
 
 function renderCarousel() {
   const track = document.querySelector("#carousel-track");
-  const colorIndices = carouselColorIndices(Math.max(carouselSettings.minimumTiles, carouselItems.length));
+  const colorIndices = carouselColorIndices(Math.max(carouselSettings.minimumTiles, carouselItems.length, window.PORTFOLIO_SHAPES.star.length));
   const count = colorIndices.length;
   track.style.setProperty("--carousel-duration", count * carouselSettings.secondsPerTile + "s");
+  const nextStarShape = window.createPortfolioShapePicker(window.PORTFOLIO_SHAPES.star.length);
+  let previousStar = -1;
+  const starIndices = Array.from({ length: count }, () => (previousStar = nextStarShape(previousStar)));
   for (let group = 0; group < 2; group++) {
     const set = element("div", "carousel-set");
     set.setAttribute("aria-hidden", "true");
     for (let index = 0; index < count; index++) {
       const item = carouselItems[index % carouselItems.length];
       const tile = element("div", "carousel-tile");
+      const shapeIndex = starIndices[index];
+      const shape = window.PORTFOLIO_SHAPES.star[shapeIndex];
+      const star = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path d="${shape}" fill="white"/></svg>`;
+      tile.dataset.starShape = shapeIndex;
+      tile.style.setProperty("--star-shape", `url("data:image/svg+xml,${encodeURIComponent(star)}")`);
       tile.style.setProperty("--carousel-color", `var(--accent-${colorIndices[index] + 1})`);
       const media = element(item.type === "video" ? "video" : "img");
       media.src = item.frames?.[0] || item.src;
