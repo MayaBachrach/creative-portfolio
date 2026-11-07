@@ -1,6 +1,7 @@
 (() => {
 // Add future animation files here. Each item accepts image or video media.
 const carouselItems = [
+  { type: "image", src: "./assets/illustrations/producer-frame-1.svg", frames: [1, 2, 3].map(frame => "./assets/illustrations/producer-frame-" + frame + ".svg"), frameDuration: 280, alt: "Music producer, illustration by Maya" },
   { type: "image", src: "./assets/illustrations/dj-mayu.png", frames: ["./assets/illustrations/dj-frame-1.svg", "./assets/illustrations/dj-frame-2.svg", "./assets/illustrations/dj-frame-3.svg"], frameDuration: 280, alt: "DJ Mayu, איור של מאיה" },
 ];
 const carouselSettings = { minimumTiles: 6, secondsPerTile: 7 };
