@@ -1,6 +1,6 @@
 // Central design settings. Use exact palette values; do not generate extra shades.
 window.PORTFOLIO_CONFIG = {
-  presentation: { defaultCards: "filled" },
+  presentation: { defaultCards: "outline" },
   favicons: { light: "./assets/branding/favicon-light.png?v=21", dark: "./assets/branding/favicon-dark.png?v=21" },
   themeNames: { light: "crayons", dark: "markers" },
   themeFamilies: {
@@ -14,5 +14,5 @@ window.PORTFOLIO_CONFIG = {
   },
   paletteNames: { light: "play-poster", dark: "neon-scribbles" },
   typography: { headings: '"Heebo", system-ui, sans-serif', body: '"Heebo", system-ui, sans-serif' },
-  designTokens: { "--outline-width": "3.8", "--outline-grain": ".55", "--outline-roughness": "1.3", "--outline-wobble": ".65", "--gutter": "clamp(1rem, 4.5vw, 5rem)" },
+  designTokens: { "--card-outline-width": "9", "--outline-width": "3.8", "--outline-grain": ".55", "--outline-roughness": "1.3", "--outline-wobble": ".65", "--gutter": "clamp(1rem, 4.5vw, 5rem)" },
 };
