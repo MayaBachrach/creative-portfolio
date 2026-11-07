@@ -9,15 +9,21 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet">
-<script src="./site-config.js?v=clean-surfaces-11"></script>
-<script src="./theme.js?v=clean-surfaces-11"></script>
-<link rel="stylesheet" href="./style.css?v=clean-surfaces-11">
-<script src="./portfolio.js?v=clean-surfaces-11" defer></script>
+<script src="./site-config.js?v=theme-switch-12"></script>
+<script src="./theme.js?v=theme-switch-12"></script>
+<link rel="stylesheet" href="./style.css?v=theme-switch-12">
+<script src="./portfolio.js?v=theme-switch-12" defer></script>
 </head>
 <body>
 <header class="site-header">
 <a class="wordmark" href="#top" lang="en" dir="ltr">MAYA BACHRACH</a>
-<button class="theme-toggle" id="theme-toggle" type="button" aria-label="מעבר למצב כהה">מצב כהה ☾</button>
+<button class="theme-toggle" id="theme-toggle" type="button" role="switch" aria-label="מצב כהה" aria-checked="false">
+<span class="theme-toggle-track" aria-hidden="true">
+<span class="theme-toggle-thumb"></span>
+<svg class="theme-toggle-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2 2m10 10 2 2M5 19l2-2M17 7l2-2"/></svg>
+<svg class="theme-toggle-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M17 3a9 9 0 1 0 4 15"/></svg>
+</span>
+</button>
 <a href="#contact">יצירת קשר</a>
 </header>
 <main id="top">

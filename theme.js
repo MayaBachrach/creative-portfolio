@@ -39,9 +39,7 @@
     document.documentElement.style.setProperty("--social-outline", "var(--accent-1)");
     const toggle = document.querySelector("#theme-toggle");
     if (toggle) {
-      toggle.textContent = mode === "dark" ? "מצב בהיר ☀" : "מצב כהה ☾";
-      toggle.setAttribute("aria-label", mode === "dark" ? "מעבר למצב בהיר" : "מעבר למצב כהה");
-      toggle.setAttribute("aria-pressed", String(mode === "dark"));
+      toggle.setAttribute("aria-checked", String(mode === "dark"));
       refreshFavicon();
       document.dispatchEvent(new Event("portfolio-theme-change"));
     }
