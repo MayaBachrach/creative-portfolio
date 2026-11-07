@@ -26,17 +26,15 @@ h1 { display: flex; align-items: baseline; gap: .22em; font-size: clamp(3.2rem, 
 .name { display: inline-block; background: var(--lime); padding-inline: .1em .14em; transform: rotate(-3deg); }
 .hero-intro > p { text-align: center; font-size: clamp(1.1rem, 2.15vw, 1.8rem); font-weight: 600; margin-block: 1.1rem 0; }
 .carousel { margin-block-start: clamp(2rem, 5vw, 4rem); }
-.carousel-window { direction: ltr; overflow: hidden; padding-block: 2rem 1rem; }
+.carousel-window { direction: ltr; overflow: hidden; padding-block: 3rem 2rem; }
 .carousel-track { display: flex; direction: ltr; width: max-content; animation: drift var(--carousel-duration, 40s) linear infinite; }
 .carousel-set { display: flex; gap: clamp(1.2rem, 3vw, 3rem); padding-inline-end: clamp(1.2rem, 3vw, 3rem); }
 .carousel-tile { position: relative; width: clamp(11rem, 22vw, 21rem); aspect-ratio: 1; flex: none; }
-.carousel-tile::before { content: ""; position: absolute; inset: -5%; background: var(--lime); clip-path: polygon(50% 0%, 61% 31%, 91% 10%, 73% 39%, 100% 50%, 71% 60%, 91% 90%, 61% 71%, 50% 100%, 39% 71%, 9% 90%, 29% 60%, 0% 50%, 29% 39%, 9% 10%, 39% 31%); transform: rotate(-8deg); }
-.carousel-tile img { animation: dj-groove 2.4s ease-in-out infinite; transform-origin: 50% 80%; }
-.carousel-tile:nth-child(even) img { animation-delay: -1.2s; }
-@keyframes dj-groove { 0%, 100% { transform: translateY(1%) rotate(-5deg); } 50% { transform: translateY(-4%) rotate(4deg); } }
-.carousel.is-paused .carousel-tile img { animation-play-state: paused; }
-.carousel-tile img, .carousel-tile video { display: block; width: 111%; height: 111%; object-fit: contain; position: absolute; bottom: -1%; left: -5%; transform: rotate(-5deg); }
-.carousel-tile:nth-child(even) video { transform: rotate(5deg); }
+.carousel-tile::before { content: ""; position: absolute; inset: -3%; background: var(--lime); clip-path: polygon(50% 0%, 64% 30%, 98% 35%, 74% 57%, 80% 94%, 50% 76%, 20% 94%, 26% 57%, 2% 35%, 36% 30%); transform: rotate(var(--star-angle, -8deg)); }
+.carousel-tile img, .carousel-tile video { display: block; width: 100%; height: 100%; object-fit: contain; position: absolute; inset: 0; }
+.carousel-tile:nth-child(3n + 1) { --star-angle: -9deg; }
+.carousel-tile:nth-child(3n + 2) { --star-angle: 7deg; }
+.carousel-tile:nth-child(3n) { --star-angle: -2deg; }
 @keyframes drift { to { transform: translateX(-50%); } }
 .carousel.is-paused .carousel-track, .carousel:focus-within .carousel-track { animation-play-state: paused; }
 .projects-section { padding: clamp(2.5rem, 6vw, 6rem) var(--gutter); }
@@ -54,7 +52,7 @@ h1 { display: flex; align-items: baseline; gap: .22em; font-size: clamp(3.2rem, 
 .contact { background: var(--ink); color: var(--white); padding: clamp(2.5rem, 6vw, 5rem) var(--gutter) 1.5rem; text-align: center; }
 .contact h2 { color: var(--lime); font-size: clamp(2.5rem, 5vw, 5.5rem); font-weight: 800; letter-spacing: -.045em; line-height: 1.3; white-space: nowrap; }
 .contact-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(.4rem, 2vw, 1rem); max-width: 38rem; margin: 1.7rem auto 0; }
-.contact-button { display: flex; min-width: 0; align-items: stretch; border: 2px solid var(--lime); background: var(--lime); color: var(--ink); }
+.contact-button { display: flex; min-width: 0; align-items: stretch; border: 2px solid var(--pink); background: var(--pink); color: var(--ink); }
 .contact-button a, .contact-button button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; }
 .contact-button a { flex: 1; min-width: 0; padding: .5rem 1.2rem; text-decoration: none; font-weight: 600; }
 .contact-button button { width: 48px; background: transparent; border: 0; border-inline-start: 1px solid var(--ink); color: var(--ink); flex: none; }

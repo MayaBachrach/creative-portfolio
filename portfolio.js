@@ -1,6 +1,6 @@
 // Add future animation files here. Each item accepts image or video media.
 const carouselItems = [
-  { type: "image", src: "./assets/dj-mayu.png", frames: ["./assets/dj-mayu.png"], alt: "DJ Mayu, איור של מאיה" },
+  { type: "image", src: "./assets/dj-mayu.png", frames: ["./assets/dj-frame-1.svg", "./assets/dj-frame-2.svg", "./assets/dj-frame-3.svg"], frameDuration: 280, alt: "DJ Mayu, איור של מאיה" },
 ];
 const carouselSettings = { minimumTiles: 6, secondsPerTile: 7 };
 
@@ -223,12 +223,15 @@ function renderCarousel() {
       } else {
         media.alt = "";
       }
-      // Supply successive drawing files in frames to replace the gentle sway with frame animation.
+      // Play frame sequences forwards, then backwards: 1, 2, 3, 2, 1, 2...
       if (item.frames?.length > 1) {
-        let frame = 0;
+        let step = 0;
+        const lastFrame = item.frames.length - 1;
+        const cycleLength = lastFrame * 2;
         setInterval(() => {
           if (carousel.classList.contains("is-paused")) return;
-          frame = (frame + 1) % item.frames.length;
+          step = (step + 1) % cycleLength;
+          const frame = step <= lastFrame ? step : cycleLength - step;
           media.src = item.frames[frame];
         }, item.frameDuration || 160);
       }
