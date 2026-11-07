@@ -40,7 +40,8 @@ function changePencilOutline(card, colorToken = "--outline-color", retainShape =
   card.dataset.outline = index;
   const theme = getComputedStyle(card);
   const outer = squareShapes[index];
-  const scale = Number(theme.getPropertyValue("--frame-inner-scale")) || .82;
+  const projectFrame = card.classList.contains("project-card");
+  const scale = Number(theme.getPropertyValue(projectFrame ? "--card-frame-inner-scale" : "--social-frame-inner-scale")) || (projectFrame ? .93 : .82);
   const inner = insetFramePath(squareShapes[(index + 3) % squareShapes.length], scale);
   const imageOpening = insetFramePath(squareShapes[(index + 3) % squareShapes.length], scale + .012);
   const color = theme.getPropertyValue(colorToken).trim();
