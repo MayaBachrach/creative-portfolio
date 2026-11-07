@@ -1,5 +1,6 @@
 // Render the supplied vector alphabet while retaining a real accessible heading.
-// Missing glyphs fall back to the configured heading font rather than inventing letters.+window.renderPortfolioLettering = function (heading, text) {
+// Missing glyphs fall back to the configured heading font rather than inventing letters.
+window.renderPortfolioLettering = function (heading, text) {
   const ns = "http://www.w3.org/2000/svg";
   const glyphs = window.PORTFOLIO_LETTERING;
   const svg = document.createElementNS(ns, "svg");
@@ -12,7 +13,7 @@
     const glyph = glyphs[char];
     if (glyph) {
       const group = document.createElementNS(ns, "g");
-      group.setAttribute("transform", `translate(${cursor - glyph.left} 90)`);
+      group.setAttribute("transform", `translate(${cursor - glyph.left} 90) scale(${glyph.scale || 1})`);
       for (const d of glyph.paths) {
         const path = document.createElementNS(ns, "path");
         path.setAttribute("d", d);
@@ -33,7 +34,7 @@
       cursor += 64;
     }
   }
-  svg.setAttribute("viewBox", `0 0 ${cursor} 110`);
+  svg.setAttribute("viewBox", `0 0 ${cursor} 130`);
   heading.setAttribute("aria-label", text);
   heading.replaceChildren(svg);
 };
