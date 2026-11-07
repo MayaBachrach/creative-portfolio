@@ -8,6 +8,15 @@
     "pink-dark": "guided",
     "pink-white": "guided",
   };
+  // Sampled from Maya's supplied references. Earlier palettes remain available here.
+  const palettePresets = {
+    "play-poster": ["#EE364C", "#1C49AE", "#F9DA44", "#0E8C61"],
+    "neon-scribbles": ["#F84AAD", "#B2F224", "#10B8F0", "#F97513", "#8132B9"],
+    "crayola-classic": ["#EE204D", "#1F75FE", "#FCE883", "#1CAC78", "#926EAE", "#FF7538"],
+    "original-markers": ["#ff65c9", "#b8ff42", "#74dffb", "#ffb46d", "#b29bff"],
+    "pink-lime": ["#ff38b5", "#d6ff43"],
+  };
+  const paletteNames = { light: "play-poster", dark: "neon-scribbles" };
   const storageKey = "maya-portfolio-color-mode";
   const systemScheme = matchMedia("(prefers-color-scheme: dark)");
   let preference = null;
@@ -37,6 +46,12 @@
     const mode = currentMode();
     document.documentElement.dataset.theme = themeNames[mode];
     document.documentElement.dataset.themeFamily = themeFamilies[themeNames[mode]];
+    const palette = palettePresets[paletteNames[mode]];
+    palette.forEach((color, index) => document.documentElement.style.setProperty("--accent-" + (index + 1), color));
+    document.documentElement.style.setProperty("--accent-count", String(palette.length));
+    document.documentElement.style.setProperty("--name-background", "var(--accent-2)");
+    document.documentElement.style.setProperty("--outline-color", "var(--accent-" + Math.min(4, palette.length) + ")");
+    document.documentElement.style.setProperty("--social-outline", "var(--accent-1)");
     const toggle = document.querySelector("#theme-toggle");
     if (toggle) {
       toggle.textContent = mode === "dark" ? "מצב בהיר ☀" : "מצב כהה ☾";

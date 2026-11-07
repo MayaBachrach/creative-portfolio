@@ -8,6 +8,8 @@
   --icon-color: var(--white);
   --outline-color: var(--lime);
   --outline-width: 2.8;
+  --outline-grain: .55;
+  --outline-roughness: .8;
   --social-outline: var(--pink);
   --primary-color: var(--pink);
   --secondary-color: var(--lime);
@@ -207,7 +209,7 @@ h1 { display: flex; align-items: baseline; gap: .22em; font-size: clamp(3.2rem, 
 
 .theme-toggle { min-height: 44px; padding: .2rem .65rem; border: 1px solid currentColor; border-radius: 999px; background: transparent; color: var(--page-text); font-size: .9rem; }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .greeting { color: var(--accent-1); }
-:root:is([data-theme="crayons"], [data-theme="markers"]) .intro-name { color: color-mix(in srgb, var(--accent-3) 70%, var(--page-text)); }
+:root:is([data-theme="crayons"], [data-theme="markers"]) .intro-name { color: var(--accent-3); }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .name { background: var(--accent-2); }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .project-entry:nth-child(4n + 1) { --outline-color: var(--accent-1); --card-accent: var(--accent-1); }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .project-entry:nth-child(4n + 2) { --outline-color: var(--accent-2); --card-accent: var(--accent-2); }
