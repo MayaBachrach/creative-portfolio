@@ -285,3 +285,11 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 :root[data-cards="outline"] .card-content::after { inset: 0; z-index: 2; }
 
 :root[data-cards] .card-title { padding-block: 0; margin-block: 0 .3rem; }
+
+/* Contact lettering keeps the original smile isolated from RTL text. */
+.contact h2 { display: flex; align-items: center; justify-content: center; gap: .12em; }
+.footer-lead { display: block; min-width: 0; flex: .9; }
+.footer-ending { display: flex; align-items: center; gap: .12em; min-width: 0; flex: 1.4; }
+.footer-tail { display: block; min-width: 0; flex: 1; }
+.contact .handwritten-heading { width: 100%; height: auto; max-height: 7rem; }
+@media(max-width:48rem) { .contact h2 { flex-wrap: wrap; gap: 0; } .footer-lead, .footer-ending { flex: 0 0 100%; } .contact .handwritten-heading { height: 4rem; max-height: none; } }

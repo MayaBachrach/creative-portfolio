@@ -341,6 +341,7 @@ function fitGreeting() {
   greetingText.style.transform = "scaleX(" + availableWidth / measure(low) + ")";
 }
 
+document.querySelectorAll("[data-lettering]").forEach(node => window.renderPortfolioLettering(node, node.dataset.lettering));
 renderCards();
 document.querySelectorAll(".social-icon").forEach(link => {
   changePencilOutline(link, "--social-outline");
