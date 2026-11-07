@@ -172,12 +172,11 @@ function showRoute() {
     dialog.showModal();
     if (openingRect && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
       const bounds = dialog.getBoundingClientRect();
-      const x = openingRect.left + openingRect.width / 2 - bounds.left - bounds.width / 2;
-      const y = openingRect.top + openingRect.height / 2 - bounds.top - bounds.height / 2;
+      const travel = Math.max(-28, Math.min(28, openingRect.top - bounds.top));
       dialog.animate([
-        { transform: `translate(${x}px, ${y}px) scale(${openingRect.width / bounds.width}, ${openingRect.height / bounds.height})`, opacity: .6 },
-        { transform: "translate(0, 0) scale(1)", opacity: 1 },
-      ], { duration: 420, easing: "cubic-bezier(.2,.8,.2,1)" });
+        { transform: `translateY(${travel}px) scale(.97)`, opacity: 0 },
+        { transform: "translateY(0) scale(1)", opacity: 1 },
+      ], { duration: 480, easing: "cubic-bezier(.16,1,.3,1)" });
     }
     openingRect = null;
   }
@@ -185,9 +184,19 @@ function showRoute() {
   projectTitle.focus({ preventScroll: true });
 }
 
-function closeProject() {
+let closingProject = false;
+async function closeProject() {
+  if (closingProject || !dialog.open) return;
+  closingProject = true;
   stopDetailVideos();
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    await dialog.animate([
+      { transform: "translateY(0) scale(1)", opacity: 1 },
+      { transform: "translateY(10px) scale(.985)", opacity: 0 },
+    ], { duration: 180, easing: "ease-out" }).finished;
+  }
   dialog.close();
+  closingProject = false;
   if (openedFromCard && location.hash.startsWith("#project/")) {
     history.back();
   } else {
@@ -201,6 +210,13 @@ document.querySelector("#close-project").addEventListener("click", closeProject)
 dialog.addEventListener("cancel", event => {
   event.preventDefault();
   closeProject();
+});
+dialog.addEventListener("click", event => {
+  if (event.target !== dialog) return;
+  const bounds = dialog.getBoundingClientRect();
+  const outside = event.clientX < bounds.left || event.clientX > bounds.right ||
+    event.clientY < bounds.top || event.clientY > bounds.bottom;
+  if (outside) closeProject();
 });
 window.addEventListener("hashchange", showRoute);
 
