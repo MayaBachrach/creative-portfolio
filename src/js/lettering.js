@@ -12,8 +12,9 @@ window.renderPortfolioLettering = function (heading, text) {
   for (const [lineIndex, line] of lines.entries()) {
   let cursor = 0;
   const lineGroup = document.createElementNS(ns, "g");
-  const units = line.match(/[A-Za-z0-9]+|./gu) || [];
-  const characters = heading.dataset.letteringDirection === "ltr" ? units : units.reverse();
+  const units = line.match(/\(:|:\)|[A-Za-z0-9]+|./gu) || [];
+  const ordered = heading.dataset.letteringDirection === "ltr" ? units : units.reverse();
+  const characters = ordered.flatMap(unit => unit === "(:" || unit === ":)" ? [...unit] : [unit]);
   for (const char of characters) {
     if (char === " ") { cursor += 28; continue; }
     const glyph = glyphs[char];

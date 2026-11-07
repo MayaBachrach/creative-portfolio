@@ -1,9 +1,10 @@
 // Central design settings. Use exact palette values; do not generate extra shades.
 window.PORTFOLIO_CONFIG = {
-  cursor: { size: 32, strokeWidth: 2.2 },
+  music: { enabled: true, bpm: 92, volume: .16 },
+  cursor: { size: 32, strokeWidth: 2.2, colorRoles: { light: { fill: 3, stroke: 2 }, dark: { fill: 2, stroke: 5 } } },
   colorRoles: { contactHeading: 4 },
   presentation: { defaultCards: "outline" },
-  favicons: { light: "./assets/branding/favicon-light.png?v=21", dark: "./assets/branding/favicon-dark.png?v=21" },
+  favicons: { light: "./assets/branding/favicon-light.png?v=29", dark: "./assets/branding/favicon-dark.png?v=29" },
   themeNames: { light: "crayons", dark: "markers" },
   themeFamilies: {
     crayons: "multicolor",

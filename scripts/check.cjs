@@ -64,3 +64,10 @@ for (const folder of ["src/js", "src/data", "src/config"]) {
 }
 for (const char of "בואו ניצור משהו יפה ביחד(:)") if (char !== " ") assert(context.window.PORTFOLIO_LETTERING[char], "Missing footer glyph: " + char);
 console.log("Passed: all JavaScript syntax and contact lettering glyphs.");
+
+const columnsContext = {};
+vm.createContext(columnsContext);
+const appSource = read("src/js/portfolio.js");
+vm.runInContext(appSource.slice(appSource.indexOf("function desktopColumnCount"), appSource.indexOf("function renderCards")), columnsContext);
+for (const [count, columns] of [[8,4],[9,3],[10,5],[12,4],[15,5]]) assert.equal(columnsContext.desktopColumnCount(count), columns);
+console.log("Passed: automatic full desktop rows for supported counts.");

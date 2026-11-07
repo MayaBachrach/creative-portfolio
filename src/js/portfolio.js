@@ -59,7 +59,17 @@ function changePencilOutline(card, colorToken = "--outline-color", retainShape =
   }
 }
 
+function desktopColumnCount(count) {
+  const options = [5, 4, 3];
+  return options.find(columns => count % columns === 0) || options.reduce((best, columns) => {
+    const gaps = Math.ceil(count / columns) * columns - count;
+    const bestGaps = Math.ceil(count / best) * best - count;
+    return gaps < bestGaps ? columns : best;
+  });
+}
+
 function renderCards() {
+  document.querySelector("#project-grid").style.setProperty("--desktop-columns", desktopColumnCount(projects.length));
   document.querySelector("#project-grid").replaceChildren(...projects.map(project => {
     const card = element("a", "project-card");
     card.href = "#project/" + project.id;
@@ -78,7 +88,7 @@ function renderCards() {
     const picture = element("div", "card-picture" + (project.contain ? " contain" : ""));
     const image = element("img");
     image.src = project.cover;
-    if (project.cover.endsWith("/dj-mayu.png")) image.classList.add("theme-drawing");
+    if (project.cover.endsWith("/dj-mayu.png") || project.cover.endsWith("/digital-products.svg")) image.classList.add("theme-drawing");
     image.alt = project.title;
     image.width = 600;
     image.height = 600;
@@ -346,7 +356,7 @@ function fitGreeting() {
 }
 
 function renderContactLettering() {
-  const text = matchMedia("(max-width: 48rem)").matches ? "בואו ניצור\nמשהו יפה ביחד" : "בואו ניצור משהו יפה ביחד";
+  const text = matchMedia("(max-width: 48rem)").matches ? "בואו ניצור\nמשהו יפה ביחד (:" : "בואו ניצור משהו יפה ביחד (:";
   window.renderPortfolioLettering(document.querySelector("#contact-lettering"), text);
 }
 renderContactLettering();

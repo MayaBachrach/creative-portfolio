@@ -321,7 +321,7 @@ const projects = [
   {
     "id": "app-development",
     "title": "מוצרים דיגיטליים",
-    "cover": "./assets/branding/picky.png",
+    "cover": "./assets/illustrations/digital-products.svg",
     "contain": true,
     "description": "מוצרים דיגיטליים, ממשקים וכלים אינטראקטיביים.",
     "tags": [
@@ -337,6 +337,28 @@ const projects = [
         "tags": [
           "פיתוח אפליקציות",
           "מוצרים דיגיטליים"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "storytelling",
+    "title": "סטוריטלינג",
+    "cover": "./assets/images/social-1.webp",
+    "description": "סיפורים, דמויות ונרטיבים — מהרעיון ועד לאופן שבו הסיפור פוגש את הקהל.",
+    "tags": [
+      "סטוריטלינג",
+      "סיפור",
+      "דמויות"
+    ],
+    "media": [
+      {
+        "type": "image",
+        "src": "./assets/images/social-1.webp",
+        "alt": "תמונת אווירה למשבצת הסטוריטלינג",
+        "tags": [
+          "סטוריטלינג",
+          "סיפור"
         ]
       }
     ]

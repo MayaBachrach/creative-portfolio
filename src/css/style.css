@@ -138,7 +138,7 @@ h1 { display: flex; align-items: baseline; gap: .22em; font-size: clamp(3.2rem, 
 @keyframes drift { to { transform: translateX(-50%); } }
 .carousel.is-paused .carousel-track, .carousel:focus-within .carousel-track { animation-play-state: paused; }
 .projects-section { padding: clamp(2.5rem, 6vw, 6rem) var(--gutter); }
-.project-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 2rem); }
+.project-grid { display: grid; grid-template-columns: repeat(var(--desktop-columns, 4), minmax(0, 1fr)); gap: clamp(1rem, 2vw, 2rem); }
 .project-card .card-content::after { content: ""; pointer-events: none; position: absolute; inset: -9px; background: var(--pencil-outline) center / 100% 100% no-repeat; opacity: 0; transition: opacity 140ms ease; }
 .project-card:focus-visible .card-content::after, .project-card.is-in-view .card-content::after { opacity: 1; }
 .name-line { display: inline-block; white-space: nowrap; }
@@ -289,13 +289,15 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 
 /* Solid irregular rings and their photo openings share the same geometry. */
 :root[data-cards="outline"] .card-picture { -webkit-mask: var(--picture-mask) center / 100% 100% no-repeat; mask: var(--picture-mask) center / 100% 100% no-repeat; }
-.contact h2 { display: flex; align-items: center; justify-content: center; gap: .1em; color: var(--contact-title); }
-.footer-text { display: block; flex: 1; min-width: 0; max-width: 65rem; }
-.contact .handwritten-heading { width: 100%; height: clamp(4rem, 8vw, 7rem); }
-.contact .smile { display: block; flex: 0 0 .65em; width: .65em; }
-@media(max-width:48rem) { .contact h2 { align-items: flex-end; } .contact .footer-text > svg { height: 8rem; } .contact .smile > svg { height: 4rem; } }
-
+.contact h2 { display: block; color: var(--contact-title); }
+.contact h2 > .handwritten-heading { width: 100%; height: clamp(4rem, 8vw, 7rem); max-width: 75rem; margin-inline: auto; }
+@media(max-width:48rem) { .contact h2 > .handwritten-heading { height: 8.5rem; } }
 @media(hover:hover) and (pointer:fine) {
   html, body { cursor: var(--site-cursor, auto); }
   a[href], button, [role="button"], [role="switch"] { cursor: var(--site-cursor-link, pointer); }
 }
+
+#music-toggle { position: fixed; z-index: 20; inset-inline-end: 1rem; bottom: 1rem; display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; padding: .45rem .8rem; color: var(--page-text); background: var(--page-background); border: 2px solid var(--accent-4); border-radius: 999px; font-size: .9rem; }
+#music-toggle svg { width: 21px; height: 21px; }
+#music-toggle[aria-pressed="true"] { border-color: var(--accent-2); }
+body:has(dialog[open]) #music-toggle { visibility: hidden; }

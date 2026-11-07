@@ -29,7 +29,7 @@
     document.documentElement.dataset.theme = themeNames[mode];
     document.documentElement.dataset.themeFamily = themeFamilies[themeNames[mode]];
     const palette = palettePresets[paletteNames[mode]];
-    window.updatePortfolioCursors(palette);
+    window.updatePortfolioCursors(palette, mode);
     const contactRole = Math.min(window.PORTFOLIO_CONFIG.colorRoles.contactHeading, palette.length) - 1;
     document.documentElement.style.setProperty("--contact-title", palette[contactRole]);
     document.documentElement.dataset.palette = paletteNames[mode];
