@@ -222,10 +222,6 @@ h1 { display: flex; align-items: baseline; gap: .22em; font-size: clamp(3.2rem, 
 :root:is([data-theme="crayons"], [data-theme="markers"]) .greeting { color: var(--accent-1); }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .intro-name { color: var(--accent-3); }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .name { background: var(--accent-2); }
-:root:is([data-theme="crayons"], [data-theme="markers"]) .project-entry:nth-child(4n + 1) { --outline-color: var(--accent-1); --card-accent: var(--accent-1); }
-:root:is([data-theme="crayons"], [data-theme="markers"]) .project-entry:nth-child(4n + 2) { --outline-color: var(--accent-2); --card-accent: var(--accent-2); }
-:root:is([data-theme="crayons"], [data-theme="markers"]) .project-entry:nth-child(4n + 3) { --outline-color: var(--accent-3); --card-accent: var(--accent-3); }
-:root:is([data-theme="crayons"], [data-theme="markers"]) .project-entry:nth-child(4n) { --outline-color: var(--accent-4); --card-accent: var(--accent-4); }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .project-card::after { opacity: 1; }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .card-title { color: var(--card-accent); }
 :root:is([data-theme="crayons"], [data-theme="markers"]) .social-icon:nth-child(1) { --social-outline: var(--footer-accent-1); }
@@ -255,10 +251,10 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 
 /* Canva outlines: monochrome masks inherit the exact active palette color. */
 .canva-word, .canva-letter { display: inline-block; height: 1em; background: currentColor; mask: var(--letter-art) center / 100% 100% no-repeat; -webkit-mask: var(--letter-art) center / 100% 100% no-repeat; vertical-align: bottom; }
-.canva-he { width: .8192em; --letter-art: url('./assets/title-he.svg?v=15'); }
-.canva-yod { width: .3476em; --letter-art: url('./assets/title-yod.svg?v=15'); }
-.canva-zot { width: 2.3965em; --letter-art: url('./assets/title-zot.svg?v=15'); }
-.canva-maya { width: 3.2668em; --letter-art: url('./assets/title-maya.svg?v=15'); }
+.canva-he { width: .8192em; --letter-art: url('../../assets/typography/title-he.svg?v=15'); }
+.canva-yod { width: .3476em; --letter-art: url('../../assets/typography/title-yod.svg?v=15'); }
+.canva-zot { width: 2.3965em; --letter-art: url('../../assets/typography/title-zot.svg?v=15'); }
+.canva-maya { width: 3.2668em; --letter-art: url('../../assets/typography/title-maya.svg?v=15'); }
 .greeting > span { display: flex; flex: none; direction: rtl; gap: .015em; }
 .canva-letter { flex: none; }
 .name-line { display: flex; align-items: center; gap: .12em; }
@@ -268,8 +264,11 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 #intro-title .greeting { width: auto; }
 
 /* Optional solid-color version: ?cards=filled. The outline version stays available. */
-:root[data-cards="filled"] .project-card { background: transparent; padding-block-start: var(--filled-card-top-padding, 2rem); }
-:root[data-cards="filled"] .project-card::before { content: ""; position: absolute; inset: -5px; background: var(--chalk-fill) center / 100% 100% no-repeat; pointer-events: none; }
+:root[data-cards="filled"] .project-card { background: transparent; padding: 0; }
+:root[data-cards="filled"] .card-content { position: relative; padding: clamp(1.1rem, 2vw, 1.7rem); }
+:root[data-cards="filled"] .card-content::before { content: ""; position: absolute; inset: -5px; background: var(--chalk-fill) center / 100% 100% no-repeat; pointer-events: none; }
 :root[data-cards="filled"] .project-card::after { display: none; }
-:root[data-cards="filled"] .project-card > * { position: relative; }
-:root[data-cards="filled"] .card-title { color: var(--filled-card-title); }
+:root[data-cards="filled"] .card-content > * { position: relative; }
+:root[data-cards="filled"] .card-title { color: var(--card-accent); margin-block: 0 1rem; }
+.card-title { width: 100%; }
+.handwritten-heading { display: block; width: 100%; height: clamp(2.4rem, 3.7vw, 3.4rem); overflow: visible; }

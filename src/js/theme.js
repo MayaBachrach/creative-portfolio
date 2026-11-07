@@ -26,10 +26,10 @@
 
   function updateTheme() {
     const mode = currentMode();
-    document.documentElement.style.setProperty("--filled-card-title", window.PORTFOLIO_CONFIG.filledCardTheme[mode].title);
     document.documentElement.dataset.theme = themeNames[mode];
     document.documentElement.dataset.themeFamily = themeFamilies[themeNames[mode]];
     const palette = palettePresets[paletteNames[mode]];
+    document.documentElement.dataset.palette = paletteNames[mode];
     palette.forEach((color, index) => document.documentElement.style.setProperty("--accent-" + (index + 1), color));
     document.documentElement.style.setProperty("--accent-count", String(palette.length));
     document.documentElement.style.setProperty("--name-background", "var(--accent-2)");

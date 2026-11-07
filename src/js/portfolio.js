@@ -1,86 +1,4 @@
-// Add future animation files here. Each item accepts image or video media.
-const carouselItems = [
-  { type: "image", src: "./assets/dj-mayu.png", frames: ["./assets/dj-frame-1.svg", "./assets/dj-frame-2.svg", "./assets/dj-frame-3.svg"], frameDuration: 280, alt: "DJ Mayu, איור של מאיה" },
-];
-const carouselSettings = { minimumTiles: 6, secondsPerTile: 7, colorCount: 5 };
-
-// Add another project object to extend the home page.
-const projects = [
-  {
-    id: "mix", title: "הפקה מוזיקלית ומיקס", cover: "./assets/dj-mayu.png", contain: true,
-    description: "מיקס, רמיקסים והפקה מוזיקלית.",
-    tags: ["מוזיקה", "מיקס", "הפקה"],
-    media: [{ type: "image", src: "./assets/dj-mayu.png", alt: "איור DJ Mayu", caption: "DJ Mayu", tags: ["איור", "מוזיקה"] }],
-  },
-  {
-    id: "social", title: "תוכן וסושיאל", cover: "./assets/social-1.webp",
-    description: "שני סרטוני סושיאל. התפקיד שלי הוא הופעה מול מצלמה ואלתור. הקונספט והעריכה נעשו על ידי אחרים.",
-    tags: ["סושיאל", "הופעה מול מצלמה", "אלתור"],
-    media: [1, 2].map(number => ({
-      type: "video", src: `./assets/social-${number}.mp4`, poster: `./assets/social-${number}.webp`,
-      alt: `סרטון סושיאל ${number}`, tags: ["סושיאל", "הופעה מול מצלמה", "אלתור"],
-    })),
-  },
-  {
-    id: "set-design", title: "עיצוב תפאורה וחלל", cover: "./assets/lobby-3.webp",
-    description: "עיצוב לובי, תפאורה ואביזרים. מהעבודה בסדנה ופרטי החיבורים ועד למיצגים בחלל המלון.",
-    tags: ["תפאורה", "עיצוב חלל", "אביזרים", "עבודת יד"],
-    media: [
-      ...[3, 2, 1].map(number => ({
-        type: "image", src: `./assets/lobby-${number}.webp`,
-        alt: ["מיצג עם בלונים ודמויות בלובי", "מיצג אדום ולב מבלונים", "תפאורת מסגרות ירוקות בלובי"][number - 1],
-        tags: ["תפאורה", "עיצוב חלל", "הקמה"],
-      })),
-      { type: "video", src: "./assets/set-process.mp4", poster: "./assets/set-poster.webp", alt: "תהליך עבודה על התפאורה", tags: ["תפאורה", "אביזרים", "עבודת יד"] },
-      ...[
-        [6, "מסגרת תפאורה מעוטרת בעלים"], [5, "סדנת העבודה"], [4, "חלקי תפאורה בסדנה"],
-        [3, "קישוט ידית עץ"], [10, "חיבור באביזר צהוב"], [7, "פין ושרשרת במסגרת"],
-        [8, "רצועת חיבור באביזר"], [1, "עבודה על כובע"], [2, "עבודה על אביזר מקופל"],
-      ].map(([number, alt]) => ({ type: "image", src: `./assets/set-${number}.webp`, alt, tags: ["תפאורה", "אביזרים", "עבודת יד"] })),
-    ],
-  },
-  {
-    id: "graphic", title: "עיצוב גרפי", cover: "./assets/dj-mayu.png", contain: true,
-    description: "איור DJ Mayu והזהות החזותית של PICKY, כלי לבחירת צבעים לכרום.",
-    tags: ["איור", "עיצוב גרפי", "עיצוב ממשק"],
-    media: [
-      { type: "image", src: "./assets/dj-mayu.png", alt: "DJ Mayu — איור של דמות מתקלטת", caption: "DJ Mayu", tags: ["איור", "מוזיקה", "עיצוב גרפי"] },
-      { type: "image", src: "./assets/picky.png", alt: "האייקון של PICKY", caption: "PICKY", link: "https://github.com/MayaBachrach/picky", tags: ["עיצוב גרפי", "עיצוב ממשק", "כלי צבע"] },
-    ],
-  },
-  {
-    id: "performance", title: "הופעה ופרפורמנס", cover: "./assets/social-2.webp",
-    description: "הופעה מול מצלמה ואלתור.", tags: ["הופעה", "אלתור", "מול מצלמה"],
-    media: [{ type: "video", src: "./assets/social-2.mp4", poster: "./assets/social-2.webp", alt: "הופעה מול מצלמה", tags: ["הופעה", "אלתור", "מול מצלמה"] }],
-  },
-  {
-    id: "animation", title: "איור ואנימציה", cover: "./assets/dj-mayu.png", contain: true,
-    description: "איורים, דמויות ותנועה.", tags: ["איור", "אנימציה", "דמויות"],
-    media: [{ type: "image", src: "./assets/dj-frame-2.svg", alt: "DJ Mayu — פריים מתוך האיור", tags: ["איור", "אנימציה", "דמויות"] }],
-  },
-  {
-    id: "concepts", title: "פיתוח קונספטים", cover: "./assets/picky.png", contain: true,
-    description: "מרעיון ראשוני לכיוון ברור: פיתוח רעיונות, סיפורים ושפה חזותית.", tags: ["קונספט", "רעיונאות", "פיתוח רעיון"],
-    media: [{ type: "image", src: "./assets/picky.png", alt: "PICKY — תמונה לסידור המשבצת", tags: ["קונספט", "רעיונאות"] }],
-  },
-  {
-    id: "creative", title: "קריאייטיב", cover: "./assets/lobby-2.webp",
-    description: "רעיונות וחיבורים בין תוכן, עיצוב וחוויה.", tags: ["קריאייטיב", "שפה חזותית", "חוויה"],
-    media: [{ type: "image", src: "./assets/lobby-2.webp", alt: "תמונת אווירה למשבצת הקריאייטיב", tags: ["קריאייטיב", "חוויה"] }],
-  },
-  {
-    id: "storytelling", title: "סטוריטלינג", cover: "./assets/social-1.webp",
-    description: "סיפורים, דמויות ונרטיבים — מהרעיון ועד לאופן שבו הסיפור פוגש את הקהל.",
-    tags: ["סטוריטלינג", "סיפור", "דמויות"],
-    media: [{ type: "image", src: "./assets/social-1.webp", alt: "תמונת אווירה למשבצת הסטוריטלינג", tags: ["סטוריטלינג", "סיפור"] }],
-  },
-  {
-    id: "app-development", title: "פיתוח אפליקציות", cover: "./assets/picky.png", contain: true,
-    description: "מוצרים דיגיטליים, ממשקים וכלים אינטראקטיביים.",
-    tags: ["פיתוח אפליקציות", "ממשק משתמש", "מוצרים דיגיטליים"],
-    media: [{ type: "image", src: "./assets/picky.png", alt: "PICKY — תמונה למשבצת הפיתוח", tags: ["פיתוח אפליקציות", "מוצרים דיגיטליים"] }],
-  },
-];
+const { carouselItems, carouselSettings, projects } = window.PORTFOLIO_CONTENT;
 
 const dialog = document.querySelector("#project-page");
 const detailMedia = document.querySelector("#detail-media");
@@ -174,6 +92,7 @@ function renderCards() {
       openedFromCard = true;
     });
     const heading = element("h2", "card-title", project.title);
+    window.renderPortfolioLettering(heading, project.title);
     const picture = element("div", "card-picture" + (project.contain ? " contain" : ""));
     const image = element("img");
     image.src = project.cover;
@@ -183,7 +102,9 @@ function renderCards() {
     image.height = 600;
     image.loading = "lazy";
     picture.append(image);
-    card.append(heading, picture);
+    const content = element("div", "card-content");
+    content.append(picture);
+    card.append(heading, content);
     if (project.note) card.append(element("p", "card-note", project.note));
     const entry = element("article", "project-entry");
     const tags = element("div", "tags");
@@ -331,14 +252,14 @@ dialog.addEventListener("click", event => {
 });
 window.addEventListener("hashchange", showRoute);
 
+function activePaletteSize() {
+  return window.PORTFOLIO_CONFIG.palettePresets[document.documentElement.dataset.palette].length;
+}
+
 function carouselColorIndices(count) {
-  const themeColorCount = Number(getComputedStyle(document.documentElement).getPropertyValue("--accent-count"));
-  const colorCount = themeColorCount || carouselSettings.colorCount;
-  const colors = Array.from({ length: count }, (_, index) => index % colorCount);
-  if (count > 1 && colors[count - 1] === colors[0]) {
-    colors[count - 1] = (colors[count - 1] + 1) % colorCount;
-  }
-  return colors;
+  const colorCount = activePaletteSize();
+  const tileCount = Math.ceil(count / colorCount) * colorCount;
+  return Array.from({ length: tileCount }, (_, index) => index % colorCount);
 }
 
 function refreshCarouselColors() {
@@ -352,8 +273,8 @@ function refreshCarouselColors() {
 
 function renderCarousel() {
   const track = document.querySelector("#carousel-track");
-  const count = Math.max(carouselSettings.minimumTiles, carouselItems.length);
-  const colorIndices = carouselColorIndices(count);
+  const colorIndices = carouselColorIndices(Math.max(carouselSettings.minimumTiles, carouselItems.length));
+  const count = colorIndices.length;
   track.style.setProperty("--carousel-duration", count * carouselSettings.secondsPerTile + "s");
   for (let group = 0; group < 2; group++) {
     const set = element("div", "carousel-set");
@@ -440,7 +361,7 @@ document.querySelectorAll(".social-icon").forEach(link => {
 });
 
 function refreshThemeOutlines() {
-  const colorCount = Number(getComputedStyle(document.documentElement).getPropertyValue("--accent-count")) || 5;
+  const colorCount = activePaletteSize();
   document.querySelectorAll(".project-entry").forEach((entry, index) => {
     const accent = `var(--accent-${index % colorCount + 1})`;
     entry.style.setProperty("--outline-color", accent);
