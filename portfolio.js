@@ -74,11 +74,25 @@ function renderTags(container, tags) {
   container.replaceChildren(...tags.map(tagLink));
 }
 
+const pencilOutlines = ["M5 8 Q80 1 195 6 L192 194 Q95 199 7 191 Z","M9 4 Q103 10 194 3 L198 191 Q92 188 4 197 Z","M4 6 L190 3 Q200 98 194 195 L8 198 Q1 100 4 6","M7 10 Q90 0 197 7 L191 198 Q99 193 3 190 Z","M10 3 L196 8 Q189 100 198 192 L4 196 Z","M3 9 Q100 4 193 4 L197 197 Q100 190 7 195 Z","M8 3 Q103 9 198 5 L191 194 Q99 201 4 192 Z","M4 4 L193 9 Q201 95 195 190 L9 198 Q2 90 4 4"];
+function changePencilOutline(card) {
+  const previous = Number(card.dataset.outline ?? -1);
+  const offset = 1 + Math.floor(Math.random() * (pencilOutlines.length - 1));
+  const index = (previous + offset + pencilOutlines.length) % pencilOutlines.length;
+  card.dataset.outline = index;
+  const path = pencilOutlines[index];
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="none"><g fill="none" stroke="#d6ff43" stroke-linecap="round" stroke-linejoin="round"><path d="${path}" stroke-width="2.2"/><path d="${path}" transform="translate(1.5 -1)" stroke-width=".8" opacity=".65"/><path d="${path}" transform="translate(-1 1.8)" stroke-width=".6" opacity=".45" stroke-dasharray="12 2 6 1"/></g></svg>`;
+  card.style.setProperty("--pencil-outline", `url("data:image/svg+xml,${encodeURIComponent(svg)}")`);
+}
+
 function renderCards() {
   document.querySelector("#project-grid").replaceChildren(...projects.map(project => {
     const card = element("a", "project-card");
     card.href = "#project/" + project.id;
     card.setAttribute("aria-haspopup", "dialog");
+    changePencilOutline(card);
+    card.addEventListener("pointerenter", () => changePencilOutline(card));
+    card.addEventListener("focus", () => changePencilOutline(card));
     card.addEventListener("click", () => {
       previousFocus = card;
       openingRect = card.getBoundingClientRect();
@@ -172,11 +186,14 @@ function showRoute() {
     dialog.showModal();
     if (openingRect && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
       const bounds = dialog.getBoundingClientRect();
-      const travel = Math.max(-28, Math.min(28, openingRect.top - bounds.top));
+      const top = Math.max(0, Math.min(bounds.height * .35, openingRect.top - bounds.top));
+      const right = Math.max(0, Math.min(bounds.width * .35, bounds.right - openingRect.right));
+      const bottom = Math.max(0, Math.min(bounds.height * .35, bounds.bottom - openingRect.bottom));
+      const left = Math.max(0, Math.min(bounds.width * .35, openingRect.left - bounds.left));
       dialog.animate([
-        { transform: `translateY(${travel}px) scale(.97)`, opacity: 0 },
-        { transform: "translateY(0) scale(1)", opacity: 1 },
-      ], { duration: 480, easing: "cubic-bezier(.16,1,.3,1)" });
+        { clipPath: `inset(${top}px ${right}px ${bottom}px ${left}px round 8px)`, opacity: .35, transform: "translateY(12px)" },
+        { clipPath: "inset(0px 0px 0px 0px round 0px)", opacity: 1, transform: "translateY(0)" },
+      ], { duration: 540, easing: "cubic-bezier(.22,1,.36,1)" });
     }
     openingRect = null;
   }
@@ -291,6 +308,15 @@ const greetingText = greeting.querySelector("span");
 function fitGreeting() {
   const availableWidth = greeting.clientWidth;
   if (!availableWidth) return;
+  const heading = document.querySelector("#intro-title");
+  const nameLine = document.querySelector(".name-line");
+  if (matchMedia("(max-width: 48rem)").matches) {
+    const currentSize = parseFloat(getComputedStyle(heading).fontSize);
+    const fittedSize = currentSize * availableWidth / nameLine.getBoundingClientRect().width;
+    heading.style.fontSize = fittedSize.toFixed(2) + "px";
+  } else {
+    heading.style.fontSize = "";
+  }
   greetingText.style.transform = "";
   const measure = count => {
     greetingText.textContent = "ה" + "י".repeat(count);
@@ -327,7 +353,10 @@ function updateTouchHighlight() {
       }
     }
   }
-  cards.forEach(card => card.classList.toggle("is-in-view", card === closestCard));
+  cards.forEach(card => {
+    if (card === closestCard && !card.classList.contains("is-in-view")) changePencilOutline(card);
+    card.classList.toggle("is-in-view", card === closestCard);
+  });
 }
 function scheduleTouchHighlight() {
   if (!highlightFrame) highlightFrame = requestAnimationFrame(updateTouchHighlight);
