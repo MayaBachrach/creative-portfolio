@@ -26,7 +26,7 @@ h1 { display: flex; align-items: baseline; gap: .22em; font-size: clamp(3.2rem, 
 .name { display: inline-block; background: var(--lime); padding-inline: .1em .14em; transform: rotate(-3deg); }
 .hero-intro > p { text-align: center; font-size: clamp(1.1rem, 2.15vw, 1.8rem); font-weight: 600; margin-block: 1.1rem 0; }
 .carousel { margin-block-start: clamp(2rem, 5vw, 4rem); }
-.carousel-window { overflow: hidden; padding-block: 2rem 1rem; }
+.carousel-window { direction: ltr; overflow: hidden; padding-block: 2rem 1rem; }
 .carousel-track { display: flex; direction: ltr; width: max-content; animation: drift var(--carousel-duration, 40s) linear infinite; }
 .carousel-set { display: flex; gap: clamp(1.2rem, 3vw, 3rem); padding-inline-end: clamp(1.2rem, 3vw, 3rem); }
 .carousel-tile { position: relative; width: clamp(11rem, 22vw, 21rem); aspect-ratio: 1; background: var(--lime); flex: none; }
