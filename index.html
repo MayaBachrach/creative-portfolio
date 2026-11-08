@@ -573,6 +573,9 @@ body > .custom-scroll .custom-scroll-thumb { background:var(--page-scroll-color)
  .detail-media { width:100%; }
  .media-item img, .media-item video { max-height:52dvh; }
 }
+
+/* Loading choreography is confined to the main heading, never the rest of the page. */
+.site-header, .hero-intro > p, .carousel, .carousel-window, .contact, .project-description { opacity:1; visibility:visible; animation:none; transition:none; }
 </style>
 <script>// Central design settings. Use exact palette values; do not generate extra shades.
 window.PORTFOLIO_CONFIG = {
