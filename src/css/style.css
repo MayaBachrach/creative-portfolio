@@ -423,3 +423,29 @@ html::-webkit-scrollbar, .project-page-scroll::-webkit-scrollbar { display:none;
 .custom-scroll-thumb { position:absolute; width:100%; min-height:36px; border-radius:999px; background:var(--accent-2); cursor:inherit; }
 .project-page > .custom-scroll { position:absolute; top:18px; bottom:18px; right:7px; }
 .project-page > .custom-scroll .custom-scroll-thumb { background:var(--panel-accent); }
+
+/* One scrollbar only: retain scrolling while suppressing browser tracks. */
+html, body, .project-page, .project-page-scroll { scrollbar-width:none !important; }
+html::-webkit-scrollbar, body::-webkit-scrollbar, .project-page::-webkit-scrollbar, .project-page-scroll::-webkit-scrollbar { display:none !important; width:0 !important; height:0 !important; }
+.difference-cursor { position:fixed; top:0; left:0; width:25px; height:25px; border-radius:50%; background:#fff; mix-blend-mode:difference; pointer-events:none; z-index:2147483647; opacity:0; transform:translate(-50%,-50%); transition:width 180ms ease,height 180ms ease,opacity 120ms ease; }
+.difference-cursor.is-hovering { width:45px; height:45px; }
+@media(hover:hover) and (pointer:fine) { html.circle-cursor-active, .circle-cursor-active * { cursor:none !important; } }
+/* Separate desktop and phone composition, preserving Maya's visual language. */
+.hero-intro { max-width:100rem; margin-inline:auto; }
+.hero-intro > p { max-width:58rem; margin-inline:auto; line-height:1.55; }
+@media(min-width:49rem) {
+ .hero { padding-block-start:clamp(3rem,6vh,6rem); }
+ .carousel-tile { width:clamp(15rem,23vw,24rem); }
+ .carousel-window { padding-block:5rem 3rem; }
+}
+@media(max-width:48rem) {
+ .hero { padding-block-start:2rem; }
+ .hero-intro > p { max-width:29rem; font-size:clamp(1rem,4.1vw,1.25rem); }
+ .hero-intro > p span { white-space:normal; }
+ .carousel-tile { width:68vw; max-width:23rem; }
+ .carousel-set { gap:12vw; padding-inline-end:12vw; }
+ .carousel-window { padding-block:4rem 2rem; }
+ .project-page { width:94vw; height:90dvh; max-height:90dvh; }
+ .project-page-content { padding-inline:.5rem; }
+ .contact { padding-block-start:1.5rem; }
+}
