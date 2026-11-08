@@ -909,5 +909,7 @@ body > .custom-scroll .custom-scroll-thumb { transition:none; }
 /* Keep a clear edge gap without shifting the heading or narrowing the drag area. */
 @media(max-width:48rem) {
  body > .custom-scroll { right:0; width:24px; }
- body > .custom-scroll .custom-scroll-thumb { left:16px; width:5px; }
+ body > .custom-scroll .custom-scroll-thumb { left:3px; width:7px; }
 }
+
+body > .custom-scroll .custom-scroll-thumb { left:3px; width:var(--page-thumb-width,7px); }
