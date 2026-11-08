@@ -24,7 +24,7 @@ ctx.document={createElementNS:(_,tag)=>new SvgNode(tag)};
 vm.runInNewContext(read("src/js/lettering.js"),ctx);
 function lettering(text,ltr){const node=new SvgNode("span");node.dataset.letteringDirection=ltr?"ltr":"rtl";ctx.window.renderPortfolioLettering(node,text);return node.children.join("");}
 html=html.replace(/(<span class="wordmark"[^>]*>)[^<]*(<\/span>)/,(_,a,b)=>a+lettering("MAYA BACHRACH",true)+b);
-html=html.replace(/(<h2 id="contact-lettering"[^>]*>)[^<]*(<\/h2>)/,(_,a,b)=>a+lettering("בואו ניצור משהו יפה ביחד (:",false)+b);
+html=html.replace(/(<h2 id="contact-lettering"[^>]*>)[^<]*(<\/h2>)/,(_,a,b)=>a+'<span class="footer-static footer-desktop">'+lettering("בואו ניצור משהו יפה ביחד (:",false)+'</span><span class="footer-static footer-mobile">'+lettering("בואו ניצור\nמשהו יפה ביחד (:",false)+'</span>'+b);
 html=html.replace(/(<span class="greeting"[^>]*><span>)[^<]*(<\/span>)/,'$1<i class="canva-letter canva-he"></i><i class="canva-letter canva-yod"></i><i class="canva-letter canva-yod"></i>$2');
 
 fs.writeFileSync("index.html",html);

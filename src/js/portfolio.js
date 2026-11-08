@@ -386,6 +386,7 @@ function fitGreeting() {
 }
 
 function renderContactLettering() {
+  if (document.querySelector("#contact-lettering .footer-static")) return;
   const text = matchMedia("(max-width: 48rem)").matches ? "בואו ניצור\nמשהו יפה ביחד (:" : "בואו ניצור משהו יפה ביחד (:";
   window.renderPortfolioLettering(document.querySelector("#contact-lettering"), text);
 }
@@ -472,4 +473,4 @@ function playHeadingIntro() {
   introPlaying=false;fitGreeting();
  });
 }
-playHeadingIntro();
+requestAnimationFrame(() => { fitGreeting(); requestAnimationFrame(playHeadingIntro); });

@@ -528,3 +528,11 @@ body > .custom-scroll .custom-scroll-thumb { background:var(--page-scroll-color)
 /* Reserve the full heading layout while its crisp intro reveals individual letters. */
 .intro-pending .greeting > span > i, .intro-pending .canva-zot, .intro-pending .name { visibility:hidden; }
 @media(prefers-reduced-motion:reduce) { .intro-pending .greeting > span > i, .intro-pending .canva-zot, .intro-pending .name { visibility:visible; } }
+
+/* Heading dimensions exist before script or animation; reveal never moves the subtitle. */
+#intro-title { block-size:clamp(4.4rem,10vw,11.2rem); min-block-size:clamp(4.4rem,10vw,11.2rem); }
+.footer-static { display:block; }
+.footer-mobile { display:none; }
+.footer-static > .handwritten-heading { height:clamp(4rem,8vw,7rem); width:100%; }
+.contact, .contact * { animation:none !important; transition:none !important; }
+@media(max-width:48rem) { .footer-desktop { display:none; } .footer-mobile { display:block; } .footer-static > .handwritten-heading { height:8.5rem; } }
