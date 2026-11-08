@@ -500,3 +500,7 @@ body > .custom-scroll { z-index:0; right:3px; }
  .custom-scroll-thumb { width:7px; left:3px; min-height:0; }
 }
 @media(prefers-reduced-motion:reduce) { .custom-scroll-thumb { transition:none; } }
+
+/* Scroll controls must receive pointer input above page and panel content. */
+body > .custom-scroll, .project-page > .custom-scroll { z-index:100; pointer-events:auto; }
+.custom-scroll-thumb { pointer-events:auto; }
