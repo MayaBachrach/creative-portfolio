@@ -480,7 +480,7 @@ function playHeadingIntro() {
  });
 }
 async function revealPreparedPage() {
- const elapsed = performance.now();
+ const elapsed = performance.now() - (window.portfolioLoadingStarted || 0);
  const minimum = Math.max(0, 1200 - elapsed);
  const ready = [document.fonts.ready, ...frameReadiness, new Promise(resolve => setTimeout(resolve, minimum))];
  await Promise.allSettled(ready);
