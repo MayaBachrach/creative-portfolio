@@ -508,3 +508,8 @@ body > .custom-scroll, .project-page > .custom-scroll { z-index:100; pointer-eve
 /* Leave real font ascent/descent space around the subtitle, including wrapped lines. */
 .hero-intro > p { line-height:1.65; padding-block:.16em; overflow:visible; }
 .hero-intro > p span { overflow:visible; }
+
+/* Pointer/touch interactions never leave browser focus rectangles behind. */
+a, button, [role="switch"], [tabindex] { -webkit-tap-highlight-color:transparent; }
+a:focus:not(:focus-visible), button:focus:not(:focus-visible), [role="switch"]:focus:not(:focus-visible), [tabindex]:focus:not(:focus-visible) { outline:none; box-shadow:none; }
+.social-icon:focus:not(:focus-visible) { outline:none; box-shadow:none; }
