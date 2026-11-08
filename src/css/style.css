@@ -669,3 +669,12 @@ html[lang="en"] .hero-intro > p { direction:ltr; }
 .skating-frame.theme-drawing { filter:none; }
 :root[data-theme="markers"] .skating-frame.theme-drawing { filter:brightness(0) invert(1); }
 @media(prefers-reduced-motion:reduce) { .skating-traveler { animation:none; } }
+
+/* A forward skating pass, with a separate twelve-pose stride/wave loop. */
+.skating-traveler { animation:skate-forward 16s linear infinite; }
+@keyframes skate-forward { from { transform:translateX(calc(-50vw - 14rem)); } to { transform:translateX(calc(50vw + 14rem)); } }
+@media(prefers-reduced-motion:reduce) { .skating-traveler { animation:none; } }
+
+.site-header { z-index:30; }
+.skating-traveler { animation-play-state:paused; }
+.skating-footer.is-visible .skating-traveler { animation-play-state:running; }
