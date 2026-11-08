@@ -522,22 +522,29 @@ revealPreparedPage();
  viewport.addEventListener("click",e=>{if(suppressClick){e.preventDefault();e.stopImmediatePropagation();}},true);
  function tick(now){
   const dt=Math.min((now-last)/1000||0,.05);last=now;
-  let reading=false;
+  let reading=false, readingStrength=0;
   if(touch.matches){
-   if(now-focusCheck>80){
+   if(now-focusCheck>24){
     focusCheck=now;let closest=null,distance=Infinity;
     for(const tile of track.querySelectorAll(".carousel-tile")){
      const r=tile.getBoundingClientRect(),d=Math.abs(r.left+r.width/2-innerWidth/2);
      if(d<distance){distance=d;closest=tile;}
     }
-    if(closest!==focusedStar&&distance<innerWidth*.14){focusedStar=closest;focusStarted=now;}
-    for(const tile of track.querySelectorAll(".carousel-tile"))tile.classList.toggle("is-reading",tile===focusedStar&&now-focusStarted<1000&&distance<innerWidth*.22&&!drag&&Math.abs(momentum)<100);
+    const zone=innerWidth*.20;
+    for(const tile of track.querySelectorAll(".carousel-tile")){
+     const r=tile.getBoundingClientRect();
+     const d=Math.abs(r.left+r.width/2-innerWidth/2);
+     const raw=Math.max(0,1-d/zone);
+     const strength=(!drag&&Math.abs(momentum)<100)?raw*raw*(3-2*raw):0;
+     tile.style.setProperty("--reading-strength",strength.toFixed(4));
+     tile.classList.toggle("is-reading",strength>0);
+    }
    }
    reading=!!track.querySelector(".is-reading");
   }
   const paused=document.hidden||reducedMotion.matches||dialog.open||(!touch.matches&&track.matches(":hover"))||!!drag;
-  const progress=Math.min(1,Math.max(0,(now-focusStarted)/1000));
-  const target=reading?1-.65*Math.sin(Math.PI*progress):1;speed+=(target-speed)*Math.min(1,dt*9);
+  readingStrength=Number(track.querySelector(".is-reading")?.style.getPropertyValue("--reading-strength")||0);
+  const target=1-.45*readingStrength;speed+=(target-speed)*Math.min(1,dt*9);
   const loop=track.scrollWidth/2;
   if(!paused&&loop){const duration=parseFloat(track.style.getPropertyValue("--carousel-duration"))||70;offset+=loop/duration*dt*speed;wrap();paint();}
   if(!document.hidden&&!reducedMotion.matches&&!dialog.open&&!drag&&Math.abs(momentum)>.5){offset+=momentum*dt;momentum*=Math.exp(-3.2*dt);wrap();paint();}

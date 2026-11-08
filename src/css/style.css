@@ -752,3 +752,6 @@ body > .custom-scroll { top:88px; }
  .wordmark .handwritten-heading { width:8rem; }
  .site-header > .header-controls { grid-column:1 / -1; grid-row:2; }
 }
+
+/* Touch title visibility follows distance from center, equally on both sides. */
+@media(hover:none), (pointer:coarse) { .carousel-tile .star-label, .carousel-tile.is-reading .star-label { opacity:var(--reading-strength,0); transform:translateY(calc((1 - var(--reading-strength,0))*7px)); transition:none; } }
