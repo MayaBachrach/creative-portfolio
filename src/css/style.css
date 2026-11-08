@@ -478,3 +478,16 @@ body { padding-right:20px; }
  .project-page > .custom-scroll { right:3px; top:14px; bottom:14px; }
  .project-page-scroll { margin-right:8px; }
 }
+
+/* Layer content above the scrollbar without shifting the page sideways. */
+body { padding-right:0; }
+.site-header, main, .contact { z-index:1; }
+body > .custom-scroll { z-index:0; right:3px; }
+.hero-intro { padding-inline:calc(var(--gutter) + 4px); }
+.carousel-window { margin-inline:4px; }
+.project-page-scroll { margin-right:0; padding-inline:4px; }
+@media(max-width:48rem) {
+ body { padding-right:0; }
+ body > .custom-scroll { right:2px; }
+ .project-page-scroll { margin-right:0; padding-inline:4px; }
+}
