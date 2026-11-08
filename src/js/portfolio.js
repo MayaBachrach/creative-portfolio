@@ -285,7 +285,9 @@ function renderCarousel() {
     set.setAttribute("aria-hidden", "true");
     for (let index = 0; index < count; index++) {
       const item = carouselItems[index % carouselItems.length];
-      const tile = element("div", "carousel-tile");
+      const tile = element("a", "carousel-tile");
+      tile.href = "#project/mix";
+      tile.setAttribute("aria-label", "DJ והפקת מוזיקה");
       const shapeIndex = starIndices[index];
       const shape = window.PORTFOLIO_SHAPES.star[shapeIndex];
       const star = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path d="${shape}" fill="white"/></svg>`;
@@ -314,6 +316,12 @@ function renderCarousel() {
         }, item.frameDuration || 160);
       }
       tile.append(media);
+      const ring = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      ring.setAttribute("viewBox", "0 0 300 300");
+      ring.classList.add("orbit-title");
+      const ringId = "orbit-" + group + "-" + index;
+      ring.innerHTML = '<defs><path id="' + ringId + '" d="M150,18 a132,132 0 1,1 -0.1,0"/></defs><text><textPath href="#' + ringId + '" startOffset="5%">DJ והפקת מוזיקה · DJ והפקת מוזיקה · </textPath></text>';
+      tile.append(ring);
       set.append(tile);
     }
     track.append(set);

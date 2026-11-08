@@ -354,3 +354,13 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 .project-page-content { padding-block-start: .5rem; }
 .media-item { border-radius: 10px; overflow: hidden; }
 .media-item img, .media-item video { border-radius: 10px; }
+
+/* Carousel navigation experiment: keep the project grid available for restoration. */
+.projects-section { display: none; }
+.carousel-window { padding-block: 4rem; }
+.carousel-set { gap: clamp(3rem, 7vw, 7rem); padding-inline-end: clamp(3rem, 7vw, 7rem); }
+.carousel-tile { display:block; color:var(--page-text); }
+.orbit-title { position:absolute; inset:-20%; width:140%; height:140%; overflow:visible; animation: orbit-spin 24s linear infinite; pointer-events:none; }
+.orbit-title text { fill:currentColor; font: 700 19px Heebo, sans-serif; }
+@keyframes orbit-spin { to { transform:rotate(360deg); } }
+@media(hover:hover) { .carousel-tile:hover { transform:scale(1.04); } }
