@@ -136,7 +136,7 @@ h1 { display: flex; align-items: baseline; gap: .22em; font-size: clamp(3.2rem, 
 .carousel-tile:nth-child(3n + 2) { --star-angle: 7deg; }
 .carousel-tile:nth-child(3n) { --star-angle: -2deg; }
 @keyframes drift { to { transform: translateX(-50%); } }
-.carousel.is-paused .carousel-track, .carousel:focus-within .carousel-track { animation-play-state: paused; }
+.carousel.is-paused .carousel-track, .carousel:has(.carousel-tile:focus-visible) .carousel-track { animation-play-state: paused; }
 .projects-section { padding: clamp(2.5rem, 6vw, 6rem) var(--gutter); }
 .project-grid { display: grid; grid-template-columns: repeat(var(--desktop-columns, 4), minmax(0, 1fr)); gap: clamp(1rem, 2vw, 2rem); }
 .project-card .card-content::after { content: ""; pointer-events: none; position: absolute; inset: -9px; background: var(--pencil-outline) center / 100% 100% no-repeat; opacity: 0; transition: opacity 140ms ease; }
@@ -180,7 +180,7 @@ h1 { display: flex; align-items: baseline; gap: .22em; font-size: clamp(3.2rem, 
   .project-card:hover .card-content::after { opacity: 1; }
   .project-card:hover { transform: translateY(-3px); }
   .tag:hover { background: var(--accent-2); color: var(--name-text); transform: translateY(-2px); }
-    .carousel:hover .carousel-track { animation-play-state: paused; }
+    .carousel:has(.carousel-tile:hover) .carousel-track { animation-play-state: paused; }
 }
 @media (max-width: 48rem) {
   h1 { display: grid; gap: .14em; font-size: clamp(2.7rem, 11vw, 5.3rem); }
