@@ -695,3 +695,9 @@ html[lang="en"] .hero-intro > p { direction:ltr; }
 /* Keep the skates on the ground line at every viewport height. */
 .skating-traveler { position:absolute; bottom:22px; }
 @media(max-width:48rem) { .skating-traveler { bottom:14px; } }
+
+/* Skating follows each language’s reading direction. */
+html[lang="he"] .skating-traveler { animation-direction:reverse; }
+html[lang="he"] .skating-maya { transform:scaleX(-1); }
+html[lang="en"] .skating-traveler { animation-direction:normal; }
+html[lang="en"] .skating-maya { transform:none; }
