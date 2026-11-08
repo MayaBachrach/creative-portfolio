@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="he" dir="rtl" data-theme="crayons" data-theme-family="multicolor">
+<html class="intro-pending" lang="he" dir="rtl" data-theme="crayons" data-theme-family="multicolor">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -535,6 +535,10 @@ body > .custom-scroll .custom-scroll-thumb { background:var(--page-scroll-color)
 
 /* Footer links follow the hero words in Hebrew reading order: greeting, middle, name. */
 :root:is([data-theme="crayons"], [data-theme="markers"]) { --footer-accent-1:var(--accent-1); --footer-accent-2:var(--accent-3); --footer-accent-3:var(--accent-2); }
+
+/* Reserve the full heading layout while its crisp intro reveals individual letters. */
+.intro-pending .greeting > span > i, .intro-pending .canva-zot, .intro-pending .name { visibility:hidden; }
+@media(prefers-reduced-motion:reduce) { .intro-pending .greeting > span > i, .intro-pending .canva-zot, .intro-pending .name { visibility:visible; } }
 </style>
 <script>// Central design settings. Use exact palette values; do not generate extra shades.
 window.PORTFOLIO_CONFIG = {
@@ -559,6 +563,9 @@ window.PORTFOLIO_CONFIG = {
 };
 
 window.updatePortfolioCursors=function(){};
+// Always begin a fresh page load at the top.
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+window.addEventListener("pageshow", () => window.scrollTo({top:0,left:0,behavior:"instant"}));
 (() => {
   // Light and dark now use the two selected multicolor palettes.
   const { themeNames, themeFamilies, palettePresets, paletteNames, typography, designTokens } = window.PORTFOLIO_CONFIG;
@@ -624,7 +631,7 @@ window.updatePortfolioCursors=function(){};
   });
 })();
 </script>
-<script src="./assets/runtime/app.f1f2f3015e.js" defer></script>
+<script src="./assets/runtime/app.4b8d64bc9d.js" defer></script>
 </head>
 <body>
 <header class="site-header">

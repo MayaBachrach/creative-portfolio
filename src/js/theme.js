@@ -1,3 +1,6 @@
+// Always begin a fresh page load at the top.
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+window.addEventListener("pageshow", () => window.scrollTo({top:0,left:0,behavior:"instant"}));
 (() => {
   // Light and dark now use the two selected multicolor palettes.
   const { themeNames, themeFamilies, palettePresets, paletteNames, typography, designTokens } = window.PORTFOLIO_CONFIG;

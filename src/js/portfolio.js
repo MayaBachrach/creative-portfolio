@@ -355,7 +355,9 @@ document.addEventListener("visibilitychange", updateCarouselMotion);
 
 const greeting = document.querySelector(".greeting");
 const greetingText = greeting.querySelector("span");
+let introPlaying = false;
 function fitGreeting() {
+  if (introPlaying) return;
   const heading = document.querySelector("#intro-title");
   const nameLine = document.querySelector(".name-line");
   heading.style.fontSize = "";
@@ -449,3 +451,25 @@ document.fonts.ready.then(fitGreeting);
 fitGreeting();
 
 document.addEventListener("dragstart", event => event.preventDefault());
+
+function playHeadingIntro() {
+ const root=document.documentElement;
+ if(matchMedia("(prefers-reduced-motion: reduce)").matches) {root.classList.remove("intro-pending");return;}
+ introPlaying=true;
+ const letters=[...greetingText.children];
+ const step=Math.min(65, 620 / Math.max(1, letters.length));
+ const pop=(node,delay,duration=150)=>node.animate([
+  {opacity:0,transform:"translateY(7px) scale(.92)"},
+  {opacity:1,transform:"translateY(-1px) scale(1.025)",offset:.72},
+  {opacity:1,transform:"translateY(0) scale(1)"}
+ ],{delay,duration,easing:"cubic-bezier(.16,1,.3,1)",fill:"both"});
+ const animations=letters.map((letter,index)=>pop(letter,index*step,130));
+ const words=[document.querySelector(".canva-zot"),document.querySelector(".name")];
+ words.forEach((word,index)=>animations.push(pop(word,letters.length*step+90+index*190,210)));
+ root.classList.remove("intro-pending");
+ Promise.all(animations.map(animation=>animation.finished)).then(()=>{
+  animations.forEach(animation=>animation.cancel());
+  introPlaying=false;fitGreeting();
+ });
+}
+playHeadingIntro();

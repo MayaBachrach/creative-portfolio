@@ -524,3 +524,7 @@ body > .custom-scroll .custom-scroll-thumb { background:var(--page-scroll-color)
 
 /* Footer links follow the hero words in Hebrew reading order: greeting, middle, name. */
 :root:is([data-theme="crayons"], [data-theme="markers"]) { --footer-accent-1:var(--accent-1); --footer-accent-2:var(--accent-3); --footer-accent-3:var(--accent-2); }
+
+/* Reserve the full heading layout while its crisp intro reveals individual letters. */
+.intro-pending .greeting > span > i, .intro-pending .canva-zot, .intro-pending .name { visibility:hidden; }
+@media(prefers-reduced-motion:reduce) { .intro-pending .greeting > span > i, .intro-pending .canva-zot, .intro-pending .name { visibility:visible; } }
