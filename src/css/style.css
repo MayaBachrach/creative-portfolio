@@ -449,3 +449,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, .project-page::-webkit-scrollb
  .project-page-content { padding-inline:.5rem; }
  .contact { padding-block-start:1.5rem; }
 }
+
+/* Dimensions and position spring together as the cursor merges into controls. */
+.difference-cursor, .difference-cursor.is-hovering { transition:opacity 120ms ease,border-radius 220ms ease; }
+.difference-cursor.is-merging { border-radius:44% 48% 46% 43% / 48% 44% 47% 45%; }
