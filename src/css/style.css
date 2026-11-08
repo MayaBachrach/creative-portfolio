@@ -585,3 +585,29 @@ body > .custom-scroll .custom-scroll-thumb { background:var(--page-scroll-color)
 :root[data-theme="crayons"] { --white:#F1ECE6; --page-background:#F1ECE6; --hero-background:#F1ECE6; --card-background:#F1ECE6; --panel-background:#F1ECE6; --tag-background:#F1ECE6; --contact-background:#F1ECE6; --media-background:#F1ECE6; }
 :root[data-theme="crayons"] .intro-name .name { color:#F1ECE6; }
 :root[data-theme="crayons"] .difference-cursor { background:#F1ECE6; }
+
+/* Playful project sheet: bold palette outline and lettering-led composition. */
+.project-page { width:min(90vw,58rem); height:auto; max-height:88dvh; padding:0; border:3px solid var(--panel-accent); border-radius:22px 17px 24px 19px; }
+.project-page-scroll { max-height:calc(88dvh - 6px); height:auto; }
+.project-page-header { position:relative; border:0; background:transparent; padding:28px 28px 12px; gap:24px; }
+.project-page-header h2 { justify-self:center; width:fit-content; max-width:100%; padding:14px 22px; border-radius:12px 17px 10px 15px; transform:rotate(-1.5deg); }
+.project-page-header h2 > .handwritten-heading { width:min(53vw,34rem); height:68px; }
+.project-page-header button { border:3px solid var(--panel-accent); border-radius:14px 11px 16px 12px; color:var(--panel-accent); transform:rotate(4deg); }
+.project-page-header button:hover { background:var(--panel-accent); color:var(--page-background); }
+.project-page-content { display:flex; flex-direction:column; align-items:center; gap:20px; padding:10px 32px 28px; }
+.project-description { max-width:42ch; text-align:center; font-size:1.15rem; margin:0; padding:0; }
+.detail-media { width:100%; max-width:40rem; justify-items:center; gap:24px; }
+.media-item { width:100%; text-align:center; overflow:visible; }
+.media-item img, .media-item video { max-height:47dvh; width:100%; background:transparent; }
+.media-item figcaption { padding-top:4px; }
+@media(max-width:48rem) {
+ .project-page { width:94vw; height:auto; max-height:90dvh; border-radius:18px 14px 20px 16px; }
+ .project-page-scroll { max-height:calc(90dvh - 6px); }
+ .project-page-header { padding:22px 16px 12px; gap:12px; grid-template-columns:minmax(0,1fr) 44px; }
+ .project-page-header h2 { padding:12px 10px; }
+ .project-page-header h2 > .handwritten-heading { width:100%; height:48px; }
+ .project-page-header button { width:44px; height:44px; min-width:44px; min-height:44px; }
+ .project-page-content { padding:8px 20px 22px; gap:16px; }
+ .project-description { font-size:1rem; }
+ .media-item img, .media-item video { max-height:48dvh; }
+}
