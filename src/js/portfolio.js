@@ -480,7 +480,9 @@ function playHeadingIntro() {
  });
 }
 async function revealPreparedPage() {
- const ready = [document.fonts.ready, ...frameReadiness];
+ const elapsed = performance.now();
+ const minimum = Math.max(0, 1200 - elapsed);
+ const ready = [document.fonts.ready, ...frameReadiness, new Promise(resolve => setTimeout(resolve, minimum))];
  await Promise.allSettled(ready);
  await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
  fitGreeting();
