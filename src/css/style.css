@@ -492,23 +492,3 @@ body > .custom-scroll { z-index:0; right:3px; }
  .project-page-scroll { margin-right:0; padding-inline:4px; }
 }
 
-/* Compact one-screen experiment; natural scrolling remains available on short screens. */
-.hero { padding-block:clamp(.5rem, 2dvh, 1.5rem) 0; }
-.hero-intro > p { margin-block:.4rem 0; line-height:1.3; }
-.carousel-window { padding-block:clamp(2.5rem, 5dvh, 4rem) .5rem; }
-.carousel-tile { width:clamp(10rem, min(24vw, 38dvh), 23rem); }
-.contact { display:flex; align-items:center; justify-content:center; gap:clamp(.75rem,3vw,2rem); padding:.5rem var(--gutter) .75rem; }
-.contact h2 { flex:1 1 auto; min-width:0; margin:0; max-width:55rem; }
-.contact h2 > .handwritten-heading { height:clamp(2.8rem,6dvh,4.5rem); }
-.contact-links { flex:0 0 auto; margin:0; gap:clamp(.6rem,1.5vw,1.25rem); }
-.social-icon { width:clamp(2.8rem,5vw,4rem); height:clamp(2.8rem,5vw,4rem); }
-@media(max-width:48rem) {
- .hero { padding-block-start:.65rem; }
- .hero-intro > p { font-size:clamp(.95rem,3.8vw,1.2rem); }
- .carousel-tile { width:min(63vw,35dvh); }
- .carousel-window { padding-block:2.5rem .5rem; }
- .contact { gap:.6rem; padding:.5rem .85rem .75rem; }
- .contact h2 > .handwritten-heading { height:3.8rem; }
- .contact-links { gap:.45rem; }
- .social-icon { width:2.5rem; height:2.5rem; }
-}
