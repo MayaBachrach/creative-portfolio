@@ -7,6 +7,7 @@ let previousFocus;
 let openedFromCard = false;
 let openedWithKeyboard = false;
 let openingRect;
+let openingStar;
 
 function element(tag, className, text) {
   const node = document.createElement(tag);
@@ -157,11 +158,11 @@ function restoreProjectFocus() {
 
 function updatePanelAccent() {
   const projectId = dialog.dataset.project;
-  const source = projectId
+  const source = openingStar || (projectId
     ? document.querySelector(`a[href="#project/${projectId}"]`)
-    : null;
+    : null);
   const theme = getComputedStyle(source || document.documentElement);
-  const accent = theme.getPropertyValue(source ? "--card-accent" : "--accent-1").trim();
+  const accent = theme.getPropertyValue(openingStar ? "--carousel-color" : source ? "--card-accent" : "--accent-1").trim();
   dialog.style.setProperty("--panel-accent", accent);
 }
 
@@ -287,6 +288,7 @@ function renderCarousel() {
       const item = carouselItems[index % carouselItems.length];
       const tile = element("a", "carousel-tile");
       tile.href = "#project/mix";
+      tile.addEventListener("click", () => { openingStar = tile; openingRect = tile.getBoundingClientRect(); previousFocus = tile; openedFromCard = true; });
       tile.setAttribute("aria-label", "DJ והפקת מוזיקה");
       const shapeIndex = starIndices[index];
       const shape = window.PORTFOLIO_SHAPES.star[shapeIndex];
