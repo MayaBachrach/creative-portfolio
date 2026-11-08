@@ -524,6 +524,10 @@ body > .custom-scroll, .project-page > .custom-scroll { z-index:100; pointer-eve
 a, button, [role="switch"], [tabindex] { -webkit-tap-highlight-color:transparent; }
 a:focus:not(:focus-visible), button:focus:not(:focus-visible), [role="switch"]:focus:not(:focus-visible), [tabindex]:focus:not(:focus-visible) { outline:none; box-shadow:none; }
 .social-icon:focus:not(:focus-visible) { outline:none; box-shadow:none; }
+
+/* Presentation-only content: disable selection and browser image dragging. */
+html, body, body * { -webkit-user-select:none; user-select:none; }
+img, svg { -webkit-user-drag:none; }
 </style>
 <script>// Central design settings. Use exact palette values; do not generate extra shades.
 window.PORTFOLIO_CONFIG = {
@@ -611,7 +615,7 @@ window.updatePortfolioCursors=function(){};
   });
 })();
 </script>
-<script src="./assets/runtime/app.7b965852f5.js" defer></script>
+<script src="./assets/runtime/app.f1f2f3015e.js" defer></script>
 </head>
 <body>
 <header class="site-header">

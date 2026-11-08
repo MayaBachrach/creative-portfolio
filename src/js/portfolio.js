@@ -447,3 +447,5 @@ showRoute();
 new ResizeObserver(fitGreeting).observe(greeting);
 document.fonts.ready.then(fitGreeting);
 fitGreeting();
+
+document.addEventListener("dragstart", event => event.preventDefault());
