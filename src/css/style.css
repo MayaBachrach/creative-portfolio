@@ -369,3 +369,7 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 .project-page { clip-path:none; border-radius:0; padding:2rem; }
 .project-page-header h2 { border:4px solid currentColor; padding:.35rem .65rem; }
 @media(max-width:48rem) { .project-page { padding:1rem; } .project-page-header { padding-inline:0; } }
+
+/* Hebrew orbit labels travel counterclockwise. */
+.orbit-title { animation-direction: reverse; }
+.orbit-title text { direction: rtl; unicode-bidi: plaintext; }

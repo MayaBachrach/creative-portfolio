@@ -320,7 +320,7 @@ function renderCarousel() {
       ring.setAttribute("viewBox", "0 0 300 300");
       ring.classList.add("orbit-title");
       const ringId = "orbit-" + group + "-" + index;
-      ring.innerHTML = '<defs><path id="' + ringId + '" d="M150,18 a132,132 0 1,1 -0.1,0"/></defs><text><textPath href="#' + ringId + '" startOffset="5%">DJ והפקת מוזיקה · DJ והפקת מוזיקה · </textPath></text>';
+      ring.innerHTML = '<defs><path id="' + ringId + '" d="M150,18 a132,132 0 1,1 -0.1,0"/></defs><text direction="rtl" lang="he" style="unicode-bidi:plaintext"><textPath href="#' + ringId + '" startOffset="100%" textLength="820" lengthAdjust="spacing">והפקת מוזיקה &#x2066;DJ&#x2069; · והפקת מוזיקה &#x2066;DJ&#x2069; · והפקת מוזיקה &#x2066;DJ&#x2069; · </textPath></text>';
       tile.append(ring);
       set.append(tile);
     }
