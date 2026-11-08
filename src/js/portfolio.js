@@ -292,9 +292,8 @@ function renderCarousel() {
     set.setAttribute("aria-hidden", "true");
     for (let index = 0; index < count; index++) {
       const item = carouselItems[index % carouselItems.length];
-      const tile = element("a", "carousel-tile");
-      tile.href = "#project/mix";
-      tile.addEventListener("click", () => { openingStar = tile; openingRect = tile.getBoundingClientRect(); previousFocus = tile; openedFromCard = true; });
+      const tile = element("div", "carousel-tile");
+
       tile.setAttribute("aria-label", "DJ והפקת מוזיקה");
       const shapeIndex = starIndices[index];
       const shape = window.PORTFOLIO_SHAPES.star[shapeIndex];
