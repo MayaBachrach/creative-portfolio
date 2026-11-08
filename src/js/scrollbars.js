@@ -60,9 +60,16 @@ function createPagePaint(){
  const solid=make('rect','scroll-flower-petal');
  const left=make('rect','scroll-flower-petal'),right=make('rect','scroll-flower-petal');
  const bud=make('ellipse','scroll-flower-petal'),center=make('circle','scroll-flower-petal');
- const heart=document.createElementNS(ns,'path');heart.setAttribute('fill','currentColor');heart.classList.add('scroll-top-heart');svg.append(heart);
+ const topGroup=document.createElementNS(ns,'g');topGroup.setAttribute('filter','url(#scroll-heart-liquid)');svg.append(topGroup);
+ const filter=document.createElementNS(ns,'filter');filter.id='scroll-heart-liquid';filter.setAttribute('x','-60%');filter.setAttribute('y','-60%');filter.setAttribute('width','220%');filter.setAttribute('height','220%');
+ const blur=document.createElementNS(ns,'feGaussianBlur');blur.setAttribute('stdDeviation','0');blur.setAttribute('result','soft');
+ const contrast=document.createElementNS(ns,'feColorMatrix');contrast.setAttribute('in','soft');contrast.setAttribute('mode','matrix');contrast.setAttribute('values','1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 18 -7');filter.append(blur,contrast);defs.append(filter);
+ const heart=document.createElementNS(ns,'path');heart.setAttribute('fill','currentColor');heart.classList.add('scroll-top-heart');
+ const anchor=document.createElementNS(ns,'path');anchor.classList.add('scroll-heart-anchor');anchor.setAttribute('fill','currentColor');
+ const bridge=document.createElementNS(ns,'path');bridge.classList.add('scroll-heart-bridge');bridge.setAttribute('stroke','currentColor');bridge.setAttribute('stroke-linecap','round');
+ topGroup.append(anchor,bridge,heart);
  document.body.append(svg);
- return {svg,solid,left,right,bud,center,stem,pool,heart,value:0,goal:0,topValue:0,topGoal:0};
+ return {svg,solid,left,right,bud,center,stem,pool,heart,anchor,bridge,blur,value:0,goal:0,topValue:0,topGoal:0};
 }
 function paintPageScrollbar(track,thumb,range){
  pagePaint ||= createPagePaint();
@@ -73,11 +80,12 @@ function paintPageScrollbar(track,thumb,range){
  p.box=box;p.floor=tr.bottom;p.goal=range>0?clamp((document.scrollingElement.scrollTop/range-.86)/.14):0;
  if(!pageFrame) pageFrame=requestAnimationFrame(drawPageScrollbar);
 }
-function drawPageScrollbar(){
+function drawPageScrollbar(now){
  pageFrame=null;const p=pagePaint;if(!p?.box)return;
  p.value=reduced.matches?p.goal:p.value+(p.goal-p.value)*.16;
  if(Math.abs(p.value-p.goal)<.001)p.value=p.goal;
- p.topValue=reduced.matches?p.topGoal:p.topValue+(p.topGoal-p.topValue)*.16;
+ const dt=Math.min(50,now-(p.lastFrame??now-16));p.lastFrame=now;
+ p.topValue=reduced.matches?p.topGoal:p.topValue+(p.topGoal-p.topValue)*(1-Math.exp(-dt/70));
  if(Math.abs(p.topValue-p.topGoal)<.001)p.topValue=p.topGoal;
  const top=p.topValue*p.topValue*(3-2*p.topValue);
  const m=p.value*p.value*(3-2*p.value),b=p.thumb.getBoundingClientRect();
@@ -119,14 +127,29 @@ function drawPageScrollbar(){
 }
 function paintTopHeart(p,b,t){
  if(!p.icon)return;
- const r=p.icon.getBoundingClientRect(),cx=b.left+b.width/2,cy=b.top+b.height/2,w=b.width/2,h=b.height/2;
- // Matching cubic segments let one connected shape bend into the heart.
- const capsule=[cx,cy+h,cx-w,cy+h,cx-w,cy+h,cx-w,cy+h-w,cx-w,cy-h,cx,cy-h,cx,cy-h,cx+w,cy-h,cx+w,cy-h,cx+w,cy-h+w,cx+w,cy+h,cx+w,cy+h,cx,cy+h];
- const normalized=[16,28,14,26,3,18,3,10,3,3,12,1,16,8,20,1,29,3,29,10,29,18,18,26,16,28];
- const points=capsule.map((v,i)=>v+( (i%2?r.top+scrollY:r.left)+normalized[i]*r.width/32-v)*t);
- let path='M'+points.slice(0,2).join(' ');for(let i=2;i<points.length;i+=6)path+='C'+points.slice(i,i+6).join(' ');
- p.heart.setAttribute('d',path+'Z');p.heart.style.display=t>0?'block':'none';p.icon.style.opacity=1-t;
- const hit=p.track.heartHit;if(hit){hit.style.display=t>.02&&t<.99?'block':'none';hit.style.left=(cx+(r.left+r.width/2-cx)*t-22)+'px';hit.style.top=(cy+(r.top+scrollY+r.height/2-cy)*t-22)+'px';}
+ const r=p.icon.getBoundingClientRect(),cx=b.left+b.width/2,cy=b.top+b.height/2,w=b.width/2,h=b.height/2,k=.55228475;
+ const top=cy-h,bottom=cy+h;
+ // The first and last outlines match the real capsule and icon exactly.
+ const capsule=[cx,bottom,cx-k*w,bottom,cx-w,bottom-(1-k)*w,cx-w,bottom-w,cx-w,cy,cx-w,top+w,cx-w,top+w,cx-w,top+(1-k)*w,cx-k*w,top,cx,top,cx+k*w,top,cx+w,top+(1-k)*w,cx+w,top+w,cx+w,cy,cx+w,bottom-w,cx+w,bottom-w,cx+w,bottom-(1-k)*w,cx+k*w,bottom,cx,bottom];
+ const shape=[16,28,14,26,6,21,3.5,14,1,8,4,3,9,3,12,3,14,5,16,8,18,5,20,3,23,3,28,3,31,8,28.5,14,26,21,18,26,16,28];
+ const smooth=v=>v*v*(3-2*v),position=smooth(clamp(t/.9)),form=smooth(clamp((t-.12)/.88));
+ const tx=r.left+r.width/2,ty=r.top+r.height/2;
+ const mx=cx+(tx-cx)*position,my=cy+(ty-cy)*position;
+ const points=capsule.map((v,i)=>{
+  const origin=i%2?cy:cx,target=(shape[i]-16)*r.width/32;
+  const local=v-origin;
+  return (i%2?my:mx)+local+(target-local)*form;
+ });
+ const path=points=>{let d='M'+points.slice(0,2).join(' ');for(let i=2;i<points.length;i+=6)d+='C'+points.slice(i,i+6).join(' ');return d+'Z';};
+ p.heart.setAttribute('d',path(points));p.heart.style.display=t>0?'block':'none';
+ p.anchor.setAttribute('d',path(shape.map((v,i)=>(i%2?r.top:r.left)+v*r.width/32)));
+ // The target stays solid; a short rounded bridge joins the approaching shape.
+ const distance=Math.hypot(tx-mx,ty-my),join=clamp((38-distance)/30)*smooth(clamp((t-.4)/.5));
+ p.bridge.setAttribute('d','M'+mx+' '+my+' Q'+tx+' '+my+' '+tx+' '+ty);
+ p.bridge.setAttribute('stroke-width',Math.min(9,r.width*.3)*join);p.bridge.style.opacity=join;
+ p.blur.setAttribute('stdDeviation',reduced.matches?0:1.6*Math.sin(Math.PI*t));
+ p.icon.style.opacity=0;
+ const hit=p.track.heartHit;if(hit){hit.style.display=t>.02&&t<.99?'block':'none';hit.style.left=(mx-22)+'px';hit.style.top=(my-22)+'px';}
 }
 function attach(host, target, page) {
  const track=document.createElement("div"), thumb=document.createElement("div");

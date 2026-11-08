@@ -902,3 +902,6 @@ body > .custom-scroll .custom-scroll-thumb { transition:none; }
 }
 
 .scroll-flower .scroll-top-heart { fill:currentColor; }
+
+.scroll-flower .scroll-heart-anchor { fill:currentColor; }
+.scroll-flower .scroll-heart-bridge { fill:none; }
