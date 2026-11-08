@@ -464,3 +464,17 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, .project-page::-webkit-scrollb
 /* Restore the simple circle and its gentle hover expansion. */
 .difference-cursor { border-radius:50%; transition:width 180ms ease,height 180ms ease,opacity 120ms ease; }
 .difference-cursor.is-hovering { width:45px; height:45px; }
+
+/* Keep scroll chrome in its own edge gutter, beneath the content layers. */
+body > .custom-scroll { z-index:0; }
+.site-header, main, .contact { position:relative; z-index:1; }
+body { padding-right:20px; }
+.project-page > .custom-scroll { z-index:0; }
+.project-page-scroll { position:relative; z-index:1; margin-right:8px; }
+@media(max-width:48rem) {
+ body { padding-right:14px; }
+ .custom-scroll { width:12px; right:1px; top:6px; bottom:6px; }
+ .custom-scroll-thumb { width:5px; left:4px; min-height:28px; }
+ .project-page > .custom-scroll { right:3px; top:14px; bottom:14px; }
+ .project-page-scroll { margin-right:8px; }
+}
