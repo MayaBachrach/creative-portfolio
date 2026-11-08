@@ -732,7 +732,7 @@ html[lang="en"] .skating-maya { transform:none; }
  .top-nav { gap:8px; }
  .top-nav > a { font-size:.8rem; white-space:nowrap; }
 }
-@media(max-width:360px) { .site-header { grid-template-rows:auto auto; } .site-header > .header-controls { grid-column:2; grid-row:2; } .top-nav { grid-column:3; grid-row:1; } }
+
 
 .copyright { position:absolute; bottom:0; inset-inline:12px; margin:0; min-height:28px; padding:5px 0; text-align:center; color:var(--page-text); font-size:.75rem; line-height:1.5; }
 .footer-ground { bottom:28px; }
@@ -742,26 +742,25 @@ html[lang="en"] .skating-maya { transform:none; }
 /* Main heading: אני replaces זאת in the same supplied vector alphabet. */
 .canva-zot { width:2.2764em; }
 
-/* Keep navigation readable; compact only the theme control, not the whole header. */
-.site-header { padding-inline:clamp(20px,4vw,64px); min-height:76px; }
+/* Header stays on one shared row; only the theme control compacts. */
+.site-header { padding-inline:clamp(20px,4vw,64px); min-height:76px; grid-template-rows:auto; }
+.site-header .wordmark { grid-column:1; grid-row:1; }
+.site-header > .header-controls { grid-column:2; grid-row:1; }
+.site-header .top-nav { grid-column:3; grid-row:1; }
 .top-nav > a { font-size:1.08rem; }
 body > .custom-scroll { top:88px; }
 @media(max-width:48rem) {
- .site-header { display:grid; grid-template-columns:minmax(0,1fr) auto; grid-template-rows:auto auto; gap:8px 16px; padding:12px 20px; min-height:112px; }
- .site-header .wordmark { grid-column:1; grid-row:1; }
- .wordmark .handwritten-heading { width:clamp(8.5rem,37vw,11rem); height:2.5rem; }
- .top-nav { grid-column:2; grid-row:1; gap:16px; }
- .top-nav > a { font-size:1rem; }
- .site-header > .header-controls { grid-column:1 / -1; grid-row:2; justify-self:center; gap:12px; }
- .site-header .theme-toggle { width:44px; min-width:44px; flex-basis:44px; }
- body > .custom-scroll { top:132px; right:2px; }
+ .site-header { grid-template-columns:minmax(0,1fr) auto auto; grid-template-rows:auto; min-height:72px; padding:10px 16px; gap:10px; }
+ .wordmark .handwritten-heading { width:clamp(7rem,29vw,11rem); height:2.5rem; max-width:100%; }
+ .site-header > .header-controls { gap:4px; }
+ .top-nav { gap:0; }
+ .top-nav > a { font-size:.95rem; }
+ body > .custom-scroll { top:84px; right:2px; }
 }
 @media(max-width:360px) {
- .site-header { padding-inline:16px; gap:8px; }
- .top-nav { gap:12px; }
- .top-nav > a { font-size:.95rem; }
- .wordmark .handwritten-heading { width:8rem; }
- .site-header > .header-controls { grid-column:1 / -1; grid-row:2; }
+ .site-header { padding-inline:10px; gap:6px; }
+ .top-nav > a { font-size:.875rem; }
+ .wordmark .handwritten-heading { width:6.6rem; }
 }
 
 /* Touch title visibility follows distance from center, equally on both sides. */
