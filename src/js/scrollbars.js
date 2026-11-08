@@ -33,6 +33,7 @@ function createPagePaint(){
 function paintPageScrollbar(track,thumb,range){
  pagePaint ||= createPagePaint();
  const p=pagePaint,box=thumb.getBoundingClientRect(),tr=track.getBoundingClientRect();
+ p.thumb=thumb;p.track=track;p.svg.style.display=range>1?"block":"none";
  p.box=box;p.floor=tr.bottom;p.goal=range>0?clamp((document.scrollingElement.scrollTop/range-.86)/.14):0;
  if(!pageFrame) pageFrame=requestAnimationFrame(drawPageScrollbar);
 }
@@ -40,7 +41,8 @@ function drawPageScrollbar(){
  pageFrame=null;const p=pagePaint;if(!p?.box)return;
  p.value=reduced.matches?p.goal:p.value+(p.goal-p.value)*.16;
  if(Math.abs(p.value-p.goal)<.001)p.value=p.goal;
- const m=p.value*p.value*(3-2*p.value),b=p.box;
+ const m=p.value*p.value*(3-2*p.value),b=p.thumb.getBoundingClientRect();
+ p.floor=p.track.getBoundingClientRect().bottom;
  const startX=b.left+b.width/2;
  const x=startX+(innerWidth-30-startX)*m;
  const mid=b.top+b.height/2, flowerY=p.floor-22;
@@ -60,6 +62,11 @@ function drawPageScrollbar(){
  p.center.setAttribute('cx',x);p.center.setAttribute('cy',y+4*m);p.center.setAttribute('r',7*m);
  p.stem.setAttribute('d','M '+x+' '+p.floor+' Q '+(x-5*m)+' '+(p.floor-10*m)+' '+x+' '+(y+5));
  p.stem.style.opacity=m;p.stem.setAttribute('stroke-width',5*m);
+ const hit=p.track.flowerHit;
+ if(hit){
+  hit.style.display=m>.02?'block':'none';
+  hit.style.left=(x-26)+'px';hit.style.top=(y-36)+'px';
+ }
  p.pool.setAttribute('cx',x);p.pool.setAttribute('cy',p.floor);p.pool.setAttribute('rx',22*m);p.pool.setAttribute('ry',4*m);
  if(p.value!==p.goal)pageFrame=requestAnimationFrame(drawPageScrollbar);
 }
@@ -68,10 +75,23 @@ function attach(host, target, page) {
  track.className="custom-scroll"; thumb.className="custom-scroll-thumb";
  track.setAttribute("aria-hidden","true");track.append(thumb);host.append(track);
  let drag;
+ if(page){const hit=document.createElement("div");hit.className="scroll-flower-handle";hit.setAttribute("aria-hidden","true");host.append(hit);track.flowerHit=hit;}
  const measure=()=>{if(page) positionPageTrack(track);const height=page?innerHeight:target.clientHeight;const total=target.scrollHeight;const range=total-height;const th=Math.min(track.clientHeight, matchMedia("(max-width:48rem)").matches ? 56 : 88);thumb.style.height=th+"px";thumb.style.top=(range>0?target.scrollTop/range*(track.clientHeight-th):0)+"px";if(page) paintPageScrollbar(track,thumb,range);track.style.visibility=range>1?"visible":"hidden";};
- track.addEventListener("pointerdown",e=>{const range=target.scrollHeight-(page?innerHeight:target.clientHeight);const travel=track.clientHeight-thumb.clientHeight;if(!thumb.contains(e.target) && travel>0){target.scrollTop=Math.max(0,Math.min(1,(e.clientY-track.getBoundingClientRect().top-thumb.clientHeight/2)/travel))*range;}drag={y:e.clientY,scroll:target.scrollTop};track.setPointerCapture(e.pointerId);e.preventDefault();measure();});
- track.addEventListener("pointermove",e=>{if(!drag)return;const range=target.scrollHeight-(page?innerHeight:target.clientHeight);const travel=track.clientHeight-thumb.clientHeight;if(travel>0)target.scrollTop=drag.scroll+(e.clientY-drag.y)*range/travel;});
- track.addEventListener("pointerup",()=>drag=null);track.addEventListener("pointercancel",()=>drag=null);
+ const down=e=>{
+  const height=page?innerHeight:target.clientHeight;
+  const range=Math.max(0,target.scrollHeight-height),travel=track.clientHeight-thumb.clientHeight;
+  if(range<=0||travel<=0)return;
+  const onHandle=thumb.contains(e.target)||track.flowerHit?.contains(e.target);
+  if(!onHandle)target.scrollTop=clamp((e.clientY-track.getBoundingClientRect().top-thumb.clientHeight/2)/travel)*range;
+  drag={y:e.clientY,scroll:target.scrollTop,range,travel};
+  e.currentTarget.setPointerCapture(e.pointerId);e.preventDefault();measure();
+ };
+ const move=e=>{if(drag)target.scrollTop=drag.scroll+(e.clientY-drag.y)*drag.range/drag.travel;};
+ const up=()=>{drag=null;};
+ for(const surface of [track,track.flowerHit].filter(Boolean)){
+  surface.addEventListener('pointerdown',down);surface.addEventListener('pointermove',move);
+  surface.addEventListener('pointerup',up);surface.addEventListener('pointercancel',up);surface.addEventListener('lostpointercapture',up);
+ }
  (page?window:target).addEventListener("scroll",measure,{passive:true});window.addEventListener("resize",measure);
  new ResizeObserver(measure).observe(target);new MutationObserver(measure).observe(target,{childList:true,subtree:true});
  new ResizeObserver(measure).observe(page ? document.body : target.firstElementChild || target);

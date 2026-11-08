@@ -868,3 +868,8 @@ body > .custom-scroll { width:24px; }
  .contact-scene .skating-traveler { bottom:3.375rem; }
  .copyright { min-height:1.75rem; padding:.3125rem 0; }
 }
+
+/* The rendered scrollbar must track scrolling exactly, without a second CSS animation. */
+body > .custom-scroll .custom-scroll-thumb { transition:none; }
+.scroll-flower-handle { position:fixed; width:52px; height:72px; z-index:101; touch-action:none; cursor:var(--site-cursor-link,pointer); display:none; }
+.site-loading .scroll-flower-handle { visibility:hidden; }
