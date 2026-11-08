@@ -4,6 +4,10 @@ document.documentElement.lang="he";document.documentElement.dir="rtl";
 window.portfolioLoadingStarted = performance.now();
 // Always begin a fresh page load at the top.
 if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+// A refreshed anchor otherwise makes the browser jump back to contact.
+if (location.hash === "#contact" || location.hash === "#top") {
+ history.replaceState(history.state, "", location.pathname + location.search);
+}
 window.addEventListener("pageshow", () => window.scrollTo({top:0,left:0,behavior:"instant"}));
 (() => {
   // Light and dark now use the two selected multicolor palettes.
