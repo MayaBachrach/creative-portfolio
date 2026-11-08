@@ -1,3 +1,5 @@
+// Hebrew is the only version; clean legacy language links without reloading.
+{ const url = new URL(location.href); if (url.searchParams.has("lang")) { url.searchParams.delete("lang"); history.replaceState(history.state,"",url.pathname+url.search+url.hash); } }
 document.documentElement.lang="he";document.documentElement.dir="rtl";
 window.portfolioLoadingStarted = performance.now();
 // Always begin a fresh page load at the top.
