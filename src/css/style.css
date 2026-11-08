@@ -580,3 +580,8 @@ body > .custom-scroll .custom-scroll-thumb { background:var(--page-scroll-color)
 .site-loading .site-header, .site-loading main, .site-loading .contact, .site-loading .custom-scroll { visibility:hidden; }
 @keyframes loader-roll { 0% { transform:translateX(-30px) rotate(0); } 50% { transform:translateX(30px) rotate(180deg); } 100% { transform:translateX(-30px) rotate(360deg); } }
 @media(prefers-reduced-motion:reduce) { #site-loader svg { animation:none; } }
+
+/* Light-theme neutral: every white UI surface and foreground uses the same cream. */
+:root[data-theme="crayons"] { --white:#F1ECE6; --page-background:#F1ECE6; --hero-background:#F1ECE6; --card-background:#F1ECE6; --panel-background:#F1ECE6; --tag-background:#F1ECE6; --contact-background:#F1ECE6; --media-background:#F1ECE6; }
+:root[data-theme="crayons"] .intro-name .name { color:#F1ECE6; }
+:root[data-theme="crayons"] .difference-cursor { background:#F1ECE6; }
