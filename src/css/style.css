@@ -407,3 +407,10 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 .carousel-tile .star-label { top:-26%; left:-5%; width:110%; color:var(--carousel-color); opacity:0; transform:translateY(9px); transition:opacity 220ms ease, transform 300ms cubic-bezier(.22,1,.36,1); }
 .carousel-tile:hover .star-label, .carousel-tile:focus-visible .star-label { opacity:1; transform:translateY(0); }
 @media(hover:none) { .carousel-tile:active .star-label { opacity:1; transform:translateY(0); } }
+
+/* Filled title label and scrollbar use the originating star's exact accent. */
+.project-page { --panel-background: var(--page-background); --panel-text: var(--page-text); --close-color: var(--page-text); }
+.project-page-header h2 { background:var(--panel-accent); border-color:var(--panel-accent); border-radius:10px; color:var(--page-background); }
+.project-page-scroll { scrollbar-color:var(--panel-accent) var(--panel-background); }
+.project-page-scroll::-webkit-scrollbar-thumb { background:var(--panel-accent); border-radius:999px; border:2px solid var(--panel-background); }
+.project-page-scroll::-webkit-scrollbar-track { background:var(--panel-background); border-radius:999px; }
