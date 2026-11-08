@@ -373,3 +373,9 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 /* Hebrew orbit labels travel counterclockwise. */
 .orbit-title { animation-direction: reverse; }
 .orbit-title text { direction: rtl; unicode-bidi: plaintext; }
+
+/* Orbit experiment: lettering passes behind the solid star silhouette. */
+.carousel-tile { isolation: isolate; }
+.carousel-tile .orbit-title { inset: 4%; width: 92%; height: 92%; z-index: 0; }
+.carousel-tile::before { z-index: 1; }
+.carousel-tile > img, .carousel-tile > video { z-index: 2; }
