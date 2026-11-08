@@ -60,13 +60,16 @@ function createPagePaint(){
  const solid=make('rect','scroll-flower-petal');
  const left=make('rect','scroll-flower-petal'),right=make('rect','scroll-flower-petal');
  const bud=make('ellipse','scroll-flower-petal'),center=make('circle','scroll-flower-petal');
+ const heart=document.createElementNS(ns,'path');heart.setAttribute('fill','currentColor');heart.classList.add('scroll-top-heart');svg.append(heart);
  document.body.append(svg);
- return {svg,solid,left,right,bud,center,stem,pool,value:0,goal:0};
+ return {svg,solid,left,right,bud,center,stem,pool,heart,value:0,goal:0,topValue:0,topGoal:0};
 }
 function paintPageScrollbar(track,thumb,range){
  pagePaint ||= createPagePaint();
  const p=pagePaint,box=thumb.getBoundingClientRect(),tr=track.getBoundingClientRect();
  p.thumb=thumb;p.track=track;p.svg.style.display=range>1?"block":"none";
+ p.icon=document.querySelector('.contact-heart-icon');
+ p.topGoal=range>0&&p.icon?clamp(1-document.scrollingElement.scrollTop/Math.min(90,range*.12)):0;
  p.box=box;p.floor=tr.bottom;p.goal=range>0?clamp((document.scrollingElement.scrollTop/range-.86)/.14):0;
  if(!pageFrame) pageFrame=requestAnimationFrame(drawPageScrollbar);
 }
@@ -74,6 +77,9 @@ function drawPageScrollbar(){
  pageFrame=null;const p=pagePaint;if(!p?.box)return;
  p.value=reduced.matches?p.goal:p.value+(p.goal-p.value)*.16;
  if(Math.abs(p.value-p.goal)<.001)p.value=p.goal;
+ p.topValue=reduced.matches?p.topGoal:p.topValue+(p.topGoal-p.topValue)*.16;
+ if(Math.abs(p.topValue-p.topGoal)<.001)p.topValue=p.topGoal;
+ const top=p.topValue*p.topValue*(3-2*p.topValue);
  const m=p.value*p.value*(3-2*p.value),b=p.thumb.getBoundingClientRect();
  p.floor=p.track.getBoundingClientRect().bottom;
  const startX=b.left+b.width/2;
@@ -87,7 +93,7 @@ function drawPageScrollbar(){
  p.solid.setAttribute('x',b.left);p.solid.setAttribute('y',b.top);
  p.solid.setAttribute('width',b.width);p.solid.setAttribute('height',b.height);
  p.solid.setAttribute('rx',b.width/2);
- p.solid.style.opacity=1-clamp(m/.12);
+ p.solid.style.opacity=top>0?0:1-clamp(m/.12);
  const splitOpacity=clamp(m/.12);
  for(const el of [p.left,p.right])el.style.opacity=splitOpacity;
  const shape=(el,cx,cy,angle)=>{
@@ -108,27 +114,39 @@ function drawPageScrollbar(){
   hit.style.left=(x-26)+'px';hit.style.top=(y-36)+'px';
  }
  p.pool.setAttribute('cx',x);p.pool.setAttribute('cy',p.floor);p.pool.setAttribute('rx',22*m);p.pool.setAttribute('ry',4*m);
- if(p.value!==p.goal)pageFrame=requestAnimationFrame(drawPageScrollbar);
+ paintTopHeart(p,b,top);
+ if(p.value!==p.goal||p.topValue!==p.topGoal)pageFrame=requestAnimationFrame(drawPageScrollbar);
+}
+function paintTopHeart(p,b,t){
+ if(!p.icon)return;
+ const r=p.icon.getBoundingClientRect(),cx=b.left+b.width/2,cy=b.top+b.height/2,w=b.width/2,h=b.height/2;
+ // Matching cubic segments let one connected shape bend into the heart.
+ const capsule=[cx,cy+h,cx-w,cy+h,cx-w,cy+h,cx-w,cy+h-w,cx-w,cy-h,cx,cy-h,cx,cy-h,cx+w,cy-h,cx+w,cy-h,cx+w,cy-h+w,cx+w,cy+h,cx+w,cy+h,cx,cy+h];
+ const normalized=[16,28,14,26,3,18,3,10,3,3,12,1,16,8,20,1,29,3,29,10,29,18,18,26,16,28];
+ const points=capsule.map((v,i)=>v+( (i%2?r.top+scrollY:r.left)+normalized[i]*r.width/32-v)*t);
+ let path='M'+points.slice(0,2).join(' ');for(let i=2;i<points.length;i+=6)path+='C'+points.slice(i,i+6).join(' ');
+ p.heart.setAttribute('d',path+'Z');p.heart.style.display=t>0?'block':'none';p.icon.style.opacity=1-t;
+ const hit=p.track.heartHit;if(hit){hit.style.display=t>.02&&t<.99?'block':'none';hit.style.left=(cx+(r.left+r.width/2-cx)*t-22)+'px';hit.style.top=(cy+(r.top+scrollY+r.height/2-cy)*t-22)+'px';}
 }
 function attach(host, target, page) {
  const track=document.createElement("div"), thumb=document.createElement("div");
  track.className="custom-scroll"; thumb.className="custom-scroll-thumb";
  track.setAttribute("aria-hidden","true");track.append(thumb);host.append(track);
  let drag;
- if(page){const hit=document.createElement("div");hit.className="scroll-flower-handle";hit.setAttribute("aria-hidden","true");host.append(hit);track.flowerHit=hit;}
+ if(page){const hit=document.createElement("div");hit.className="scroll-flower-handle";hit.setAttribute("aria-hidden","true");host.append(hit);track.flowerHit=hit;const heartHit=document.createElement("div");heartHit.className="scroll-heart-handle";heartHit.setAttribute("aria-hidden","true");host.append(heartHit);track.heartHit=heartHit;}
  const measure=()=>{if(page) positionPageTrack(track);const height=page?innerHeight:target.clientHeight;const total=target.scrollHeight;const range=total-height;const th=Math.min(track.clientHeight, matchMedia("(max-width:48rem)").matches ? 56 : 88);thumb.style.height=th+"px";thumb.style.top=(range>0?target.scrollTop/range*(track.clientHeight-th):0)+"px";if(page) paintPageScrollbar(track,thumb,range);track.style.visibility=range>1?"visible":"hidden";};
  const down=e=>{
   const height=page?innerHeight:target.clientHeight;
   const range=Math.max(0,target.scrollHeight-height),travel=track.clientHeight-thumb.clientHeight;
   if(range<=0||travel<=0)return;
-  const onHandle=thumb.contains(e.target)||track.flowerHit?.contains(e.target);
+  const onHandle=thumb.contains(e.target)||track.flowerHit?.contains(e.target)||track.heartHit?.contains(e.target);
   if(!onHandle)target.scrollTop=clamp((e.clientY-track.getBoundingClientRect().top-thumb.clientHeight/2)/travel)*range;
   drag={y:e.clientY,scroll:target.scrollTop,range,travel};
   e.currentTarget.setPointerCapture(e.pointerId);e.preventDefault();measure();
  };
  const move=e=>{if(drag)target.scrollTop=drag.scroll+(e.clientY-drag.y)*drag.range/drag.travel;};
  const up=()=>{drag=null;};
- for(const surface of [track,track.flowerHit].filter(Boolean)){
+ for(const surface of [track,track.flowerHit,track.heartHit].filter(Boolean)){
   surface.addEventListener('pointerdown',down);surface.addEventListener('pointermove',move);
   surface.addEventListener('pointerup',up);surface.addEventListener('pointercancel',up);surface.addEventListener('lostpointercapture',up);
  }
