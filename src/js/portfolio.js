@@ -546,7 +546,7 @@ revealPreparedPage();
   readingStrength=Number(track.querySelector(".is-reading")?.style.getPropertyValue("--reading-strength")||0);
   const target=1-.45*readingStrength;speed+=(target-speed)*Math.min(1,dt*9);
   const loop=track.scrollWidth/2;
-  if(!paused&&loop){const duration=parseFloat(track.style.getPropertyValue("--carousel-duration"))||70;offset-=loop/duration*dt*speed;wrap();paint();}
+  if(!paused&&loop){const duration=parseFloat(track.style.getPropertyValue("--carousel-duration"))||70;offset+=loop/duration*dt*speed;wrap();paint();}
   if(!document.hidden&&!reducedMotion.matches&&!dialog.open&&!drag&&Math.abs(momentum)>.5){offset+=momentum*dt;momentum*=Math.exp(-3.2*dt);wrap();paint();}
   requestAnimationFrame(tick);
  }
