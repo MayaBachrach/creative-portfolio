@@ -547,6 +547,32 @@ body > .custom-scroll .custom-scroll-thumb { background:var(--page-scroll-color)
 .footer-static > .handwritten-heading { height:clamp(4rem,8vw,7rem); width:100%; }
 .contact, .contact * { animation:none !important; transition:none !important; }
 @media(max-width:48rem) { .footer-desktop { display:none; } .footer-mobile { display:block; } .footer-static > .handwritten-heading { height:8.5rem; } }
+
+/* Project panel: compact header, readable copy, and a media-led content area. */
+.project-page { width:min(92vw,66rem); height:min(86dvh,50rem); max-height:90dvh; padding:0; border-radius:22px; }
+.project-page-scroll { padding:0; margin:0; }
+.project-page-header { grid-template-columns:minmax(0,1fr) 48px; gap:24px; padding:20px 32px; align-items:center; background:var(--panel-background); border-bottom:1px solid var(--panel-accent); }
+.project-page-header h2 { width:fit-content; max-width:100%; border:0; padding:12px 20px; border-radius:12px; }
+.project-page-header h2 > .handwritten-heading { width:min(48vw,34rem); height:56px; max-width:100%; }
+.project-page-header button { width:48px; height:48px; min-width:48px; margin:0; border-radius:50%; }
+.project-page-header button svg { width:30px; height:30px; }
+.project-page-content { display:grid; grid-template-columns:minmax(12rem,1fr) minmax(0,2fr); align-items:start; gap:32px; padding:28px 32px 32px; }
+.project-description { margin:0; font-size:1.1rem; line-height:1.7; max-width:34ch; padding-block:8px; }
+.detail-media { margin:0; display:grid; grid-template-columns:1fr; gap:24px; min-width:0; }
+.media-item { margin:0; padding:0; background:transparent; border-radius:14px; }
+.media-item img, .media-item video { max-height:56dvh; width:100%; object-fit:contain; background:transparent; border-radius:14px; }
+.media-item img.theme-drawing { background:transparent; }
+.media-item figcaption { padding-block:12px 0; font-size:.9rem; line-height:1.5; }
+@media(max-width:48rem) {
+ .project-page { width:94vw; height:90dvh; border-radius:18px; }
+ .project-page-header { padding:16px; gap:12px; }
+ .project-page-header h2 { padding:10px 12px; }
+ .project-page-header h2 > .handwritten-heading { width:100%; min-width:0; height:42px; }
+ .project-page-content { display:flex; flex-direction:column; gap:20px; padding:20px 20px 28px; }
+ .project-description { max-width:none; font-size:1rem; padding:0; }
+ .detail-media { width:100%; }
+ .media-item img, .media-item video { max-height:52dvh; }
+}
 </style>
 <script>// Central design settings. Use exact palette values; do not generate extra shades.
 window.PORTFOLIO_CONFIG = {
