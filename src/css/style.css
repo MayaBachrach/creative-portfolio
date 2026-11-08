@@ -460,3 +460,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, .project-page::-webkit-scrollb
 .custom-scroll { width:25px; right:0; }
 .custom-scroll-thumb { width:13px; left:6px; }
 .project-page > .custom-scroll { right:1px; }
+
+/* Restore the simple circle and its gentle hover expansion. */
+.difference-cursor { border-radius:50%; transition:width 180ms ease,height 180ms ease,opacity 120ms ease; }
+.difference-cursor.is-hovering { width:45px; height:45px; }
