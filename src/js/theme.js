@@ -1,3 +1,4 @@
+document.documentElement.lang="he";document.documentElement.dir="rtl";
 window.portfolioLoadingStarted = performance.now();
 // Always begin a fresh page load at the top.
 if ("scrollRestoration" in history) history.scrollRestoration = "manual";

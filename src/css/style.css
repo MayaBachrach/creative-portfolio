@@ -701,3 +701,24 @@ html[lang="he"] .skating-traveler { animation-direction:reverse; }
 html[lang="he"] .skating-maya { transform:scaleX(-1); }
 html[lang="en"] .skating-traveler { animation-direction:normal; }
 html[lang="en"] .skating-maya { transform:none; }
+
+/* Direct controls replace the language/settings menu. */
+.site-header { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:12px; }
+.wordmark { justify-self:start; }
+.site-header > .header-controls { position:static; inset:auto; transform:none; width:auto; display:flex; align-items:center; gap:8px; height:44px; justify-self:center; }
+.site-header > .header-controls .theme-toggle, .site-header > .header-controls #music-toggle { position:relative; inset:auto; transform:none; flex:none; }
+.site-header > .header-controls #music-toggle { width:44px; height:44px; }
+.top-nav { justify-self:end; }
+.compact-theme-icon { display:none; }
+@media(max-width:48rem) {
+ .site-header { min-height:64px; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); padding-inline:12px; gap:6px; }
+ .site-header > .header-controls { gap:2px; }
+ .site-header .theme-toggle { width:44px; min-width:44px; flex-basis:44px; border-radius:50%; background:var(--contact-title); color:var(--page-background); }
+ .site-header .theme-toggle-track { display:none; }
+ .site-header .compact-theme-icon { display:block; position:static; width:24px; height:24px; }
+ .theme-toggle[aria-checked="true"] .compact-sun, .theme-toggle[aria-checked="false"] .compact-moon { display:none; }
+ .wordmark .handwritten-heading { width:clamp(5rem,26vw,7.2rem); }
+ .top-nav { gap:8px; }
+ .top-nav > a { font-size:.8rem; white-space:nowrap; }
+}
+@media(max-width:360px) { .site-header { grid-template-rows:auto auto; } .site-header > .header-controls { grid-column:2; grid-row:2; } .top-nav { grid-column:3; grid-row:1; } }
