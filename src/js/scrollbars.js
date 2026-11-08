@@ -4,7 +4,7 @@ function attach(host, target, page) {
  track.className="custom-scroll"; thumb.className="custom-scroll-thumb";
  track.setAttribute("aria-hidden","true");track.append(thumb);host.append(track);
  let drag;
- const measure=()=>{const height=page?innerHeight:target.clientHeight;const total=target.scrollHeight;const range=total-height;const th=Math.min(track.clientHeight, Math.max(parseFloat(getComputedStyle(thumb).minHeight) || 28,track.clientHeight*height/total));thumb.style.height=th+"px";thumb.style.top=(range>0?target.scrollTop/range*(track.clientHeight-th):0)+"px";track.style.visibility=range>1?"visible":"hidden";};
+ const measure=()=>{const height=page?innerHeight:target.clientHeight;const total=target.scrollHeight;const range=total-height;const th=Math.min(track.clientHeight, matchMedia("(max-width:48rem)").matches ? 56 : 88);thumb.style.height=th+"px";thumb.style.top=(range>0?target.scrollTop/range*(track.clientHeight-th):0)+"px";track.style.visibility=range>1?"visible":"hidden";};
  track.addEventListener("pointerdown",e=>{drag={y:e.clientY,scroll:target.scrollTop};track.setPointerCapture(e.pointerId);e.preventDefault();});
  track.addEventListener("pointermove",e=>{if(!drag)return;const range=target.scrollHeight-(page?innerHeight:target.clientHeight);target.scrollTop=drag.scroll+(e.clientY-drag.y)*range/(track.clientHeight-thumb.clientHeight);});
  track.addEventListener("pointerup",()=>drag=null);track.addEventListener("pointercancel",()=>drag=null);
