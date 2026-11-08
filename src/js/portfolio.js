@@ -275,7 +275,9 @@ function refreshCarouselColors() {
   });
 }
 
+const frameTimers = [];
 function renderCarousel() {
+  frameTimers.splice(0).forEach(clearInterval);
   const track = document.querySelector("#carousel-track");
   const colorIndices = carouselColorIndices(Math.max(carouselSettings.minimumTiles, carouselItems.length, window.PORTFOLIO_SHAPES.star.length));
   const count = colorIndices.length;
@@ -307,17 +309,25 @@ function renderCarousel() {
       } else {
         media.alt = "";
       }
-      // Play frame sequences forwards, then backwards: 1, 2, 3, 2, 1, 2...
+      // Decode once, then reveal already-loaded layers; never replace a playing frame URL.
       if (item.frames?.length > 1) {
-        let step = 0;
-        const lastFrame = item.frames.length - 1;
-        const cycleLength = lastFrame * 2;
-        setInterval(() => {
-          if (carousel.classList.contains("is-paused")) return;
-          step = (step + 1) % cycleLength;
-          const frame = step <= lastFrame ? step : cycleLength - step;
-          media.src = item.frames[frame];
-        }, item.frameDuration || 160);
+        const layers = item.frames.map((src, frame) => {
+          const image = frame === 0 ? media : element("img");
+          image.src = src; image.alt = ""; image.style.visibility = frame === 0 ? "visible" : "hidden";
+          if(frame) tile.append(image);
+          return image;
+        });
+        Promise.all(layers.map(image => image.decode())).then(() => {
+          if(!media.isConnected) return;
+          let step = 0;
+          const last = layers.length - 1;
+          frameTimers.push(setInterval(() => {
+            if(document.hidden || reducedMotion.matches) return;
+            step = (step + 1) % (last * 2);
+            const frame = step <= last ? step : last * 2 - step;
+            layers.forEach((image, index) => image.style.visibility = index === frame ? "visible" : "hidden");
+          }, item.frameDuration || 280));
+        }).catch(() => { /* Keep the first frame visible if another frame cannot load. */ });
       }
       tile.append(media);
       const label = element("span", "star-label star-label-" + (index % 4));

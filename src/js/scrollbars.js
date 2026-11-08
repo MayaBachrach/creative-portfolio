@@ -10,7 +10,9 @@ function attach(host, target, page) {
  track.addEventListener("pointerup",()=>drag=null);track.addEventListener("pointercancel",()=>drag=null);
  (page?window:target).addEventListener("scroll",measure,{passive:true});window.addEventListener("resize",measure);
  new ResizeObserver(measure).observe(target);new MutationObserver(measure).observe(target,{childList:true,subtree:true});
- measure();setInterval(measure,500);
+ new ResizeObserver(measure).observe(page ? document.body : target.firstElementChild || target);
+ if(!page) new MutationObserver(measure).observe(host,{attributes:true,attributeFilter:["open"]});
+ measure();
 }
 attach(document.body,document.scrollingElement,true);
 attach(document.querySelector("#project-page"),document.querySelector(".project-page-scroll"),false);
