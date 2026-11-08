@@ -809,3 +809,14 @@ html[lang] .skating-maya { transform:none; }
  .site-header { padding-inline:12px; gap:8px; }
  .site-header > .header-controls { gap:4px; }
 }
+
+/* Scrollbar art is separate from its generous draggable hit area. */
+body > .custom-scroll .custom-scroll-thumb { background:transparent; }
+body > .custom-scroll { width:24px; }
+.scroll-flower { position:fixed; inset:0; width:100%; height:100dvh; z-index:99; pointer-events:none; overflow:visible; color:var(--page-scroll-color); }
+.scroll-flower-petal { fill:currentColor; }
+.scroll-flower-ground { fill:var(--accent-4); stroke:var(--accent-4); stroke-linecap:round; }
+.scroll-flower path { fill:none; }
+:root[data-theme="markers"] .scroll-flower-ground { fill:var(--accent-2); stroke:var(--accent-2); }
+.site-loading .scroll-flower { visibility:hidden; }
+@media(prefers-reduced-motion:reduce){ .scroll-flower g { filter:none; } }
