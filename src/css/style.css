@@ -873,3 +873,14 @@ body > .custom-scroll { width:24px; }
 body > .custom-scroll .custom-scroll-thumb { transition:none; }
 .scroll-flower-handle { position:fixed; width:52px; height:72px; z-index:101; touch-action:none; cursor:var(--site-cursor-link,pointer); display:none; }
 .site-loading .scroll-flower-handle { visibility:hidden; }
+
+/* Use a single invitation line whenever it can remain comfortably readable. */
+@media(min-width:40rem) {
+ .contact-scene .footer-desktop { display:block; }
+ .contact-scene .footer-mobile { display:none; }
+ .contact-scene .footer-desktop > .handwritten-heading { width:100%; height:auto; max-height:6rem; }
+}
+@media(max-width:39.999rem) {
+ .contact-scene .footer-desktop { display:none; }
+ .contact-scene .footer-mobile { display:block; }
+}
