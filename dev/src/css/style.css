@@ -905,3 +905,9 @@ body > .custom-scroll .custom-scroll-thumb { transition:none; }
 
 .scroll-flower .scroll-heart-anchor { fill:currentColor; }
 .scroll-flower .scroll-heart-bridge { fill:none; }
+
+/* Keep a clear edge gap without shifting the heading or narrowing the drag area. */
+@media(max-width:48rem) {
+ body > .custom-scroll { right:0; width:24px; }
+ body > .custom-scroll .custom-scroll-thumb { left:16px; width:5px; }
+}
