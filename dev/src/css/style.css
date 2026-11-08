@@ -913,3 +913,12 @@ body > .custom-scroll .custom-scroll-thumb { transition:none; }
 }
 
 body > .custom-scroll .custom-scroll-thumb { left:3px; width:var(--page-thumb-width,7px); }
+
+/* Contact and wordmark share the heading's outer margins. */
+.site-header { padding-inline:calc(var(--gutter) + 4px); }
+.site-header .contact-nav-link { display:inline-flex; align-items:center; justify-content:flex-end; min-height:44px; padding:0; gap:0; white-space:nowrap; }
+@media(max-width:48rem) {
+ .site-header .top-nav > a { font-size:.95rem; }
+ .site-header .wordmark .handwritten-heading { width:clamp(6rem,27vw,11rem); }
+}
+@media(max-width:359px) { .site-header .top-nav > a { font-size:.875rem; } }

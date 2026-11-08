@@ -14,6 +14,10 @@ function clearFlowerLanding(ground) {
   if(original){
    const ns='http://www.w3.org/2000/svg',defs=document.createElementNS(ns,'defs'),pattern=document.createElementNS(ns,'pattern'),tile=document.createElementNS(ns,'rect');
    pattern.id='ground-grass-repeat';pattern.setAttribute('patternUnits','userSpaceOnUse');pattern.setAttribute('width','1440');pattern.setAttribute('height','90');
+   ground.grassClusters=(original.getAttribute('d').match(/M[^M]+/g)||[]).map(part=>{
+    const numbers=part.match(/-?[\d.]+/g).map(Number),xs=numbers.filter((_,i)=>i%2===0);
+    return {start:Math.min(...xs),end:Math.max(...xs)};
+   });
    const art=original.cloneNode(true);art.removeAttribute('class');pattern.append(art);defs.append(pattern);ground.prepend(defs);
    tile.setAttribute('class','grass-blades');tile.setAttribute('height','90');tile.setAttribute('fill','url(#ground-grass-repeat)');
    original.replaceWith(tile);ground.grassTile=tile;
@@ -30,7 +34,11 @@ function clearFlowerLanding(ground) {
  }
  const point=ground.createSVGPoint();point.x=innerWidth-68;point.y=0;
  const local=point.matrixTransform(matrix.inverse());
- ground.landingClip.setAttribute('width',Math.max(0,Math.min(ground.viewBox.baseVal.width,local.x)));
+ // Cut only in a gap: remove the entire tuft that meets the flower clearing.
+ const repeat=1440,tileStart=Math.floor(local.x/repeat)*repeat,within=local.x-tileStart;
+ const tuft=ground.grassClusters?.find(t=>within>=t.start-3&&within<=t.end+3);
+ const edge=tuft?tileStart+tuft.start-3:local.x;
+ ground.landingClip.setAttribute('width',Math.max(0,Math.min(ground.viewBox.baseVal.width,edge)));
  ground.landingClip.setAttribute('height',ground.viewBox.baseVal.height);
 }
 function positionPageTrack(track) {
