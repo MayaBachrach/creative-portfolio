@@ -884,3 +884,21 @@ body > .custom-scroll .custom-scroll-thumb { transition:none; }
  .contact-scene .footer-desktop { display:none; }
  .contact-scene .footer-mobile { display:block; }
 }
+
+.contact-nav-link { display:inline-flex; align-items:center; gap:.35rem; }
+.contact-heart-icon { width:1.75rem; height:1.75rem; flex:none; color:var(--page-scroll-color); }
+.scroll-heart-handle { position:fixed; width:44px; height:44px; z-index:101; touch-action:none; display:none; cursor:var(--site-cursor-link,pointer); }
+.site-loading .scroll-heart-handle { visibility:hidden; }
+@media(max-width:48rem) {
+ .contact-nav-link { gap:.125rem; }
+ .contact-heart-icon { width:1.35rem; height:1.35rem; }
+ .site-header > .header-controls { gap:0; }
+ .wordmark .handwritten-heading { width:clamp(5.25rem,23vw,10rem); }
+}
+@media(max-width:359px) {
+ .site-header { padding-inline:8px; gap:5px; }
+ .site-header .top-nav > a { font-size:.75rem; }
+ .site-header .wordmark .handwritten-heading { width:5.25rem; }
+}
+
+.scroll-flower .scroll-top-heart { fill:currentColor; }
