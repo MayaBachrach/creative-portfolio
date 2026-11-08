@@ -532,6 +532,9 @@ img, svg { -webkit-user-drag:none; }
 /* Palette roles are shared instead of hard-coded per mode. */
 body > .custom-scroll .custom-scroll-thumb { background:var(--page-scroll-color); }
 .theme-toggle-track { background:var(--contact-title); }
+
+/* Footer links follow the hero words in Hebrew reading order: greeting, middle, name. */
+:root:is([data-theme="crayons"], [data-theme="markers"]) { --footer-accent-1:var(--accent-1); --footer-accent-2:var(--accent-3); --footer-accent-3:var(--accent-2); }
 </style>
 <script>// Central design settings. Use exact palette values; do not generate extra shades.
 window.PORTFOLIO_CONFIG = {
