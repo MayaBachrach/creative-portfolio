@@ -484,12 +484,16 @@ function playHeadingIntro() {
 async function revealPreparedPage() {
  const elapsed = performance.now() - (window.portfolioLoadingStarted || 0);
  const minimum = Math.max(0, 1200 - elapsed);
- const ready = [document.fonts.ready, ...frameReadiness, ...[...document.querySelectorAll(".skating-frame")].map(image=>image.decode()), new Promise(resolve => setTimeout(resolve, minimum))];
- await Promise.allSettled(ready);
+ const assets = [document.fonts.ready, ...frameReadiness, ...[...document.querySelectorAll(".skating-frame")].map(image=>image.decode())];
+ let assetsReadyAt=performance.now(), failedAssets=0;
+ const assetsReady=Promise.allSettled(assets).then(results=>{assetsReadyAt=performance.now();failedAssets=results.filter(result=>result.status==="rejected").length;});
+ await Promise.all([assetsReady,new Promise(resolve=>setTimeout(resolve,minimum))]);
  await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
  fitGreeting();
  document.documentElement.classList.remove("site-loading");
  document.querySelector("#site-loader")?.remove();
+ const shownAt=performance.now();
+ window.portfolioLoadHistory?.record({assetsReadyMs:Math.round(assetsReadyAt),pageShownMs:Math.round(shownAt),minimumLoaderExtraMs:Math.round(Math.max(0,shownAt-assetsReadyAt)),failedAssets});
  requestAnimationFrame(playHeadingIntro);
 }
 revealPreparedPage();
