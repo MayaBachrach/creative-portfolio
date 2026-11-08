@@ -861,6 +861,24 @@ body > .custom-scroll { width:24px; }
  .wordmark .handwritten-heading { width:5.8rem; }
  .top-nav > a { font-size:.8rem; }
 }
+
+/* Keep the composition proportionate when browser zoom exposes a very wide viewport. */
+@media(min-width:120rem){
+ :root { font-size:clamp(16px,1vw,48px); }
+ .site-header { min-height:4.75rem; padding-block:.75rem; }
+ .site-header > .header-controls { gap:.5rem; height:2.75rem; }
+ .site-header > .header-controls #music-toggle,#pencil-toggle { width:2.75rem; height:2.75rem; }
+ .site-header > .header-controls #music-toggle svg,#pencil-toggle svg { width:1.5rem; height:1.5rem; }
+ .site-header .theme-toggle { width:5rem; min-height:2.75rem; }
+ .theme-toggle-track { width:4.75rem; height:2.25rem; }
+ .theme-toggle-thumb { top:.25rem; left:.25rem; width:1.75rem; height:1.75rem; }
+ .theme-toggle[aria-checked="true"] .theme-toggle-thumb { transform:translateX(2.5rem); }
+ .theme-toggle svg { top:.5625rem; width:1.125rem; height:1.125rem; }
+ .theme-toggle-sun { left:.5625rem; } .theme-toggle-moon { right:.5625rem; }
+ .contact-scene .footer-ground { height:5.625rem; bottom:1.75rem; }
+ .contact-scene .skating-traveler { bottom:3.375rem; }
+ .copyright { min-height:1.75rem; padding:.3125rem 0; }
+}
 </style>
 <script>// Central design settings. Use exact palette values; do not generate extra shades.
 window.PORTFOLIO_CONFIG = {
