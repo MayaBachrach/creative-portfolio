@@ -356,8 +356,12 @@ document.addEventListener("visibilitychange", updateCarouselMotion);
 const greeting = document.querySelector(".greeting");
 const greetingText = greeting.querySelector("span");
 let introPlaying = false;
+let lastGreetingWidth = -1;
 function fitGreeting() {
   if (introPlaying) return;
+  const nextWidth = document.querySelector("#intro-title").clientWidth;
+  if (Math.abs(nextWidth - lastGreetingWidth) < 1) return;
+  lastGreetingWidth = nextWidth;
   const heading = document.querySelector("#intro-title");
   const nameLine = document.querySelector(".name-line");
   heading.style.fontSize = "";
@@ -448,7 +452,7 @@ renderCarousel();
 updateCarouselMotion();
 showRoute();
 new ResizeObserver(fitGreeting).observe(greeting);
-document.fonts.ready.then(fitGreeting);
+// Vector lettering does not depend on the body font loading.
 fitGreeting();
 
 document.addEventListener("dragstart", event => event.preventDefault());
@@ -459,11 +463,10 @@ function playHeadingIntro() {
  introPlaying=true;
  const letters=[...greetingText.children];
  const step=Math.min(65, 620 / Math.max(1, letters.length));
- const pop=(node,delay,duration=150)=>node.animate([
-  {opacity:0,transform:"translateY(7px) scale(.92)"},
-  {opacity:1,transform:"translateY(-1px) scale(1.025)",offset:.72},
-  {opacity:1,transform:"translateY(0) scale(1)"}
- ],{delay,duration,easing:"cubic-bezier(.16,1,.3,1)",fill:"both"});
+ const pop=(node,delay,duration=100)=>node.animate([
+  {opacity:0,clipPath:"inset(0 100% 0 0)"},
+  {opacity:1,clipPath:"inset(0 0 0 0)"}
+ ],{delay,duration,easing:"steps(2,end)",fill:"both"});
  const animations=letters.map((letter,index)=>pop(letter,index*step,130));
  const words=[document.querySelector(".canva-zot"),document.querySelector(".name")];
  words.forEach((word,index)=>animations.push(pop(word,letters.length*step+90+index*190,210)));
