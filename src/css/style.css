@@ -809,3 +809,8 @@ html[lang] .skating-maya { transform:none; }
  .site-header { padding-inline:12px; gap:8px; }
  .site-header > .header-controls { gap:4px; }
 }
+
+/* Reserve the actual label height above every star, including large phones. */
+.carousel-window { padding-block-start:calc(var(--carousel-size) * .3 + 16px); }
+.carousel-tile .star-label { top:auto; bottom:calc(100% + 12px); left:-5%; width:110%; }
+.star-label .handwritten-heading { display:block; width:100%; height:auto; overflow:visible; }
