@@ -32,6 +32,8 @@
     window.updatePortfolioCursors(palette, mode);
     const contactRole = Math.min(window.PORTFOLIO_CONFIG.colorRoles.contactHeading, palette.length) - 1;
     document.documentElement.style.setProperty("--contact-title", palette[contactRole]);
+    const unused = palette.findIndex((_, index) => ![0, 1, 2, contactRole].includes(index));
+    document.documentElement.style.setProperty("--page-scroll-color", palette[unused < 0 ? palette.length - 1 : unused]);
     document.documentElement.dataset.palette = paletteNames[mode];
     palette.forEach((color, index) => document.documentElement.style.setProperty("--accent-" + (index + 1), color));
     document.documentElement.style.setProperty("--accent-count", String(palette.length));

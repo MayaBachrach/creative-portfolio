@@ -517,3 +517,7 @@ a:focus:not(:focus-visible), button:focus:not(:focus-visible), [role="switch"]:f
 /* Presentation-only content: disable selection and browser image dragging. */
 html, body, body * { -webkit-user-select:none; user-select:none; }
 img, svg { -webkit-user-drag:none; }
+
+/* Palette roles are shared instead of hard-coded per mode. */
+body > .custom-scroll .custom-scroll-thumb { background:var(--page-scroll-color); }
+.theme-toggle-track { background:var(--contact-title); }
