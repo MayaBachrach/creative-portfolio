@@ -572,3 +572,11 @@ body > .custom-scroll .custom-scroll-thumb { background:var(--page-scroll-color)
 .carousel-tile { width:var(--carousel-size); height:var(--carousel-size); }
 .carousel-window { box-sizing:content-box; height:var(--carousel-size); padding-block:5rem 3rem; }
 @media(max-width:48rem) { .carousel { --carousel-size:min(68vw,23rem); } .carousel-window { padding-block:4rem 2rem; } }
+
+/* Prepare all visible assets behind a themed rolling-star loading screen. */
+#site-loader { position:fixed; inset:0; display:grid; place-items:center; z-index:2147483646; background:var(--page-background); color:var(--accent-1); }
+#site-loader svg { width:76px; height:76px; animation:loader-roll 1.25s linear infinite; }
+.site-loading { overflow:hidden; }
+.site-loading .site-header, .site-loading main, .site-loading .contact, .site-loading .custom-scroll { visibility:hidden; }
+@keyframes loader-roll { 0% { transform:translateX(-30px) rotate(0); } 50% { transform:translateX(30px) rotate(180deg); } 100% { transform:translateX(-30px) rotate(360deg); } }
+@media(prefers-reduced-motion:reduce) { #site-loader svg { animation:none; } }

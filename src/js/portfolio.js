@@ -276,6 +276,7 @@ function refreshCarouselColors() {
 }
 
 const frameTimers = [];
+const frameReadiness = [];
 function renderCarousel() {
   frameTimers.splice(0).forEach(clearInterval);
   const track = document.querySelector("#carousel-track");
@@ -317,7 +318,9 @@ function renderCarousel() {
           if(frame) tile.append(image);
           return image;
         });
-        Promise.all(layers.map(image => image.decode())).then(() => {
+        const ready = Promise.all(layers.map(image => image.decode()));
+        frameReadiness.push(ready);
+        ready.then(() => {
           if(!media.isConnected) return;
           let step = 0;
           const last = layers.length - 1;
@@ -476,4 +479,13 @@ function playHeadingIntro() {
   introPlaying=false;fitGreeting();
  });
 }
-requestAnimationFrame(() => { fitGreeting(); requestAnimationFrame(playHeadingIntro); });
+async function revealPreparedPage() {
+ const ready = [document.fonts.ready, ...frameReadiness];
+ await Promise.allSettled(ready);
+ await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+ fitGreeting();
+ document.documentElement.classList.remove("site-loading");
+ document.querySelector("#site-loader")?.remove();
+ requestAnimationFrame(playHeadingIntro);
+}
+revealPreparedPage();
