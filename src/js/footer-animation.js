@@ -10,3 +10,5 @@
   setTimeout(next,100);
  }).catch(()=>{});
 })();
+
+document.querySelector("#copyright-year").textContent = String(new Date().getFullYear());
