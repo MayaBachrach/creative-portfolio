@@ -36,7 +36,17 @@ function clearFlowerLanding(ground) {
 function positionPageTrack(track) {
  const letter=document.querySelector('.canva-he');
  const title=letter || document.querySelector('#intro-title');
- if(title) track.style.top=Math.max(12,title.getBoundingClientRect().top+scrollY)+'px';
+ if(title){
+  const box=title.getBoundingClientRect();
+  // Ink bounds of the supplied, tightly measured Hebrew SVG, relative to its viewBox.
+  const inkTop=box.height*.034,inkHeight=box.height*.899;
+  track.letterHeight=inkHeight;
+  const width=Math.max(3,box.height*.1),gap=Math.max(5,box.height*.09);
+  track.style.top=Math.max(12,box.top+inkTop+scrollY)+'px';
+  track.style.setProperty('--page-thumb-width',width+'px');
+  // Keep the larger drag target while the visible bar follows the lettering.
+  track.style.right=(innerWidth-(box.right+gap-3)-track.offsetWidth)+'px';
+ }
  const ground=document.querySelector('.footer-ground');
  if(ground){
   clearFlowerLanding(ground);
@@ -116,7 +126,7 @@ function attach(host, target, page) {
  track.setAttribute("aria-hidden","true");track.append(thumb);host.append(track);
  let drag;
  if(page){const hit=document.createElement("div");hit.className="scroll-flower-handle";hit.setAttribute("aria-hidden","true");host.append(hit);track.flowerHit=hit;}
- const measure=()=>{if(page) positionPageTrack(track);const height=page?innerHeight:target.clientHeight;const total=target.scrollHeight;const range=total-height;const th=Math.min(track.clientHeight, matchMedia("(max-width:48rem)").matches ? 56 : 88);thumb.style.height=th+"px";thumb.style.top=(range>0?target.scrollTop/range*(track.clientHeight-th):0)+"px";if(page) paintPageScrollbar(track,thumb,range);track.style.visibility=range>1?"visible":"hidden";};
+ const measure=()=>{if(page) positionPageTrack(track);const height=page?innerHeight:target.clientHeight;const total=target.scrollHeight;const range=total-height;const th=Math.min(track.clientHeight, page ? track.letterHeight || 56 : matchMedia("(max-width:48rem)").matches ? 56 : 88);thumb.style.height=th+"px";thumb.style.top=(range>0?target.scrollTop/range*(track.clientHeight-th):0)+"px";if(page) paintPageScrollbar(track,thumb,range);track.style.visibility=range>1?"visible":"hidden";};
  const down=e=>{
   const height=page?innerHeight:target.clientHeight;
   const range=Math.max(0,target.scrollHeight-height),travel=track.clientHeight-thumb.clientHeight;
