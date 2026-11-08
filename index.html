@@ -797,13 +797,29 @@ html[lang] .skating-maya { transform:none; }
 @keyframes skate-physical-ltr { from { transform:translate3d(-100%,0,0); } to { transform:translate3d(100vw,0,0); } }
 
 /* Use the full switch whenever the single header row has room. */
-@media(min-width:375px) and (max-width:48rem) {
+@media(min-width:360px) and (max-width:48rem) {
  .site-header .theme-toggle { width:80px; min-width:80px; flex-basis:80px; background:transparent; color:var(--page-text); }
  .site-header .theme-toggle-track { display:block; }
  .site-header .compact-theme-icon { display:none; }
 }
 .copyright { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:.35rem .8rem; }
 .copyright a { color:inherit; white-space:nowrap; text-decoration:underline; text-underline-offset:3px; }
+
+/* Compact headers distribute the three groups evenly, instead of leaving
+   all spare room after the wordmark. Wide screens retain a centered grid. */
+@media(max-width:64rem) {
+ .site-header { display:flex; justify-content:space-between; align-items:center; gap:clamp(8px,2.4vw,20px); padding-inline:clamp(12px,4vw,32px); }
+ .site-header .wordmark { flex:0 1 auto; min-width:0; }
+ .site-header > .header-controls { flex:0 0 auto; gap:8px; }
+ .site-header .top-nav { flex:0 0 auto; }
+}
+@media(max-width:48rem) {
+ .wordmark .handwritten-heading { width:clamp(6.6rem,29vw,11rem); }
+}
+@media(max-width:359px) {
+ .site-header { padding-inline:12px; gap:8px; }
+ .site-header > .header-controls { gap:4px; }
+}
 </style>
 <script>// Central design settings. Use exact palette values; do not generate extra shades.
 window.PORTFOLIO_CONFIG = {
