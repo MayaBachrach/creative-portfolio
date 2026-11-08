@@ -779,3 +779,9 @@ body > .custom-scroll { top:88px; }
 .carousel-tile > img, .carousel-tile > video { transform:scaleX(-1); }
 html[lang] .skating-traveler { animation-direction:normal; }
 html[lang] .skating-maya { transform:none; }
+
+/* Explicit physical directions, independent of the document’s RTL flow. */
+.carousel-tile > img, .carousel-tile > video { transform:none; }
+html[lang] .skating-traveler { left:0; right:auto; direction:ltr; animation-name:skate-physical-ltr; animation-direction:normal; }
+html[lang] .skating-maya { transform:none; }
+@keyframes skate-physical-ltr { from { transform:translate3d(-100%,0,0); } to { transform:translate3d(100vw,0,0); } }
