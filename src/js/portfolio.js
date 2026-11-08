@@ -316,12 +316,14 @@ function renderCarousel() {
         }, item.frameDuration || 160);
       }
       tile.append(media);
-      const ring = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      ring.setAttribute("viewBox", "0 0 300 300");
-      ring.classList.add("orbit-title");
-      const ringId = "orbit-" + group + "-" + index;
-      ring.innerHTML = '<defs><path id="' + ringId + '" d="M150,18 a132,132 0 1,1 -0.1,0"/></defs><text direction="rtl" lang="he" style="unicode-bidi:plaintext"><textPath href="#' + ringId + '" startOffset="100%" textLength="820" lengthAdjust="spacing">והפקת מוזיקה &#x2066;DJ&#x2069; · והפקת מוזיקה &#x2066;DJ&#x2069; · והפקת מוזיקה &#x2066;DJ&#x2069; · </textPath></text>';
-      tile.append(ring);
+      const label = element("span", "star-label star-label-" + (index % 3));
+      window.renderPortfolioLettering(label, "DJ והפקת סאונד");
+      const arrow = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      arrow.setAttribute("viewBox", "0 0 100 100");
+      arrow.setAttribute("aria-hidden", "true");
+      arrow.classList.add("star-arrow");
+      arrow.innerHTML = '<path d="M18 10 C12 29 38 27 43 43 S57 64 74 80 M53 73 Q64 79 76 82 Q74 69 76 59" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>';
+      tile.append(label, arrow);
       set.append(tile);
     }
     track.append(set);

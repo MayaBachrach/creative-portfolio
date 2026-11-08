@@ -379,3 +379,14 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 .carousel-tile .orbit-title { inset: 4%; width: 92%; height: 92%; z-index: 0; }
 .carousel-tile::before { z-index: 1; }
 .carousel-tile > img, .carousel-tile > video { z-index: 2; }
+
+/* Handwritten annotations replace the rotating orbit experiment. */
+.carousel-window { padding-block: 7rem 3rem; }
+.carousel-tile .star-label { position:absolute; display:block; z-index:3; width:110%; top:-24%; left:-5%; color:var(--page-text); pointer-events:none; }
+.star-label .handwritten-heading { width:100%; height:auto; }
+.carousel-tile .star-label-0 { transform:rotate(-8deg); }
+.carousel-tile .star-label-1 { top:-12%; left:-20%; transform:rotate(-24deg); }
+.carousel-tile .star-label-2 { top:-20%; left:8%; transform:rotate(13deg); }
+.star-arrow { position:absolute; z-index:3; width:29%; height:29%; top:-5%; left:8%; color:var(--page-text); pointer-events:none; }
+.carousel-tile:nth-child(3n + 2) .star-arrow { left:-7%; top:0; transform:rotate(-20deg); }
+.carousel-tile:nth-child(3n) .star-arrow { left:62%; top:-4%; transform:scaleX(-1); }
