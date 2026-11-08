@@ -2,12 +2,44 @@
 const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
 let pagePaint, pageFrame;
 const reduced=matchMedia('(prefers-reduced-motion:reduce)');
+function clearFlowerLanding(ground) {
+ const bounds=ground.getBoundingClientRect();
+ if(bounds.height<=0)return;
+ const width=bounds.width/(bounds.height/90);
+ ground.setAttribute('viewBox','0 0 '+width+' 90');
+ const line=ground.querySelector('.ground-line');
+ if(line)line.setAttribute('d','M0 57 Q'+(width/4)+' 53 '+(width/2)+' 57 T'+width+' 57');
+ if(!ground.grassTile){
+  const original=ground.querySelector('path.grass-blades');
+  if(original){
+   const ns='http://www.w3.org/2000/svg',defs=document.createElementNS(ns,'defs'),pattern=document.createElementNS(ns,'pattern'),tile=document.createElementNS(ns,'rect');
+   pattern.id='ground-grass-repeat';pattern.setAttribute('patternUnits','userSpaceOnUse');pattern.setAttribute('width','1440');pattern.setAttribute('height','90');
+   const art=original.cloneNode(true);art.removeAttribute('class');pattern.append(art);defs.append(pattern);ground.prepend(defs);
+   tile.setAttribute('class','grass-blades');tile.setAttribute('height','90');tile.setAttribute('fill','url(#ground-grass-repeat)');
+   original.replaceWith(tile);ground.grassTile=tile;
+  }
+ }
+ if(ground.grassTile)ground.grassTile.setAttribute('width',width);
+ const blades=ground.querySelector('.grass-blades'),matrix=ground.getScreenCTM();
+ if(!blades||!matrix)return;
+ if(!ground.landingClip){
+  const ns='http://www.w3.org/2000/svg',defs=document.createElementNS(ns,'defs'),clip=document.createElementNS(ns,'clipPath'),rect=document.createElementNS(ns,'rect');
+  clip.id='flower-landing-clear';clip.setAttribute('clipPathUnits','userSpaceOnUse');
+  clip.append(rect);defs.append(clip);ground.prepend(defs);ground.landingClip=rect;
+  blades.setAttribute('clip-path','url(#flower-landing-clear)');
+ }
+ const point=ground.createSVGPoint();point.x=innerWidth-68;point.y=0;
+ const local=point.matrixTransform(matrix.inverse());
+ ground.landingClip.setAttribute('width',Math.max(0,Math.min(ground.viewBox.baseVal.width,local.x)));
+ ground.landingClip.setAttribute('height',ground.viewBox.baseVal.height);
+}
 function positionPageTrack(track) {
  const letter=document.querySelector('.canva-he');
  const title=letter || document.querySelector('#intro-title');
  if(title) track.style.top=Math.max(12,title.getBoundingClientRect().top+scrollY)+'px';
  const ground=document.querySelector('.footer-ground');
  if(ground){
+  clearFlowerLanding(ground);
   const rect=ground.getBoundingClientRect();
   const max=document.scrollingElement.scrollHeight-innerHeight;
   const floorAtEnd=rect.top+scrollY-max+rect.height*57/90;
