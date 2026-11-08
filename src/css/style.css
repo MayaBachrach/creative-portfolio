@@ -611,3 +611,9 @@ body > .custom-scroll .custom-scroll-thumb { background:var(--page-scroll-color)
  .project-description { font-size:1rem; }
  .media-item img, .media-item video { max-height:48dvh; }
 }
+
+/* Drag and mobile reading focus share the same continuous carousel position. */
+.carousel-track { animation:none; will-change:transform; }
+.carousel-window { touch-action:pan-y; }
+.carousel-window.is-dragging { cursor:grabbing; }
+.carousel-tile.is-reading .star-label { opacity:1; transform:translateY(0); }
