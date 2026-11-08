@@ -467,7 +467,7 @@ function playHeadingIntro() {
  const letters=[...greetingText.children];
  const step=Math.min(65, 620 / Math.max(1, letters.length));
  const pop=(node,delay,duration=100)=>node.animate([
-  {opacity:0,clipPath:"inset(0 100% 0 0)"},
+  {opacity:0,clipPath:"inset(0 0 0 100%)"},
   {opacity:1,clipPath:"inset(0 0 0 0)"}
  ],{delay,duration,easing:"steps(2,end)",fill:"both"});
  const animations=letters.map((letter,index)=>pop(letter,index*step,130));
