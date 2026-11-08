@@ -617,3 +617,55 @@ body > .custom-scroll .custom-scroll-thumb { background:var(--page-scroll-color)
 .carousel-window { touch-action:pan-y; }
 .carousel-window.is-dragging { cursor:grabbing; }
 .carousel-tile.is-reading .star-label { opacity:1; transform:translateY(0); }
+
+/* Navigation and compact settings belong to the header, not the hero. */
+.site-header { min-height:72px; display:flex; direction:ltr; justify-content:space-between; padding-block:.75rem; }
+.top-nav { display:flex; align-items:center; gap:clamp(.8rem,2vw,2rem); position:relative; }
+.top-nav > a { color:var(--page-text); text-decoration:underline; text-underline-offset:5px; font-size:1rem; }
+#settings-toggle { width:44px; height:44px; background:transparent; color:var(--page-text); border:0; padding:8px; }
+#settings-toggle svg { width:100%; height:100%; }
+#settings-menu { position:absolute; right:0; top:calc(100% + 10px); z-index:150; min-width:245px; background:var(--page-background); color:var(--page-text); border:2px solid var(--contact-title); border-radius:15px; padding:18px; box-shadow:0 8px 0 var(--contact-title); }
+#settings-menu[hidden] { display:none; }
+.language-options { display:flex; gap:10px; margin-bottom:18px; }
+.language-options button { flex:1; min-height:44px; border:2px solid var(--contact-title); border-radius:9px; background:transparent; color:var(--page-text); }
+.language-options button[aria-pressed="true"] { background:var(--contact-title); color:var(--page-background); }
+.setting-row { display:flex; flex-direction:column; gap:12px; }
+#settings-menu .header-controls { position:relative; inset:auto; width:auto; display:flex; align-items:center; justify-content:space-between; gap:20px; height:44px; }
+#settings-menu .theme-toggle, #settings-menu #music-toggle { position:relative; inset:auto; transform:none; flex:none; }
+#settings-menu #music-toggle { width:44px; height:44px; }
+#gallery, #contact { scroll-margin-top:16px; }
+.contact { min-height:40dvh; display:flex; flex-direction:column; justify-content:center; }
+.skating-footer { min-height:65dvh; position:relative; overflow:hidden; display:grid; place-items:center; background:var(--page-background); }
+.skating-maya { width:clamp(13rem,34vw,25rem); height:auto; animation:skate-across 13s ease-in-out infinite alternate; }
+@keyframes skate-across { from { transform:translateX(-24vw) rotate(-4deg); } to { transform:translateX(24vw) rotate(4deg); } }
+.english-intro { display:none; }
+html[lang="en"] #intro-title { display:none; }
+html[lang="en"] .english-intro { display:flex; align-items:center; gap:.5rem; height:clamp(4.4rem,10vw,11.2rem); direction:ltr; }
+.english-intro > span { flex:1; min-width:0; }
+.english-intro > span:first-child { flex:1.8; color:var(--accent-1); }
+.english-intro > span:nth-child(2) { color:var(--accent-3); }
+.english-intro > span:last-child { background:var(--accent-2); color:var(--page-background); padding:.3rem; transform:rotate(-3deg); }
+.english-intro .handwritten-heading { width:100%; height:clamp(3rem,8vw,9rem); }
+.intro-pending .english-intro > span { visibility:hidden; }
+html[lang="en"] .hero-intro > p { direction:ltr; }
+@media(max-width:48rem) {
+ .site-header { min-height:64px; padding-block:.5rem; padding-inline:16px; }
+ .wordmark .handwritten-heading { width:7.2rem; }
+ .top-nav { gap:.7rem; }
+ .top-nav > a { font-size:.9rem; }
+ #settings-toggle { width:38px; height:44px; }
+ #settings-menu { right:0; }
+ .skating-footer { min-height:65dvh; }
+ .contact { min-height:40dvh; padding-inline:16px; }
+}
+@media(prefers-reduced-motion:reduce) { .skating-maya { animation:none; } }
+
+.skating-maya.theme-drawing { filter:none; mix-blend-mode:multiply; }
+:root[data-theme="markers"] .skating-maya.theme-drawing { filter:invert(1); mix-blend-mode:screen; }
+
+.skating-traveler { width:clamp(13rem,34vw,25rem); animation:skate-across 13s ease-in-out infinite alternate; }
+.skating-maya { position:relative; width:100%; aspect-ratio:1; animation:none; }
+.skating-frame { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; }
+.skating-frame.theme-drawing { filter:none; }
+:root[data-theme="markers"] .skating-frame.theme-drawing { filter:brightness(0) invert(1); }
+@media(prefers-reduced-motion:reduce) { .skating-traveler { animation:none; } }

@@ -168,6 +168,7 @@ function updatePanelAccent() {
 }
 
 function showRoute() {
+  projectTitle.dataset.letteringDirection = document.documentElement.lang === "en" ? "ltr" : "rtl";
   const [kind, encodedValue] = location.hash.slice(1).split("/");
   if (kind !== "project" && kind !== "tag") {
     stopDetailVideos();
@@ -464,14 +465,15 @@ function playHeadingIntro() {
  const root=document.documentElement;
  if(matchMedia("(prefers-reduced-motion: reduce)").matches) {root.classList.remove("intro-pending");return;}
  introPlaying=true;
- const letters=[...greetingText.children];
+ const english=document.documentElement.lang==="en";
+ const letters=english?[...document.querySelectorAll(".english-intro > span")]:[...greetingText.children];
  const step=Math.min(65, 620 / Math.max(1, letters.length));
  const pop=(node,delay,duration=100)=>node.animate([
-  {opacity:0,clipPath:"inset(0 0 0 100%)"},
+  {opacity:0,clipPath:english?"inset(0 100% 0 0)":"inset(0 0 0 100%)"},
   {opacity:1,clipPath:"inset(0 0 0 0)"}
  ],{delay,duration,easing:"steps(2,end)",fill:"both"});
  const animations=letters.map((letter,index)=>pop(letter,index*step,130));
- const words=[document.querySelector(".canva-zot"),document.querySelector(".name")];
+ const words=english?[]:[document.querySelector(".canva-zot"),document.querySelector(".name")];
  words.forEach((word,index)=>animations.push(pop(word,letters.length*step+90+index*190,210)));
  root.classList.remove("intro-pending");
  Promise.all(animations.map(animation=>animation.finished)).then(()=>{
@@ -482,7 +484,7 @@ function playHeadingIntro() {
 async function revealPreparedPage() {
  const elapsed = performance.now() - (window.portfolioLoadingStarted || 0);
  const minimum = Math.max(0, 1200 - elapsed);
- const ready = [document.fonts.ready, ...frameReadiness, new Promise(resolve => setTimeout(resolve, minimum))];
+ const ready = [document.fonts.ready, ...frameReadiness, ...[...document.querySelectorAll(".skating-frame")].map(image=>image.decode()), new Promise(resolve => setTimeout(resolve, minimum))];
  await Promise.allSettled(ready);
  await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
  fitGreeting();
@@ -496,22 +498,22 @@ revealPreparedPage();
 (() => {
  const viewport=document.querySelector(".carousel-window"), track=document.querySelector("#carousel-track");
  const touch=matchMedia("(hover:none), (pointer:coarse)");
- let offset=0, last=0, focusCheck=0, drag=null, suppressClick=false, speed=1;
+ let offset=0, last=0, focusCheck=0, drag=null, suppressClick=false, speed=1, momentum=0, focusedStar=null, focusStarted=0;
  const wrap=()=>{const width=track.scrollWidth/2;if(width)offset=((offset%width)+width)%width;};
  const paint=()=>track.style.transform="translate3d("+(-offset)+"px,0,0)";
  viewport.addEventListener("pointerdown",e=>{
   if(e.button!==0)return;
-  drag={id:e.pointerId,x:e.clientX,y:e.clientY,lastX:e.clientX,moved:false};
+  momentum=0;drag={id:e.pointerId,x:e.clientX,y:e.clientY,lastX:e.clientX,time:e.timeStamp,velocity:0,moved:false};
  });
  viewport.addEventListener("pointermove",e=>{
   if(!drag||drag.id!==e.pointerId)return;
   const dx=e.clientX-drag.x,dy=e.clientY-drag.y;
   if(!drag.moved&&Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>8){drag=null;return;}
   if(!drag.moved&&Math.abs(dx)>7){drag.moved=true;viewport.setPointerCapture(e.pointerId);viewport.classList.add("is-dragging");}
-  if(drag.moved){offset-=e.clientX-drag.lastX;wrap();paint();e.preventDefault();}
-  drag.lastX=e.clientX;
+  if(drag.moved){const elapsed=Math.max(8,e.timeStamp-drag.time);const velocity=-(e.clientX-drag.lastX)/elapsed*1000;drag.velocity=drag.velocity*.3+velocity*.7;offset-=e.clientX-drag.lastX;wrap();paint();e.preventDefault();}
+  drag.lastX=e.clientX;drag.time=e.timeStamp;
  });
- function end(e){if(!drag)return;suppressClick=drag.moved;if(viewport.hasPointerCapture(e.pointerId))viewport.releasePointerCapture(e.pointerId);drag=null;viewport.classList.remove("is-dragging");setTimeout(()=>suppressClick=false,0);}
+ function end(e){if(!drag)return;suppressClick=drag.moved;momentum=drag.moved&&e.type!=="pointercancel"&&e.timeStamp-drag.time<100?Math.max(-3000,Math.min(3000,drag.velocity)):0;if(viewport.hasPointerCapture(e.pointerId))viewport.releasePointerCapture(e.pointerId);drag=null;viewport.classList.remove("is-dragging");setTimeout(()=>suppressClick=false,0);}
  viewport.addEventListener("pointerup",end);viewport.addEventListener("pointercancel",end);
  viewport.addEventListener("click",e=>{if(suppressClick){e.preventDefault();e.stopImmediatePropagation();}},true);
  function tick(now){
@@ -524,14 +526,17 @@ revealPreparedPage();
      const r=tile.getBoundingClientRect(),d=Math.abs(r.left+r.width/2-innerWidth/2);
      if(d<distance){distance=d;closest=tile;}
     }
-    for(const tile of track.querySelectorAll(".carousel-tile"))tile.classList.toggle("is-reading",tile===closest&&distance<innerWidth*.2);
+    if(closest!==focusedStar&&distance<innerWidth*.14){focusedStar=closest;focusStarted=now;}
+    for(const tile of track.querySelectorAll(".carousel-tile"))tile.classList.toggle("is-reading",tile===focusedStar&&now-focusStarted<1000&&distance<innerWidth*.22&&!drag&&Math.abs(momentum)<100);
    }
    reading=!!track.querySelector(".is-reading");
   }
   const paused=document.hidden||reducedMotion.matches||dialog.open||(!touch.matches&&track.matches(":hover"))||!!drag;
-  const target=reading?.22:1;speed+=(target-speed)*.09;
+  const progress=Math.min(1,Math.max(0,(now-focusStarted)/1000));
+  const target=reading?1-.65*Math.sin(Math.PI*progress):1;speed+=(target-speed)*Math.min(1,dt*9);
   const loop=track.scrollWidth/2;
   if(!paused&&loop){const duration=parseFloat(track.style.getPropertyValue("--carousel-duration"))||70;offset+=loop/duration*dt*speed;wrap();paint();}
+  if(!document.hidden&&!reducedMotion.matches&&!dialog.open&&!drag&&Math.abs(momentum)>.5){offset+=momentum*dt;momentum*=Math.exp(-3.2*dt);wrap();paint();}
   requestAnimationFrame(tick);
  }
  requestAnimationFrame(tick);
