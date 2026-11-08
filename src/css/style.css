@@ -253,7 +253,7 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 .canva-word, .canva-letter { display: inline-block; height: 1em; background: currentColor; mask: var(--letter-art) center / 100% 100% no-repeat; -webkit-mask: var(--letter-art) center / 100% 100% no-repeat; vertical-align: bottom; }
 .canva-he { width: .8192em; --letter-art: url('../../assets/typography/title-he.svg?v=15'); }
 .canva-yod { width: .3476em; --letter-art: url('../../assets/typography/title-yod.svg?v=15'); }
-.canva-zot { width: 2.3965em; --letter-art: url('../../assets/typography/title-zot.svg?v=15'); }
+.canva-zot { width: 2.3965em; --letter-art: url('../../assets/typography/title-ani.svg?v=1'); }
 .canva-maya { width: 3.2668em; --letter-art: url('../../assets/typography/title-maya.svg?v=15'); }
 .greeting > span { display: flex; flex: none; direction: rtl; gap: .015em; }
 .canva-letter { flex: none; }
@@ -727,3 +727,6 @@ html[lang="en"] .skating-maya { transform:none; }
 .footer-ground { bottom:28px; }
 .skating-traveler { bottom:50px; }
 @media(max-width:48rem) { .skating-traveler { bottom:42px; } }
+
+/* Main heading: אני replaces זאת in the same supplied vector alphabet. */
+.canva-zot { width:2.2764em; }
