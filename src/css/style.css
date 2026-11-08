@@ -774,3 +774,8 @@ body > .custom-scroll { top:88px; }
  .contact-scene .skating-traveler { width:min(62vw,42dvh,23rem); bottom:56px; }
  .contact-scene .footer-ground { height:90px; }
 }
+
+/* Drawings face the carousel travel direction; the footer always skates LTR. */
+.carousel-tile > img, .carousel-tile > video { transform:scaleX(-1); }
+html[lang] .skating-traveler { animation-direction:normal; }
+html[lang] .skating-maya { transform:none; }
