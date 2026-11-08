@@ -576,6 +576,13 @@ body > .custom-scroll .custom-scroll-thumb { background:var(--page-scroll-color)
 
 /* Loading choreography is confined to the main heading, never the rest of the page. */
 .site-header, .hero-intro > p, .carousel, .carousel-window, .contact, .project-description { opacity:1; visibility:visible; animation:none; transition:none; }
+
+/* Carousel geometry is known before its runtime or image frames arrive. */
+.carousel { --carousel-size:clamp(15rem,23vw,24rem); }
+.carousel-track { height:var(--carousel-size); min-height:var(--carousel-size); }
+.carousel-tile { width:var(--carousel-size); height:var(--carousel-size); }
+.carousel-window { box-sizing:content-box; height:var(--carousel-size); padding-block:5rem 3rem; }
+@media(max-width:48rem) { .carousel { --carousel-size:min(68vw,23rem); } .carousel-window { padding-block:4rem 2rem; } }
 </style>
 <script>// Central design settings. Use exact palette values; do not generate extra shades.
 window.PORTFOLIO_CONFIG = {
