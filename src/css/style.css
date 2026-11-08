@@ -678,3 +678,20 @@ html[lang="en"] .hero-intro > p { direction:ltr; }
 .site-header { z-index:30; }
 .skating-traveler { animation-play-state:paused; }
 .skating-footer.is-visible .skating-traveler { animation-play-state:running; }
+
+/* All landscape colors come directly from the active palette. */
+#settings-menu .header-controls { transform:none; }
+.skating-footer { --scene-ground:var(--accent-4); --scene-sky:var(--accent-3); }
+:root[data-theme="markers"] .skating-footer { --scene-ground:var(--accent-2); --scene-sky:var(--accent-1); }
+.footer-sun, .footer-moon { position:absolute; width:clamp(4rem,9vw,7rem); height:auto; top:8%; right:12%; color:var(--scene-sky); }
+.footer-moon { display:none; }
+:root[data-theme="markers"] .footer-sun { display:none; }
+:root[data-theme="markers"] .footer-moon { display:block; }
+.footer-ground { position:absolute; width:100%; height:70px; bottom:0; left:0; color:var(--scene-ground); }
+:root[data-theme="markers"] .grass-blades { display:none; }
+.skating-traveler { z-index:1; }
+@media(max-width:48rem) { .footer-ground { height:45px; } .footer-sun,.footer-moon { right:9%; top:12%; } }
+
+/* Keep the skates on the ground line at every viewport height. */
+.skating-traveler { position:absolute; bottom:22px; }
+@media(max-width:48rem) { .skating-traveler { bottom:14px; } }

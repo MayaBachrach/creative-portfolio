@@ -1,9 +1,12 @@
 (() => {
  const strings={
  he:{gallery:"גלריה",contact:"יצירת קשר",appearance:"תצוגה",subtitle:"אני אוהבת פרויקטים מהממים מדוייקים ומרגשים (וצללית כחולה)",title:"DJ והפקה מוזיקלית",description:"מיקס, רמיקסים והפקה מוזיקלית.",star:"DJ והפקת סאונד",footer:"בואו ניצור משהו יפה ביחד (:"},
- en:{gallery:"Gallery",contact:"Contact",appearance:"Appearance / sound",subtitle:"I love gorgeous, precise, moving projects (and blue eyeshadow).",title:"DJ AND MUSIC PRODUCTION",description:"Mixes, remixes, and music production.",star:"DJ AND SOUND PRODUCTION",footer:"LET'S MAKE SOMETHING BEAUTIFUL TOGETHER :)"}
+ en:{gallery:"Gallery",contact:"Contact",appearance:"Appearance / sound",subtitle:"I love gorgeous, precise, moving projects (and blue eyeshadow).",title:"DJ AND MUSIC PRODUCTION",description:"Mixes, remixes, and music production.",star:"DJ AND SOUND PRODUCTION",footer:"LET US MAKE SOMETHING BEAUTIFUL TOGETHER :)"}
  };
  const original={title:projects[0].title,description:projects[0].description};
+ function controlLabels(){const en=document.documentElement.lang==="en";for(const [selector,text] of [["#theme-toggle",en?"Dark mode":"מצב כהה"],["#music-toggle",document.querySelector("#music-toggle").getAttribute("aria-pressed")==="true"?(en?"Mute sound":"השתקת מוזיקת הרקע"):(en?"Enable sound":"הפעלת מוזיקת הרקע")]]){const e=document.querySelector(selector);if(e.getAttribute("aria-label")!==text)e.setAttribute("aria-label",text);}}
+ new MutationObserver(controlLabels).observe(document.querySelector("#music-toggle"),{attributes:true,attributeFilter:["aria-label","aria-pressed"]});
+ document.addEventListener("portfolio-theme-change",controlLabels);
  function apply(language){
   const s=strings[language];document.documentElement.lang=language;document.documentElement.dir=language==="he"?"rtl":"ltr";
   try{localStorage.setItem("maya-language",language);}catch{}
@@ -19,6 +22,9 @@
   document.querySelectorAll(".social-icon").forEach((e,i)=>e.setAttribute("aria-label",(language==="en"?["Instagram","WhatsApp","Email"]:["אינסטגרם","וואטסאפ","מייל"])[i]));
   document.querySelectorAll("[data-lang]").forEach(e=>e.setAttribute("aria-pressed",String(e.dataset.lang===language)));
   if(document.querySelector("dialog").open){const t=document.querySelector("#project-title");t.dataset.letteringDirection=language==="en"?"ltr":"rtl";window.renderPortfolioLettering(t,s.title);document.querySelector("#project-description").textContent=s.description;}
+  controlLabels();
+  document.querySelector("#gallery").setAttribute("aria-label",language==="en"?"Maya’s illustrations":"האיורים של מאיה");
+  document.querySelectorAll(".carousel-tile").forEach(e=>e.setAttribute("aria-label",s.star));
   if(language==="he"){lastGreetingWidth=-1;fitGreeting();}
  }
  document.querySelectorAll("[data-en-word]").forEach(e=>{e.dataset.letteringDirection="ltr";window.renderPortfolioLettering(e,e.dataset.enWord);});
