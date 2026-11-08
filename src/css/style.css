@@ -453,3 +453,10 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, .project-page::-webkit-scrollb
 /* Dimensions and position spring together as the cursor merges into controls. */
 .difference-cursor, .difference-cursor.is-hovering { transition:opacity 120ms ease,border-radius 220ms ease; }
 .difference-cursor.is-merging { border-radius:44% 48% 46% 43% / 48% 44% 47% 45%; }
+
+/* The cursor is visual only: input always reaches the original controls. */
+.difference-cursor { pointer-events:none !important; user-select:none; }
+.theme-toggle-track, .theme-toggle-track * { pointer-events:none; }
+.custom-scroll { width:25px; right:0; }
+.custom-scroll-thumb { width:13px; left:6px; }
+.project-page > .custom-scroll { right:1px; }

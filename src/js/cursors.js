@@ -17,24 +17,28 @@ document.addEventListener("DOMContentLoaded", () => {
  document.addEventListener("pointermove",e=>{
   const hover=!!e.target.closest("a,button,[role=switch],.custom-scroll");
   goal={x:e.clientX,y:e.clientY,w:hover?45:25,h:hover?45:25};
-  let nearest, distance=42;
+  let nearest, distance=18;
   for(const target of document.querySelectorAll(".custom-scroll-thumb,.theme-toggle-track")) {
    const r=target.getBoundingClientRect();
    if(!r.width||!r.height||getComputedStyle(target.parentElement).visibility==="hidden"||r.bottom<0||r.top>innerHeight)continue;
    if(dialog.open&&!dialog.contains(target))continue;
    const dx=Math.max(r.left-e.clientX,0,e.clientX-r.right),dy=Math.max(r.top-e.clientY,0,e.clientY-r.bottom);
    const d=Math.hypot(dx,dy);
-   if(d<distance){nearest={r,scroll:target.classList.contains("custom-scroll-thumb")};distance=d;}
+   if(d<distance){nearest={r,target};distance=d;}
   }
   if(nearest){
-   const {r,scroll}=nearest;
-   const raw=1-distance/42, t=raw*raw*(3-2*raw);
-   const cx=r.left+r.width/2, cy=scroll?Math.max(r.top+15,Math.min(r.bottom-15,e.clientY)):r.top+r.height/2;
-   goal.x+=(cx-goal.x)*t;goal.y+=(cy-goal.y)*t;
-   goal.w+=(r.width+6-goal.w)*t;
-   goal.h+=((scroll?Math.min(r.height+6,74):r.height+6)-goal.h)*t;
+   const {r,target}=nearest;
+   const raw=1-distance/18, t=raw*raw*(3-2*raw);
+   // Fully lock only when the real pointer is over the real interactive area.
+   const inside=distance===0;
+   const weight=inside?1:t*.35;
+   goal.x+=(r.left+r.width/2-goal.x)*weight;
+   goal.y+=(r.top+r.height/2-goal.y)*weight;
+   goal.w+=(r.width-goal.w)*weight;
+   goal.h+=(r.height-goal.h)*weight;
+   dot.style.borderRadius=getComputedStyle(target).borderRadius;
    dot.classList.add("is-merging");
-  } else dot.classList.remove("is-merging");
+  } else { dot.classList.remove("is-merging"); dot.style.borderRadius="50%"; }
   dot.style.opacity="1";document.documentElement.classList.add("circle-cursor-active");
   if(!frame)frame=requestAnimationFrame(paint);
  },{passive:true});
