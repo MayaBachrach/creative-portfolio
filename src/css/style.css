@@ -390,3 +390,14 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 .star-arrow { position:absolute; z-index:3; width:29%; height:29%; top:-5%; left:8%; color:var(--page-text); pointer-events:none; }
 .carousel-tile:nth-child(3n + 2) .star-arrow { left:-7%; top:0; transform:rotate(-20deg); }
 .carousel-tile:nth-child(3n) .star-arrow { left:62%; top:-4%; transform:scaleX(-1); }
+
+/* Each annotation has its own outside route; arrowheads stop beside the artwork. */
+.carousel-window { padding-block: clamp(7rem, 15vw, 12rem); }
+.carousel-tile .star-label { width:94%; left:0; top:-34%; }
+.carousel-tile .star-label-0 { transform:rotate(-6deg); }
+.carousel-tile .star-label-1 { top:111%; left:6%; transform:rotate(5deg); }
+.carousel-tile .star-label-2 { top:-33%; left:4%; transform:rotate(10deg); }
+.carousel-tile .star-label-3 { top:110%; left:-3%; transform:rotate(-8deg); }
+.carousel-tile .star-arrow { width:28%; height:48%; left:87%; top:-24%; transform:none; }
+.carousel-tile .star-arrow-1, .carousel-tile .star-arrow-3 { left:-22%; top:73%; transform:none; }
+.carousel-tile .star-arrow-2 { left:88%; top:-23%; transform:none; }
