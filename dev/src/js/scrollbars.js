@@ -25,10 +25,11 @@ function createPagePaint(){
  const group=document.createElementNS(ns,'g');group.setAttribute('filter','url(#scroll-liquid)');svg.append(group);
  const make=(tag,cls)=>{const el=document.createElementNS(ns,tag);el.setAttribute('class',cls);group.append(el);return el;};
  const stem=make('path','scroll-flower-ground'),pool=make('ellipse','scroll-flower-ground');
+ const solid=make('rect','scroll-flower-petal');
  const left=make('rect','scroll-flower-petal'),right=make('rect','scroll-flower-petal');
  const bud=make('ellipse','scroll-flower-petal'),center=make('circle','scroll-flower-petal');
  document.body.append(svg);
- return {svg,left,right,bud,center,stem,pool,value:0,goal:0};
+ return {svg,solid,left,right,bud,center,stem,pool,value:0,goal:0};
 }
 function paintPageScrollbar(track,thumb,range){
  pagePaint ||= createPagePaint();
@@ -50,6 +51,13 @@ function drawPageScrollbar(){
  const half=b.height/2+2, petalH=half+(25-half)*m;
  const w=b.width+(13-b.width)*m;
  p.svg.setAttribute('viewBox','0 0 '+innerWidth+' '+innerHeight);
+ // One uninterrupted capsule outside the bloom transition.
+ p.solid.setAttribute('x',b.left);p.solid.setAttribute('y',b.top);
+ p.solid.setAttribute('width',b.width);p.solid.setAttribute('height',b.height);
+ p.solid.setAttribute('rx',b.width/2);
+ p.solid.style.opacity=1-clamp(m/.12);
+ const splitOpacity=clamp(m/.12);
+ for(const el of [p.left,p.right])el.style.opacity=splitOpacity;
  const shape=(el,cx,cy,angle)=>{
   el.setAttribute('x',cx-w/2);el.setAttribute('y',cy-petalH/2);
   el.setAttribute('width',w);el.setAttribute('height',petalH);el.setAttribute('rx',w/2);
