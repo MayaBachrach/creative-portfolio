@@ -318,18 +318,7 @@ function renderCarousel() {
       tile.append(media);
       const label = element("span", "star-label star-label-" + (index % 4));
       window.renderPortfolioLettering(label, "DJ והפקת סאונד");
-      const arrow = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      arrow.setAttribute("viewBox", "0 0 100 100");
-      arrow.setAttribute("aria-hidden", "true");
-      arrow.classList.add("star-arrow", "star-arrow-" + (index % 4));
-      const arrowPaths = [
-        "M10 10 C80 10 96 50 37 86 M35 66 Q36 78 37 86 Q50 83 60 75",
-        "M80 90 C15 88 3 47 67 14 M46 17 Q58 17 67 14 Q65 27 61 35",
-        "M12 12 C86 24 88 63 30 86 M29 65 L30 86 L51 78",
-        "M80 89 C20 94 15 65 40 61 C68 56 59 89 31 65 C14 48 29 23 67 14 M45 16 L67 14 L61 35"
-      ];
-      arrow.innerHTML = '<path d="' + arrowPaths[index % 4] + '" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>';
-      tile.append(label, arrow);
+      tile.append(label);
       set.append(tile);
     }
     track.append(set);

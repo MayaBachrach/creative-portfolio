@@ -401,3 +401,9 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 .carousel-tile .star-arrow { width:28%; height:48%; left:87%; top:-24%; transform:none; }
 .carousel-tile .star-arrow-1, .carousel-tile .star-arrow-3 { left:-22%; top:73%; transform:none; }
 .carousel-tile .star-arrow-2 { left:88%; top:-23%; transform:none; }
+
+/* Reveal a single clean title as part of the star interaction. */
+.carousel-window { padding-block: 5rem 3rem; }
+.carousel-tile .star-label { top:-26%; left:-5%; width:110%; color:var(--carousel-color); opacity:0; transform:translateY(9px); transition:opacity 220ms ease, transform 300ms cubic-bezier(.22,1,.36,1); }
+.carousel-tile:hover .star-label, .carousel-tile:focus-visible .star-label { opacity:1; transform:translateY(0); }
+@media(hover:none) { .carousel-tile:active .star-label { opacity:1; transform:translateY(0); } }
