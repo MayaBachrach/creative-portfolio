@@ -755,3 +755,22 @@ body > .custom-scroll { top:88px; }
 
 /* Touch title visibility follows distance from center, equally on both sides. */
 @media(hover:none), (pointer:coarse) { .carousel-tile .star-label, .carousel-tile.is-reading .star-label { opacity:var(--reading-strength,0); transform:translateY(calc((1 - var(--reading-strength,0))*7px)); transition:none; } }
+
+/* Contact is exactly one viewport, from its invitation to the copyright line. */
+.contact-scene { height:100dvh; min-height:100svh; display:grid; grid-template-rows:auto minmax(0,1fr); scroll-margin-top:0 !important; position:relative; z-index:1; background:var(--page-background); }
+.contact-scene .contact { min-height:0; padding:16px var(--gutter) 0; gap:0; }
+.contact-scene .contact h2 { margin:0; }
+.contact-scene .footer-static > .handwritten-heading { height:clamp(3.5rem,10dvh,6rem); }
+.contact-scene .contact-links { margin-top:14px; }
+.contact-scene .social-icon { width:clamp(2.8rem,8dvh,4.5rem); height:clamp(2.8rem,8dvh,4.5rem); }
+.contact-scene .skating-footer { min-height:0; height:100%; }
+.contact-scene .skating-traveler { width:min(34vw,42dvh,25rem); bottom:54px; }
+.contact-scene .footer-ground { height:90px; width:100%; bottom:28px; }
+@media(max-width:48rem) {
+ .contact-scene .contact { padding:12px 16px 0; }
+ .contact-scene .footer-static > .handwritten-heading { height:clamp(5rem,15dvh,8.5rem); }
+ .contact-scene .contact-links { margin-top:10px; }
+ .contact-scene .social-icon { width:clamp(2.6rem,7dvh,4rem); height:clamp(2.6rem,7dvh,4rem); }
+ .contact-scene .skating-traveler { width:min(62vw,42dvh,23rem); bottom:56px; }
+ .contact-scene .footer-ground { height:90px; }
+}
