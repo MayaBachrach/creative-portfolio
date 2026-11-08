@@ -414,3 +414,12 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 .project-page-scroll { scrollbar-color:var(--panel-accent) var(--panel-background); }
 .project-page-scroll::-webkit-scrollbar-thumb { background:var(--panel-accent); border-radius:999px; border:2px solid var(--panel-background); }
 .project-page-scroll::-webkit-scrollbar-track { background:var(--panel-background); border-radius:999px; }
+
+.project-page { border-radius:20px; background:color-mix(in srgb, var(--panel-background) 92%, transparent); backdrop-filter:blur(12px); }
+.project-page-header { background:transparent; }
+html, .project-page-scroll { scrollbar-width:none; }
+html::-webkit-scrollbar, .project-page-scroll::-webkit-scrollbar { display:none; }
+.custom-scroll { position:fixed; top:8px; bottom:8px; right:5px; width:13px; z-index:20; touch-action:none; cursor:var(--site-cursor-link, pointer); }
+.custom-scroll-thumb { position:absolute; width:100%; min-height:36px; border-radius:999px; background:var(--accent-2); cursor:inherit; }
+.project-page > .custom-scroll { position:absolute; top:18px; bottom:18px; right:7px; }
+.project-page > .custom-scroll .custom-scroll-thumb { background:var(--panel-accent); }

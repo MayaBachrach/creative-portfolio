@@ -8,6 +8,7 @@ let openedFromCard = false;
 let openedWithKeyboard = false;
 let openingRect;
 let openingStar;
+let panelOrigin = "translate(0, 0) scale(.2)";
 
 function element(tag, className, text) {
   const node = document.createElement(tag);
@@ -205,10 +206,11 @@ function showRoute() {
     dialog.showModal();
     if (openingRect && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
       const bounds = dialog.getBoundingClientRect();
-      const x = Math.max(-120, Math.min(120, openingRect.left + openingRect.width / 2 - bounds.left - bounds.width / 2));
-      const y = Math.max(-80, Math.min(80, openingRect.top + openingRect.height / 2 - bounds.top - bounds.height / 2));
+      const x = openingRect.left + openingRect.width / 2 - bounds.left - bounds.width / 2;
+      const y = openingRect.top + openingRect.height / 2 - bounds.top - bounds.height / 2;
+      panelOrigin = `translate(${x}px, ${y}px) scale(${Math.min(openingRect.width / bounds.width, openingRect.height / bounds.height)})`;
       dialog.animate([
-        { transform: `translate(${x}px, ${y}px) scale(.88)`, opacity: 0 },
+        { transform: panelOrigin, opacity: 0 },
         { transform: "translate(0, 0) scale(1)", opacity: 1 },
       ], { duration: 520, easing: "cubic-bezier(.22,1,.36,1)" });
     }
@@ -226,8 +228,8 @@ async function closeProject() {
   if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
     await dialog.animate([
       { transform: "translateY(0) scale(1)", opacity: 1 },
-      { transform: "translateY(10px) scale(.985)", opacity: 0 },
-    ], { duration: 180, easing: "ease-out" }).finished;
+      { transform: panelOrigin, opacity: 0 },
+    ], { duration: 400, easing: "cubic-bezier(.4,0,.2,1)" }).finished;
   }
   dialog.close();
   closingProject = false;
