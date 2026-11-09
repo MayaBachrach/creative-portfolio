@@ -314,6 +314,10 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 #music-toggle { position: absolute; left: calc(100% + .25rem); top: 0; display: grid; place-items: center; width: 44px; height: 44px; padding: .45rem; border: 0; background: transparent; color: var(--page-text); }
 #music-toggle svg { width: 26px; height: 26px; overflow: visible; }
 #music-toggle[aria-pressed="true"] .music-muted-line { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  #music-toggle { transition: scale 150ms cubic-bezier(.22,1,.36,1); }
+  #music-toggle:active { scale: .93; transition-duration: 75ms; }
+}
 :root[data-cards] .card-title { margin-block-end: -.45rem; }
 
 @media(max-width:23rem) { .site-header { min-height: 104px; padding-block-end: 52px; } .header-controls { top: 52px; } }
