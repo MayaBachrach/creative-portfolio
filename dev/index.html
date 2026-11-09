@@ -961,6 +961,16 @@ body > .custom-scroll .custom-scroll-thumb { left:3px; width:var(--page-thumb-wi
 }
 
 :root[data-theme="crayons"] .theme-toggle-moon { color:var(--page-background); }
+
+/* Scale around the cursor center without resizing its layout box. */
+.difference-cursor, .difference-cursor.is-hovering {
+  translate: -50% -50%;
+  transform: none;
+  width: 25px;
+  height: 25px;
+  transition: scale 220ms cubic-bezier(.22,1,.36,1), opacity 120ms ease;
+}
+.difference-cursor.is-hovering { scale: 1.8; }
 </style>
 <noscript><style>#site-loader{display:none}.site-loading{overflow:auto}.site-loading .site-header,.site-loading main,.site-loading .contact,.intro-pending .canva-letter,.intro-pending .canva-zot,.intro-pending .name{visibility:visible}.header-controls{display:none!important}</style></noscript>
 <script>// Central design settings. Use exact palette values; do not generate extra shades.
