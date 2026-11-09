@@ -955,6 +955,89 @@ body > .custom-scroll .custom-scroll-thumb { left:3px; width:var(--page-thumb-wi
   #music-toggle svg, #pencil-toggle svg { transition: none; }
   #music-toggle:active svg, #pencil-toggle:active svg { transform: none; }
 }
+
+/* The three header tools are siblings: one centerline, matching borders,
+   circular drawing/music controls, and the original oblong theme switch. */
+.site-header > .header-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  gap: 6px;
+}
+.site-header > .header-controls > #theme-toggle,
+.site-header > .header-controls > #music-toggle,
+.site-header > .header-controls > #pencil-toggle {
+  position: relative;
+  inset: auto;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  height: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 2px solid var(--page-text);
+  background: transparent;
+  color: var(--page-text);
+  transform: none;
+  align-self: center;
+}
+.site-header > .header-controls > #theme-toggle {
+  flex: 0 0 80px;
+  width: 80px;
+  min-width: 80px;
+  border-radius: 999px;
+}
+.site-header > .header-controls > #theme-toggle .theme-toggle-track {
+  display: block;
+  width: 76px;
+  height: 36px;
+}
+.site-header > .header-controls > #theme-toggle .compact-theme-icon {
+  display: none;
+}
+.site-header > .header-controls > #music-toggle,
+.site-header > .header-controls > #pencil-toggle {
+  flex: 0 0 44px;
+  width: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+}
+.site-header > .header-controls > #music-toggle svg,
+.site-header > .header-controls > #pencil-toggle svg {
+  width: 24px;
+  height: 24px;
+}
+.site-header > .header-controls > #theme-toggle .theme-toggle-track {
+  transition: transform 170ms cubic-bezier(.22, 1, .36, 1);
+}
+.site-header > .header-controls > #theme-toggle:active .theme-toggle-track {
+  transform: translateY(1px) scale(.96);
+}
+@media (max-width: 359px) {
+  .site-header > .header-controls { gap: 3px; }
+  .site-header > .header-controls > #theme-toggle {
+    flex-basis: 60px;
+    width: 60px;
+    min-width: 60px;
+  }
+  .site-header > .header-controls > #theme-toggle .theme-toggle-track {
+    width: 56px;
+    height: 32px;
+  }
+  .site-header > .header-controls > #theme-toggle .theme-toggle-thumb {
+    width: 24px;
+    height: 24px;
+  }
+  .site-header > .header-controls > #theme-toggle[aria-checked="true"] .theme-toggle-thumb {
+    transform: translateX(24px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-header > .header-controls > #theme-toggle .theme-toggle-track { transition: none; }
+  .site-header > .header-controls > #theme-toggle:active .theme-toggle-track { transform: none; }
+}
 </style>
 <noscript><style>#site-loader{display:none}.site-loading{overflow:auto}.site-loading .site-header,.site-loading main,.site-loading .contact,.intro-pending .canva-letter,.intro-pending .canva-zot,.intro-pending .name{visibility:visible}.header-controls{display:none!important}</style></noscript>
 <script>// Central design settings. Use exact palette values; do not generate extra shades.
