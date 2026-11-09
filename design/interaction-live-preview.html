@@ -1,0 +1,45 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>תצוגת ניסיון — תיק העבודות</title><style>
+*{box-sizing:border-box}body{margin:0;font:14px system-ui;background:#151419;color:white}
+iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#FAF4E9}
+.controls{position:fixed;z-index:30;top:8px;left:8px;right:8px;max-width:760px;margin:auto;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px;padding:12px 16px;background:#222129f2;border-radius:16px;box-shadow:0 5px 20px #0007}
+.controls label{display:flex;gap:6px;align-items:center;cursor:pointer}
+.controls input{width:18px;height:18px;accent-color:#B2F224}
+.controls button{font:inherit;color:inherit;background:transparent;border:1px solid #aaa;padding:6px 12px;border-radius:8px;cursor:pointer}
+.controls button:focus-visible,.controls input:focus-visible{outline:2px solid #B2F224;outline-offset:3px}
+#status{font-size:11px;color:#ddd}
+@media(max-width:650px){.controls{gap:8px;padding:8px}.controls strong{width:100%;text-align:center}}
+</style></head><body>
+<iframe id="site" src="../" title="תיק העבודות — תצוגה חיה"></iframe>
+<div class="controls"><strong>ניסוי על האתר — לא שינוי קבוע</strong>
+<label><input type="checkbox" id="buttons">כפתורים</label>
+<label><input type="checkbox" id="shadow">צל על ציור לבן בכוכב ירוק</label>
+<button id="reset">הצג את המקור</button><span id="status" role="status">טוען…</span></div>
+<script>"use strict";
+const frame=document.getElementById("site"), buttons=document.getElementById("buttons"), shadow=document.getElementById("shadow"), status=document.getElementById("status");
+const styleText="html.preview-buttons .site-header button svg,html.preview-buttons #close-project svg,html.preview-buttons .social-icon > svg:not(.pencil-frame){transform-origin:center;transition:transform 170ms cubic-bezier(.22,1,.36,1)}\n@media(hover:hover){html.preview-buttons .site-header button:hover svg,html.preview-buttons #close-project:hover svg,html.preview-buttons .social-icon:hover > svg:not(.pencil-frame){transform:rotate(-4deg) scale(1.05)}}\nhtml.preview-buttons .site-header button:active svg,html.preview-buttons #close-project:active svg,html.preview-buttons .social-icon:active > svg:not(.pencil-frame){transform:translateY(1px) scale(.91) rotate(2deg)}\nhtml.preview-buttons .site-header button:focus-visible,html.preview-buttons #close-project:focus-visible,html.preview-buttons .social-icon:focus-visible,html.preview-buttons .contact-nav-link:focus-visible{outline:2px dashed currentColor;outline-offset:5px}\nhtml.preview-shadow[data-theme=\"markers\"] .carousel-tile.preview-green > img,html.preview-shadow[data-theme=\"markers\"] .carousel-tile.preview-green > video{filter:brightness(0) invert(1) drop-shadow(2px 2px 0 #151419)}\n@media(prefers-reduced-motion:reduce){html.preview-buttons .site-header button svg,html.preview-buttons #close-project svg,html.preview-buttons .social-icon > svg:not(.pencil-frame){transition:none!important;transform:none!important}}";
+let observer;
+function markGreen(){
+ const d=frame.contentDocument;if(!d)return;
+ for(const tile of d.querySelectorAll(".carousel-tile")){
+  const col=d.defaultView.getComputedStyle(tile,"::before").backgroundColor;
+  tile.classList.toggle("preview-green",col==="rgb(178, 242, 36)"||col==="rgb(178,242,36)");
+ }
+}
+function sync(){
+ try{const d=frame.contentDocument;if(!d||!d.documentElement)return;
+ d.documentElement.classList.toggle("preview-buttons",buttons.checked);
+ d.documentElement.classList.toggle("preview-shadow",shadow.checked);
+ markGreen();status.textContent="אפשר להפעיל ולבטל כל ניסוי בנפרד";
+ }catch(e){status.textContent="יש לפתוח את הניסוי דרך GitHub Pages";}
+}
+frame.addEventListener("load",()=>{
+ try{const d=frame.contentDocument;
+ const style=d.createElement("style");style.textContent=styleText;d.head.appendChild(style);
+ if(observer)observer.disconnect();
+ observer=new MutationObserver(markGreen);
+ observer.observe(d.getElementById("carousel-track")||d.body,{childList:true});
+ sync();
+ }catch(e){status.textContent="לא ניתן להחיל את התצוגה על האתר";}
+});
+buttons.onchange=sync;shadow.onchange=sync;
+document.getElementById("reset").onclick=()=>{buttons.checked=false;shadow.checked=false;sync()};</script></body></html>
