@@ -314,10 +314,6 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 #music-toggle { position: absolute; left: calc(100% + .25rem); top: 0; display: grid; place-items: center; width: 44px; height: 44px; padding: .45rem; border: 0; background: transparent; color: var(--page-text); }
 #music-toggle svg { width: 26px; height: 26px; overflow: visible; }
 #music-toggle[aria-pressed="true"] .music-muted-line { display: none; }
-@media (prefers-reduced-motion: no-preference) {
-  #music-toggle { transition: scale 150ms cubic-bezier(.22,1,.36,1); }
-  #music-toggle:active { scale: .93; transition-duration: 75ms; }
-}
 :root[data-cards] .card-title { margin-block-end: -.45rem; }
 
 @media(max-width:23rem) { .site-header { min-height: 104px; padding-block-end: 52px; } .header-controls { top: 52px; } }
@@ -941,6 +937,12 @@ body > .custom-scroll .custom-scroll-thumb { left:3px; width:var(--page-thumb-wi
 
 .skip-link { position:fixed; inset:1rem auto auto 1rem; z-index:2147483647; padding:.5rem 1rem; background:var(--page-background); color:var(--page-text); transform:translateY(-200%); }
 .skip-link:focus { transform:none; }
+
+/* Tactile press feedback preserves each control's existing transform. */
+@media (prefers-reduced-motion: no-preference) {
+  :is(button, .top-nav a, .social-icon, .copyright a, .project-card):active:not(:disabled) { scale: .94; }
+  :is(button, .top-nav a, .social-icon, .copyright a, .project-card) { transition: scale 140ms cubic-bezier(.22,1,.36,1); }
+}
 </style>
 <noscript><style>#site-loader{display:none}.site-loading{overflow:auto}.site-loading .site-header,.site-loading main,.site-loading .contact,.intro-pending .canva-letter,.intro-pending .canva-zot,.intro-pending .name{visibility:visible}.header-controls{display:none!important}</style></noscript>
 <script>// Central design settings. Use exact palette values; do not generate extra shades.

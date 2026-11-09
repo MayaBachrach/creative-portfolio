@@ -303,6 +303,7 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 #music-toggle { position: absolute; left: calc(100% + .25rem); top: 0; display: grid; place-items: center; width: 44px; height: 44px; padding: .45rem; border: 0; background: transparent; color: var(--page-text); }
 #music-toggle svg { width: 26px; height: 26px; overflow: visible; }
 #music-toggle[aria-pressed="true"] .music-muted-line { display: none; }
+#music-toggle[aria-pressed="true"] { border-radius:50%; background:var(--contact-title); color:var(--page-background); }
 :root[data-cards] .card-title { margin-block-end: -.45rem; }
 
 @media(max-width:23rem) { .site-header { min-height: 104px; padding-block-end: 52px; } .header-controls { top: 52px; } }
@@ -814,3 +815,9 @@ html[lang] .skating-maya { transform:none; }
 .carousel-window { padding-block-start:calc(var(--carousel-size) * .3 + 16px); }
 .carousel-tile .star-label { top:auto; bottom:calc(100% + 12px); left:-5%; width:110%; }
 .star-label .handwritten-heading { display:block; width:100%; height:auto; overflow:visible; }
+
+/* Tactile press feedback preserves each control's existing transform. */
+@media (prefers-reduced-motion: no-preference) {
+  :is(button, .top-nav a, .social-icon, .copyright a, .project-card):active:not(:disabled) { scale: .94; }
+  :is(button, .top-nav a, .social-icon, .copyright a, .project-card) { transition: scale 140ms cubic-bezier(.22,1,.36,1); }
+}
