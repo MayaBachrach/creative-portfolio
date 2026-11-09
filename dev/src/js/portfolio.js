@@ -167,13 +167,7 @@ function updatePanelAccent() {
   dialog.style.setProperty("--panel-accent", accent);
 }
 
-let closingAnimation;
-let routeRevision = 0;
-
 function showRoute() {
-  routeRevision++;
-  closingAnimation?.cancel();
-  closingAnimation = undefined;
   projectTitle.dataset.letteringDirection = document.documentElement.lang === "en" ? "ltr" : "rtl";
   const [kind, encodedValue] = location.hash.slice(1).split("/");
   if (kind !== "project" && kind !== "tag") {
@@ -227,28 +221,19 @@ function showRoute() {
   projectTitle.focus({ preventScroll: true });
 }
 
+let closingProject = false;
 async function closeProject() {
-  if (closingAnimation || !dialog.open) return;
-  const revision = routeRevision;
-  const route = location.hash;
+  if (closingProject || !dialog.open) return;
+  closingProject = true;
   stopDetailVideos();
   if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    const animation = dialog.animate([
+    await dialog.animate([
       { transform: "translateY(0) scale(1)", opacity: 1 },
       { transform: panelOrigin, opacity: 0 },
-    ], { duration: 400, easing: "cubic-bezier(.4,0,.2,1)" });
-    closingAnimation = animation;
-    try {
-      await animation.finished;
-    } catch (error) {
-      if (error.name !== "AbortError") throw error;
-      return;
-    } finally {
-      if (closingAnimation === animation) closingAnimation = undefined;
-    }
+    ], { duration: 400, easing: "cubic-bezier(.4,0,.2,1)" }).finished;
   }
-  if (revision !== routeRevision || route !== location.hash) return;
   dialog.close();
+  closingProject = false;
   if (openedFromCard && location.hash.startsWith("#project/")) {
     history.back();
   } else {
@@ -547,14 +532,15 @@ revealPreparedPage();
   let readingStrength=0;
   if(touch.matches){
    if(now-focusCheck>24){
-    focusCheck=now;
-    const center = innerWidth / 2;
-    const zone = innerWidth * .20;
-    const measurements = Array.from(track.querySelectorAll(".carousel-tile"), tile => {
-     const bounds = tile.getBoundingClientRect();
-     return { tile, distance: Math.abs(bounds.left + bounds.width / 2 - center) };
-    });
-    for (const { tile, distance: d } of measurements) {
+    focusCheck=now;let closest=null,distance=Infinity;
+    for(const tile of track.querySelectorAll(".carousel-tile")){
+     const r=tile.getBoundingClientRect(),d=Math.abs(r.left+r.width/2-innerWidth/2);
+     if(d<distance){distance=d;closest=tile;}
+    }
+    const zone=innerWidth*.20;
+    for(const tile of track.querySelectorAll(".carousel-tile")){
+     const r=tile.getBoundingClientRect();
+     const d=Math.abs(r.left+r.width/2-innerWidth/2);
      const raw=Math.max(0,1-d/zone);
      const strength=(!drag&&Math.abs(momentum)<100)?raw*raw*(3-2*raw):0;
      tile.style.setProperty("--reading-strength",strength.toFixed(4));

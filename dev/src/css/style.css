@@ -582,9 +582,9 @@ body > .custom-scroll .custom-scroll-thumb { background:var(--page-scroll-color)
 @media(prefers-reduced-motion:reduce) { #site-loader svg { animation:none; } }
 
 /* Light-theme neutral: every white UI surface and foreground uses the same cream. */
-:root[data-theme="crayons"] { --white:#FAF4E9; --page-background:#FAF4E9; --hero-background:#FAF4E9; --card-background:#FAF4E9; --panel-background:#FAF4E9; --tag-background:#FAF4E9; --contact-background:#FAF4E9; --media-background:#FAF4E9; }
-:root[data-theme="crayons"] .intro-name .name { color:#FAF4E9; }
-:root[data-theme="crayons"] .difference-cursor { background:#FAF4E9; }
+:root[data-theme="crayons"] { --white:#F1ECE6; --page-background:#F1ECE6; --hero-background:#F1ECE6; --card-background:#F1ECE6; --panel-background:#F1ECE6; --tag-background:#F1ECE6; --contact-background:#F1ECE6; --media-background:#F1ECE6; }
+:root[data-theme="crayons"] .intro-name .name { color:#F1ECE6; }
+:root[data-theme="crayons"] .difference-cursor { background:#F1ECE6; }
 
 /* Playful project sheet: bold palette outline and lettering-led composition. */
 .project-page { width:min(90vw,58rem); height:auto; max-height:88dvh; padding:0; border:3px solid var(--panel-accent); border-radius:22px 17px 24px 19px; }
@@ -925,105 +925,3 @@ body > .custom-scroll .custom-scroll-thumb { left:3px; width:var(--page-thumb-wi
 
 .skip-link { position:fixed; inset:1rem auto auto 1rem; z-index:2147483647; padding:.5rem 1rem; background:var(--page-background); color:var(--page-text); transform:translateY(-200%); }
 .skip-link:focus { transform:none; }
-
-/* Music and pencil: matching drawn icon scale and shared tactile press response. */
-#music-toggle svg, #pencil-toggle svg {
-  display: block;
-  width: 24px;
-  height: 24px;
-  transform-origin: center;
-  transition: transform 170ms cubic-bezier(.22, 1, .36, 1);
-}
-#music-toggle svg { stroke-width: 2.3; }
-#music-toggle .music-muted-line { stroke-width: 2.7; }
-#music-toggle:active svg, #pencil-toggle:active svg {
-  transform: translateY(1px) scale(.91) rotate(2deg);
-  transition-duration: 100ms;
-}
-@media (prefers-reduced-motion: reduce) {
-  #music-toggle svg, #pencil-toggle svg { transition: none; }
-  #music-toggle:active svg, #pencil-toggle:active svg { transform: none; }
-}
-
-/* The three header tools are siblings: one centerline, matching borders,
-   circular drawing/music controls, and the original oblong theme switch. */
-.site-header > .header-controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 44px;
-  gap: 6px;
-}
-.site-header > .header-controls > #theme-toggle,
-.site-header > .header-controls > #music-toggle,
-.site-header > .header-controls > #pencil-toggle {
-  position: relative;
-  inset: auto;
-  display: grid;
-  place-items: center;
-  box-sizing: border-box;
-  height: 44px;
-  min-height: 44px;
-  margin: 0;
-  padding: 0;
-  border: 2px solid var(--page-text);
-  background: transparent;
-  color: var(--page-text);
-  transform: none;
-  align-self: center;
-}
-.site-header > .header-controls > #theme-toggle {
-  flex: 0 0 80px;
-  width: 80px;
-  min-width: 80px;
-  border-radius: 999px;
-}
-.site-header > .header-controls > #theme-toggle .theme-toggle-track {
-  display: block;
-  width: 76px;
-  height: 36px;
-}
-.site-header > .header-controls > #theme-toggle .compact-theme-icon {
-  display: none;
-}
-.site-header > .header-controls > #music-toggle,
-.site-header > .header-controls > #pencil-toggle {
-  flex: 0 0 44px;
-  width: 44px;
-  min-width: 44px;
-  border-radius: 50%;
-}
-.site-header > .header-controls > #music-toggle svg,
-.site-header > .header-controls > #pencil-toggle svg {
-  width: 24px;
-  height: 24px;
-}
-.site-header > .header-controls > #theme-toggle .theme-toggle-track {
-  transition: transform 170ms cubic-bezier(.22, 1, .36, 1);
-}
-.site-header > .header-controls > #theme-toggle:active .theme-toggle-track {
-  transform: translateY(1px) scale(.96);
-}
-@media (max-width: 359px) {
-  .site-header > .header-controls { gap: 3px; }
-  .site-header > .header-controls > #theme-toggle {
-    flex-basis: 60px;
-    width: 60px;
-    min-width: 60px;
-  }
-  .site-header > .header-controls > #theme-toggle .theme-toggle-track {
-    width: 56px;
-    height: 32px;
-  }
-  .site-header > .header-controls > #theme-toggle .theme-toggle-thumb {
-    width: 24px;
-    height: 24px;
-  }
-  .site-header > .header-controls > #theme-toggle[aria-checked="true"] .theme-toggle-thumb {
-    transform: translateX(24px);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .site-header > .header-controls > #theme-toggle .theme-toggle-track { transition: none; }
-  .site-header > .header-controls > #theme-toggle:active .theme-toggle-track { transform: none; }
-}
