@@ -845,7 +845,8 @@ body > .custom-scroll { width:24px; }
 .drawing-enabled .site-header button,.drawing-enabled .site-header a,.drawing-enabled .wordmark,.drawing-enabled h1,.drawing-enabled .hero-intro p,.drawing-enabled .carousel-tile,.drawing-enabled .contact h2,.drawing-enabled .social-icon,.drawing-enabled .copyright,.drawing-enabled .skating-traveler { pointer-events:auto; }
 #pencil-toggle { display:grid; place-items:center; flex:none; width:44px; height:44px; border:0; border-radius:50%; padding:10px; background:transparent; color:var(--page-text); }
 #pencil-toggle svg { display:block; width:24px; height:24px; }
-#pencil-toggle[aria-pressed="true"] { background:var(--contact-title); color:var(--page-background); }
+#pencil-toggle[aria-pressed="true"],
+#music-toggle[aria-pressed="true"] { border-radius:50%; background:var(--contact-title); color:var(--page-background); }
 #pencil-toggle[aria-pressed="true"] .pencil-off { display:none; }
 /* Three controls use circles on phones so the header stays comfortable. */
 @media(max-width:48rem){
