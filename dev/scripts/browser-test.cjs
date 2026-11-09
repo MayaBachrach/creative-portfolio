@@ -106,6 +106,41 @@ async function run() {
     console.log('PASS keyboard skip link, theme persistence, reload, audio state, drawing, scrollbar and project dialog');
     await page.close();
 
+    const race = await browser.newPage();
+    await ready(race, base + '#project/mix');
+    await race.locator('#close-project').click();
+    await race.evaluate(() => { location.hash = '#tag/test'; });
+    await race.waitForFunction(() => !document.querySelector('#project-page').dataset.project);
+    await race.waitForTimeout(450);
+    assert.equal(new URL(race.url()).hash, '#tag/test');
+    assert(await race.locator('#project-page').isVisible());
+    await race.keyboard.press('Escape');
+    await race.locator('#project-page').waitFor({ state: 'hidden' });
+    await race.close();
+    console.log('PASS dialog route survives an interrupted close');
+
+    const touch = await browser.newPage({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+    await touch.addInitScript(() => {
+      const measure = Element.prototype.getBoundingClientRect;
+      const counts = new WeakMap();
+      window.duplicateCarouselReads = 0;
+      let frame = 0;
+      function nextFrame() { frame++; requestAnimationFrame(nextFrame); }
+      requestAnimationFrame(nextFrame);
+      Element.prototype.getBoundingClientRect = function () {
+        if (this.matches('.carousel-tile')) {
+          if (counts.get(this) === frame) window.duplicateCarouselReads++;
+          counts.set(this, frame);
+        }
+        return measure.call(this);
+      };
+    });
+    await ready(touch, base);
+    await touch.waitForFunction(() => document.querySelector('.carousel-tile').style.getPropertyValue('--reading-strength'));
+    assert.equal(await touch.evaluate(() => window.duplicateCarouselReads), 0);
+    await touch.close();
+    console.log('PASS touch carousel reads each tile once per frame');
+
     const noJs = await browser.newPage({ javaScriptEnabled: false });
     await ready(noJs, base);
     assert(await noJs.locator('main').isVisible());
