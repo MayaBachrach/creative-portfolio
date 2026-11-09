@@ -925,3 +925,22 @@ body > .custom-scroll .custom-scroll-thumb { left:3px; width:var(--page-thumb-wi
 
 .skip-link { position:fixed; inset:1rem auto auto 1rem; z-index:2147483647; padding:.5rem 1rem; background:var(--page-background); color:var(--page-text); transform:translateY(-200%); }
 .skip-link:focus { transform:none; }
+
+/* Music and pencil: matching drawn icon scale and shared tactile press response. */
+#music-toggle svg, #pencil-toggle svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+  transform-origin: center;
+  transition: transform 170ms cubic-bezier(.22, 1, .36, 1);
+}
+#music-toggle svg { stroke-width: 2.3; }
+#music-toggle .music-muted-line { stroke-width: 2.7; }
+#music-toggle:active svg, #pencil-toggle:active svg {
+  transform: translateY(1px) scale(.91) rotate(2deg);
+  transition-duration: 100ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  #music-toggle svg, #pencil-toggle svg { transition: none; }
+  #music-toggle:active svg, #pencil-toggle:active svg { transform: none; }
+}
