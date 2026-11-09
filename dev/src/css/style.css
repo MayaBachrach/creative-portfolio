@@ -948,3 +948,5 @@ body > .custom-scroll .custom-scroll-thumb { left:3px; width:var(--page-thumb-wi
 @media (min-width: 40rem) and (max-width: 64rem) and (orientation: portrait) {
   .footer-sun, .footer-moon { top: 22%; }
 }
+
+:root[data-theme="crayons"] .theme-toggle-moon { color:var(--page-background); }
