@@ -573,3 +573,50 @@ revealPreparedPage();
  }
  requestAnimationFrame(tick);
 })();
+
+/* Drive the actual document scroll so the custom thumb and flower follow it. */
+(() => {
+  let frame = 0;
+  const cancel = () => {
+    cancelAnimationFrame(frame);
+    frame = 0;
+  };
+  for (const event of ["wheel", "touchstart", "pointerdown", "keydown", "popstate"]) {
+    window.addEventListener(event, cancel, { passive: true });
+  }
+  document.addEventListener("click", event => {
+    const link = event.target.closest?.('a[href="#contact"], a[href="#top"]');
+    if (!link || event.defaultPrevented || event.button !== 0 ||
+        event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const target = document.getElementById(link.hash.slice(1));
+    if (!target) return;
+    event.preventDefault();
+    cancel();
+
+    const start = scrollY;
+    const limit = document.scrollingElement.scrollHeight - document.scrollingElement.clientHeight;
+    const end = Math.max(0, Math.min(limit, start + target.getBoundingClientRect().top));
+    const finish = () => {
+      frame = 0;
+      window.scrollTo({ top: end, behavior: "instant" });
+      if (location.hash !== link.hash) history.pushState(null, "", link.hash);
+      target.setAttribute("tabindex", "-1");
+      target.focus({ preventScroll: true });
+    };
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || Math.abs(end - start) < 1) {
+      finish();
+      return;
+    }
+
+    const started = performance.now();
+    const duration = 240;
+    const move = now => {
+      const progress = Math.min(1, (now - started) / duration);
+      if (progress === 1) { finish(); return; }
+      const ease = 1 - (1 - progress) ** 3;
+      window.scrollTo({ top: start + (end - start) * ease, behavior: "instant" });
+      frame = requestAnimationFrame(move);
+    };
+    frame = requestAnimationFrame(move);
+  });
+})();
