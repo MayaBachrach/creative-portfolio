@@ -821,3 +821,7 @@ html[lang] .skating-maya { transform:none; }
   :is(button, .top-nav a, .social-icon, .copyright a, .project-card):active:not(:disabled) { scale: .94; }
   :is(button, .top-nav a, .social-icon, .copyright a, .project-card) { transition: scale 140ms cubic-bezier(.22,1,.36,1); }
 }
+
+@media (max-width: 48rem) {
+  .site-header > .header-controls { gap: 4px; }
+}

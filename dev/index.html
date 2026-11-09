@@ -943,6 +943,10 @@ body > .custom-scroll .custom-scroll-thumb { left:3px; width:var(--page-thumb-wi
   :is(button, .top-nav a, .social-icon, .copyright a, .project-card):active:not(:disabled) { scale: .94; }
   :is(button, .top-nav a, .social-icon, .copyright a, .project-card) { transition: scale 140ms cubic-bezier(.22,1,.36,1); }
 }
+
+@media (max-width: 48rem) {
+  .site-header > .header-controls { gap: 4px; }
+}
 </style>
 <noscript><style>#site-loader{display:none}.site-loading{overflow:auto}.site-loading .site-header,.site-loading main,.site-loading .contact,.intro-pending .canva-letter,.intro-pending .canva-zot,.intro-pending .name{visibility:visible}.header-controls{display:none!important}</style></noscript>
 <script>// Central design settings. Use exact palette values; do not generate extra shades.
