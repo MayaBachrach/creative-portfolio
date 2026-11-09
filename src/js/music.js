@@ -10,7 +10,13 @@
   const melody = [76,0,79,0,74,0,71,0,72,0,76,0,0,74,0,71,69,0,72,0,77,0,76,0,74,0,71,0,0,69,0,67,69,0,72,0,76,0,74,0,71,0,74,0,0,79,0,76,77,0,76,0,72,0,69,0,71,0,74,0,0,72,71,0];
   const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
   function setup() {
+    // Ask supported mobile browsers to treat this as music playback.
+    try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch {}
     context = new (window.AudioContext || window.webkitAudioContext)();
+    context.addEventListener('statechange', () => {
+      if (context.state === 'running') beginIfRunning();
+      else { clearInterval(timer); playing = false; updateControl(); }
+    });
     master = context.createGain(); master.gain.value = 0;
     const compressor = context.createDynamicsCompressor();
     compressor.threshold.value = -18; compressor.ratio.value = 3;
@@ -38,6 +44,8 @@
     source.onended = () => { source.disconnect(); filter.disconnect(); gain.disconnect(); };
   }
   function schedule() {
+    // Resume from now instead of scheduling a backlog after a phone interruption.
+    if (nextTime < context.currentTime - .1) nextTime = context.currentTime + .04;
     while (playing && nextTime < context.currentTime + .25) {
       const bar = Math.floor(step / 8), beat = step % 8;
       const time = nextTime + (beat % 2 ? .025 : 0);
@@ -75,7 +83,7 @@
   function tryStart() {
     if (!wanted) return;
     try {
-      if (!context) setup();
+      if (!context || context.state === "closed") setup();
       context.resume().then(beginIfRunning).catch(updateControl);
       beginIfRunning();
     } catch { wanted = false; updateControl(); }
@@ -95,11 +103,13 @@
     if (event.target.closest?.('#music-toggle')) return;
     if (wanted && !playing) tryStart();
   }
-  for (const event of ['pointerdown', 'click', 'keydown']) document.addEventListener(event, unlock, true);
+  for (const event of ['pointerdown', 'touchend', 'click', 'keydown']) document.addEventListener(event, unlock, true);
   document.addEventListener('visibilitychange', () => {
     if (!context) return;
-    if (document.hidden) context.suspend();
-    else if (wanted) { context.resume().then(beginIfRunning); }
+    if (document.hidden) {
+      clearInterval(timer); playing = false; updateControl();
+      context.suspend().catch(updateControl);
+    } else if (wanted) tryStart();
   });
   document.addEventListener('play', event => {
     if (event.target.tagName === 'VIDEO' && !event.target.muted && playing) stop();

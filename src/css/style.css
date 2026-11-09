@@ -303,7 +303,6 @@ h1, h2, h3, .card-title { font-family: var(--font-heading, "Heebo", system-ui, s
 #music-toggle { position: absolute; left: calc(100% + .25rem); top: 0; display: grid; place-items: center; width: 44px; height: 44px; padding: .45rem; border: 0; background: transparent; color: var(--page-text); }
 #music-toggle svg { width: 26px; height: 26px; overflow: visible; }
 #music-toggle[aria-pressed="true"] .music-muted-line { display: none; }
-#music-toggle[aria-pressed="true"] { border-radius:50%; background:var(--contact-title); color:var(--page-background); }
 :root[data-cards] .card-title { margin-block-end: -.45rem; }
 
 @media(max-width:23rem) { .site-header { min-height: 104px; padding-block-end: 52px; } .header-controls { top: 52px; } }
@@ -583,9 +582,9 @@ body > .custom-scroll .custom-scroll-thumb { background:var(--page-scroll-color)
 @media(prefers-reduced-motion:reduce) { #site-loader svg { animation:none; } }
 
 /* Light-theme neutral: every white UI surface and foreground uses the same cream. */
-:root[data-theme="crayons"] { --white:#F1ECE6; --page-background:#F1ECE6; --hero-background:#F1ECE6; --card-background:#F1ECE6; --panel-background:#F1ECE6; --tag-background:#F1ECE6; --contact-background:#F1ECE6; --media-background:#F1ECE6; }
-:root[data-theme="crayons"] .intro-name .name { color:#F1ECE6; }
-:root[data-theme="crayons"] .difference-cursor { background:#F1ECE6; }
+:root[data-theme="crayons"] { --white:#FAF4E9; --page-background:#FAF4E9; --hero-background:#FAF4E9; --card-background:#FAF4E9; --panel-background:#FAF4E9; --tag-background:#FAF4E9; --contact-background:#FAF4E9; --media-background:#FAF4E9; }
+:root[data-theme="crayons"] .intro-name .name { color:#FAF4E9; }
+:root[data-theme="crayons"] .difference-cursor { background:#FAF4E9; }
 
 /* Playful project sheet: bold palette outline and lettering-led composition. */
 .project-page { width:min(90vw,58rem); height:auto; max-height:88dvh; padding:0; border:3px solid var(--panel-accent); border-radius:22px 17px 24px 19px; }
@@ -811,10 +810,122 @@ html[lang] .skating-maya { transform:none; }
  .site-header > .header-controls { gap:4px; }
 }
 
+/* Scrollbar art is separate from its generous draggable hit area. */
+body > .custom-scroll .custom-scroll-thumb { background:transparent; }
+body > .custom-scroll { width:24px; }
+.scroll-flower { position:fixed; inset:0; width:100%; height:100dvh; z-index:99; pointer-events:none; overflow:visible; color:var(--page-scroll-color); }
+.scroll-flower-petal { fill:currentColor; }
+.scroll-flower-ground { fill:var(--accent-4); stroke:var(--accent-4); stroke-linecap:round; }
+.scroll-flower path { fill:none; }
+:root[data-theme="markers"] .scroll-flower-ground { fill:var(--accent-2); stroke:var(--accent-2); }
+.site-loading .scroll-flower { visibility:hidden; }
+@media(prefers-reduced-motion:reduce){ .scroll-flower g { filter:none; } }
+
 /* Reserve the actual label height above every star, including large phones. */
 .carousel-window { padding-block-start:calc(var(--carousel-size) * .3 + 16px); }
 .carousel-tile .star-label { top:auto; bottom:calc(100% + 12px); left:-5%; width:110%; }
 .star-label .handwritten-heading { display:block; width:100%; height:auto; overflow:visible; }
+
+/* Visitor sketches sit behind the content, never above its controls. */
+.background-drawing { position:fixed; inset:0; width:100%; height:100dvh; z-index:0; pointer-events:none; touch-action:none; }
+.has-drawing-layer .hero,.has-drawing-layer .contact-scene,.has-drawing-layer .contact,.has-drawing-layer .skating-footer { background:transparent; }
+.drawing-enabled .background-drawing { pointer-events:auto; }
+.drawing-enabled .site-header,.drawing-enabled main,.drawing-enabled .hero,.drawing-enabled .hero-intro,.drawing-enabled .carousel,.drawing-enabled .carousel-window,.drawing-enabled .carousel-track,.drawing-enabled .carousel-set,.drawing-enabled .contact-scene,.drawing-enabled .contact,.drawing-enabled .contact-links,.drawing-enabled .skating-footer { pointer-events:none; }
+.drawing-enabled .site-header button,.drawing-enabled .site-header a,.drawing-enabled .wordmark,.drawing-enabled h1,.drawing-enabled .hero-intro p,.drawing-enabled .carousel-tile,.drawing-enabled .contact h2,.drawing-enabled .social-icon,.drawing-enabled .copyright,.drawing-enabled .skating-traveler { pointer-events:auto; }
+#pencil-toggle { display:grid; place-items:center; flex:none; width:44px; height:44px; border:0; border-radius:50%; padding:10px; background:transparent; color:var(--page-text); }
+#pencil-toggle svg { display:block; width:24px; height:24px; }
+#pencil-toggle[aria-pressed="true"],
+#music-toggle[aria-pressed="true"] { border-radius:50%; background:var(--contact-title); color:var(--page-background); }
+#pencil-toggle[aria-pressed="true"] .pencil-off { display:none; }
+/* Three controls use circles on phones so the header stays comfortable. */
+@media(max-width:48rem){
+ .site-header .theme-toggle { width:44px; min-width:44px; flex-basis:44px; background:var(--contact-title); color:var(--page-background); }
+ .site-header .theme-toggle-track { display:none; }
+ .site-header .compact-theme-icon { display:block; }
+ .site-header > .header-controls { gap:4px; }
+ .wordmark .handwritten-heading { width:clamp(6rem,25vw,10rem); }
+ .site-header { padding-inline:12px; gap:8px; }
+}
+@media(max-width:359px){
+ .site-header > .header-controls { gap:0; }
+ .wordmark .handwritten-heading { width:5.8rem; }
+ .top-nav > a { font-size:.8rem; }
+}
+
+/* Keep the composition proportionate when browser zoom exposes a very wide viewport. */
+@media(min-width:120rem){
+ :root { font-size:clamp(16px,1vw,48px); }
+ .site-header { min-height:4.75rem; padding-block:.75rem; }
+ .site-header > .header-controls { gap:.5rem; height:2.75rem; }
+ .site-header > .header-controls #music-toggle,#pencil-toggle { width:2.75rem; height:2.75rem; }
+ .site-header > .header-controls #music-toggle svg,#pencil-toggle svg { width:1.5rem; height:1.5rem; }
+ .site-header .theme-toggle { width:5rem; min-height:2.75rem; }
+ .theme-toggle-track { width:4.75rem; height:2.25rem; }
+ .theme-toggle-thumb { top:.25rem; left:.25rem; width:1.75rem; height:1.75rem; }
+ .theme-toggle[aria-checked="true"] .theme-toggle-thumb { transform:translateX(2.5rem); }
+ .theme-toggle svg { top:.5625rem; width:1.125rem; height:1.125rem; }
+ .theme-toggle-sun { left:.5625rem; } .theme-toggle-moon { right:.5625rem; }
+ .contact-scene .footer-ground { height:5.625rem; bottom:1.75rem; }
+ .contact-scene .skating-traveler { bottom:3.375rem; }
+ .copyright { min-height:1.75rem; padding:.3125rem 0; }
+}
+
+/* The rendered scrollbar must track scrolling exactly, without a second CSS animation. */
+body > .custom-scroll .custom-scroll-thumb { transition:none; }
+.scroll-flower-handle { position:fixed; width:52px; height:72px; z-index:101; touch-action:none; cursor:var(--site-cursor-link,pointer); display:none; }
+.site-loading .scroll-flower-handle { visibility:hidden; }
+
+/* Use a single invitation line whenever it can remain comfortably readable. */
+@media(min-width:40rem) {
+ .contact-scene .footer-desktop { display:block; }
+ .contact-scene .footer-mobile { display:none; }
+ .contact-scene .footer-desktop > .handwritten-heading { width:100%; height:auto; max-height:6rem; }
+}
+@media(max-width:39.999rem) {
+ .contact-scene .footer-desktop { display:none; }
+ .contact-scene .footer-mobile { display:block; }
+}
+
+.contact-nav-link { display:inline-flex; align-items:center; gap:.35rem; }
+.contact-heart-icon { width:1.75rem; height:1.75rem; flex:none; color:var(--page-scroll-color); }
+.scroll-heart-handle { position:fixed; width:44px; height:44px; z-index:101; touch-action:none; display:none; cursor:var(--site-cursor-link,pointer); }
+.site-loading .scroll-heart-handle { visibility:hidden; }
+@media(max-width:48rem) {
+ .contact-nav-link { gap:.125rem; }
+ .contact-heart-icon { width:1.35rem; height:1.35rem; }
+ .site-header > .header-controls { gap:0; }
+ .wordmark .handwritten-heading { width:clamp(5.25rem,23vw,10rem); }
+}
+@media(max-width:359px) {
+ .site-header { padding-inline:8px; gap:5px; }
+ .site-header .top-nav > a { font-size:.75rem; }
+ .site-header .wordmark .handwritten-heading { width:5.25rem; }
+}
+
+.scroll-flower .scroll-top-heart { fill:currentColor; }
+
+.scroll-flower .scroll-heart-anchor { fill:currentColor; }
+.scroll-flower .scroll-heart-bridge { fill:none; }
+
+/* Keep a clear edge gap without shifting the heading or narrowing the drag area. */
+@media(max-width:48rem) {
+ body > .custom-scroll { right:0; width:24px; }
+ body > .custom-scroll .custom-scroll-thumb { left:3px; width:7px; }
+}
+
+body > .custom-scroll .custom-scroll-thumb { left:3px; width:var(--page-thumb-width,7px); }
+
+/* Contact and wordmark share the heading's outer margins. */
+.site-header { padding-inline:calc(var(--gutter) + 4px); }
+.site-header .contact-nav-link { display:inline-flex; align-items:center; justify-content:flex-end; min-height:44px; padding:0; gap:0; white-space:nowrap; }
+@media(max-width:48rem) {
+ .site-header .top-nav > a { font-size:.95rem; }
+ .site-header .wordmark .handwritten-heading { width:clamp(6rem,27vw,11rem); }
+}
+@media(max-width:359px) { .site-header .top-nav > a { font-size:.875rem; } }
+
+.skip-link { position:fixed; inset:1rem auto auto 1rem; z-index:2147483647; padding:.5rem 1rem; background:var(--page-background); color:var(--page-text); transform:translateY(-200%); }
+.skip-link:focus { transform:none; }
 
 /* Tactile press feedback preserves each control's existing transform. */
 @media (prefers-reduced-motion: no-preference) {
@@ -825,3 +936,17 @@ html[lang] .skating-maya { transform:none; }
 @media (max-width: 48rem) {
   .site-header > .header-controls { gap: 4px; }
 }
+
+/* Keep the artwork close to the introduction and size it continuously across tablet widths. */
+.carousel {
+  --carousel-size: min(68vw, clamp(17.5rem, 23vw, 24rem));
+  margin-block-start: clamp(.75rem, 2vw, 1.75rem);
+}
+.contact-scene .social-icon { min-width: 44px; min-height: 44px; }
+.copyright { column-gap: 1rem; }
+.copyright a { display: inline-flex; align-items: center; min-height: 44px; }
+@media (min-width: 40rem) and (max-width: 64rem) and (orientation: portrait) {
+  .footer-sun, .footer-moon { top: 22%; }
+}
+
+:root[data-theme="crayons"] .theme-toggle-moon { color:var(--page-background); }

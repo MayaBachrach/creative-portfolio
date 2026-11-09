@@ -167,7 +167,13 @@ function updatePanelAccent() {
   dialog.style.setProperty("--panel-accent", accent);
 }
 
+let closingAnimation;
+let routeRevision = 0;
+
 function showRoute() {
+  routeRevision++;
+  closingAnimation?.cancel();
+  closingAnimation = undefined;
   projectTitle.dataset.letteringDirection = document.documentElement.lang === "en" ? "ltr" : "rtl";
   const [kind, encodedValue] = location.hash.slice(1).split("/");
   if (kind !== "project" && kind !== "tag") {
@@ -221,19 +227,28 @@ function showRoute() {
   projectTitle.focus({ preventScroll: true });
 }
 
-let closingProject = false;
 async function closeProject() {
-  if (closingProject || !dialog.open) return;
-  closingProject = true;
+  if (closingAnimation || !dialog.open) return;
+  const revision = routeRevision;
+  const route = location.hash;
   stopDetailVideos();
   if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    await dialog.animate([
+    const animation = dialog.animate([
       { transform: "translateY(0) scale(1)", opacity: 1 },
       { transform: panelOrigin, opacity: 0 },
-    ], { duration: 400, easing: "cubic-bezier(.4,0,.2,1)" }).finished;
+    ], { duration: 400, easing: "cubic-bezier(.4,0,.2,1)" });
+    closingAnimation = animation;
+    try {
+      await animation.finished;
+    } catch (error) {
+      if (error.name !== "AbortError") throw error;
+      return;
+    } finally {
+      if (closingAnimation === animation) closingAnimation = undefined;
+    }
   }
+  if (revision !== routeRevision || route !== location.hash) return;
   dialog.close();
-  closingProject = false;
   if (openedFromCard && location.hash.startsWith("#project/")) {
     history.back();
   } else {
@@ -484,15 +499,20 @@ async function revealPreparedPage() {
  const elapsed = performance.now() - (window.portfolioLoadingStarted || 0);
  const minimum = Math.max(0, 1200 - elapsed);
  const assets = [document.fonts.ready, ...frameReadiness, ...[...document.querySelectorAll(".skating-frame")].map(image=>image.decode())];
- let assetsReadyAt=performance.now(), failedAssets=0;
+ let assetsReadyAt=performance.now(), failedAssets=0, assetWaitTimedOut=false;
  const assetsReady=Promise.allSettled(assets).then(results=>{assetsReadyAt=performance.now();failedAssets=results.filter(result=>result.status==="rejected").length;});
- await Promise.all([assetsReady,new Promise(resolve=>setTimeout(resolve,minimum))]);
+ let timeout;
+ const deadline = new Promise(resolve => {
+  timeout = setTimeout(() => { assetWaitTimedOut = true; resolve(); }, 3500);
+ });
+ await Promise.all([Promise.race([assetsReady, deadline]), new Promise(resolve => setTimeout(resolve, minimum))]);
+ clearTimeout(timeout);
  await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
  fitGreeting();
  document.documentElement.classList.remove("site-loading");
  document.querySelector("#site-loader")?.remove();
  const shownAt=performance.now();
- window.portfolioLoadHistory?.record({assetsReadyMs:Math.round(assetsReadyAt),pageShownMs:Math.round(shownAt),minimumLoaderExtraMs:Math.round(Math.max(0,shownAt-assetsReadyAt)),failedAssets});
+ window.portfolioLoadHistory?.record({assetsReadyMs:Math.round(assetsReadyAt),pageShownMs:Math.round(shownAt),minimumLoaderExtraMs:Math.round(Math.max(0,shownAt-assetsReadyAt)),failedAssets,assetWaitTimedOut});
  requestAnimationFrame(playHeadingIntro);
 }
 revealPreparedPage();
@@ -501,6 +521,8 @@ revealPreparedPage();
 (() => {
  const viewport=document.querySelector(".carousel-window"), track=document.querySelector("#carousel-track");
  const touch=matchMedia("(hover:none), (pointer:coarse)");
+ let onScreen=true;
+ new IntersectionObserver(([entry])=>{ onScreen=entry.isIntersecting; }).observe(viewport);
  let offset=0, last=0, focusCheck=0, drag=null, suppressClick=false, speed=1, momentum=0, focusedStar=null, focusStarted=0;
  const wrap=()=>{const width=track.scrollWidth/2;if(width)offset=((offset%width)+width)%width;};
  const paint=()=>track.style.transform="translate3d("+(-offset)+"px,0,0)";
@@ -521,25 +543,25 @@ revealPreparedPage();
  viewport.addEventListener("click",e=>{if(suppressClick){e.preventDefault();e.stopImmediatePropagation();}},true);
  function tick(now){
   const dt=Math.min((now-last)/1000||0,.05);last=now;
-  let reading=false, readingStrength=0;
+  if (!onScreen || document.hidden || (reducedMotion.matches && !drag)) { requestAnimationFrame(tick); return; }
+  let readingStrength=0;
   if(touch.matches){
    if(now-focusCheck>24){
-    focusCheck=now;let closest=null,distance=Infinity;
-    for(const tile of track.querySelectorAll(".carousel-tile")){
-     const r=tile.getBoundingClientRect(),d=Math.abs(r.left+r.width/2-innerWidth/2);
-     if(d<distance){distance=d;closest=tile;}
-    }
-    const zone=innerWidth*.20;
-    for(const tile of track.querySelectorAll(".carousel-tile")){
-     const r=tile.getBoundingClientRect();
-     const d=Math.abs(r.left+r.width/2-innerWidth/2);
+    focusCheck=now;
+    const center = innerWidth / 2;
+    const zone = innerWidth * .20;
+    const measurements = Array.from(track.querySelectorAll(".carousel-tile"), tile => {
+     const bounds = tile.getBoundingClientRect();
+     return { tile, distance: Math.abs(bounds.left + bounds.width / 2 - center) };
+    });
+    for (const { tile, distance: d } of measurements) {
      const raw=Math.max(0,1-d/zone);
      const strength=(!drag&&Math.abs(momentum)<100)?raw*raw*(3-2*raw):0;
      tile.style.setProperty("--reading-strength",strength.toFixed(4));
      tile.classList.toggle("is-reading",strength>0);
     }
    }
-   reading=!!track.querySelector(".is-reading");
+
   }
   const paused=document.hidden||reducedMotion.matches||dialog.open||(!touch.matches&&track.matches(":hover"))||!!drag;
   readingStrength=Number(track.querySelector(".is-reading")?.style.getPropertyValue("--reading-strength")||0);
@@ -550,4 +572,51 @@ revealPreparedPage();
   requestAnimationFrame(tick);
  }
  requestAnimationFrame(tick);
+})();
+
+/* Drive the actual document scroll so the custom thumb and flower follow it. */
+(() => {
+  let frame = 0;
+  const cancel = () => {
+    cancelAnimationFrame(frame);
+    frame = 0;
+  };
+  for (const event of ["wheel", "touchstart", "pointerdown", "keydown", "popstate"]) {
+    window.addEventListener(event, cancel, { passive: true });
+  }
+  document.addEventListener("click", event => {
+    const link = event.target.closest?.('a[href="#contact"], a[href="#top"]');
+    if (!link || event.defaultPrevented || event.button !== 0 ||
+        event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const target = document.getElementById(link.hash.slice(1));
+    if (!target) return;
+    event.preventDefault();
+    cancel();
+
+    const start = scrollY;
+    const limit = document.scrollingElement.scrollHeight - document.scrollingElement.clientHeight;
+    const end = Math.max(0, Math.min(limit, start + target.getBoundingClientRect().top));
+    const finish = () => {
+      frame = 0;
+      window.scrollTo({ top: end, behavior: "instant" });
+      if (location.hash !== link.hash) history.pushState(null, "", link.hash);
+      target.setAttribute("tabindex", "-1");
+      target.focus({ preventScroll: true });
+    };
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || Math.abs(end - start) < 1) {
+      finish();
+      return;
+    }
+
+    const started = performance.now();
+    const duration = 240;
+    const move = now => {
+      const progress = Math.min(1, (now - started) / duration);
+      if (progress === 1) { finish(); return; }
+      const ease = 1 - (1 - progress) ** 3;
+      window.scrollTo({ top: start + (end - start) * ease, behavior: "instant" });
+      frame = requestAnimationFrame(move);
+    };
+    frame = requestAnimationFrame(move);
+  });
 })();

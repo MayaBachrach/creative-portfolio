@@ -1,7 +1,7 @@
 // Local-only load history. No requests, cookies, or third-party analytics.
 (() => {
  const key="maya-portfolio-load-history",limit=100;
- function history(){try{return JSON.parse(localStorage.getItem(key)||"[]");}catch{return[];}}
+ function history(){try{const rows=JSON.parse(localStorage.getItem(key)||"[]");return Array.isArray(rows)?rows:[];}catch{return[];}}
  window.portfolioLoadHistory={read:history,toJSON:()=>JSON.stringify(history(),null,2),record(details){
   const navigation=performance.getEntriesByType("navigation")[0];
   const entries=performance.getEntriesByType("resource");
