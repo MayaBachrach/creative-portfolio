@@ -1,16 +1,16 @@
 <!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>תצוגת ניסיון — תיק העבודות</title><style>
 *{box-sizing:border-box}body{margin:0;font:14px system-ui;background:#151419;color:white}
 iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#FAF4E9}
-.controls{position:fixed;z-index:30;top:8px;left:8px;right:8px;max-width:760px;margin:auto;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px;padding:12px 16px;background:#222129f2;border-radius:16px;box-shadow:0 5px 20px #0007}
+.controls{position:fixed;z-index:30;bottom:12px;left:12px;right:auto;max-width:min(92vw,760px);display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px;padding:12px 16px;background:#222129f2;border-radius:16px;box-shadow:0 5px 20px #0007}.controls[hidden]{display:none}.preview-tab{position:fixed;bottom:12px;left:12px;z-index:31;padding:10px 14px;background:#222129f2;border:2px solid #B2F224;border-radius:14px;color:#fff;font:600 13px system-ui;cursor:pointer}.preview-tab:focus-visible{outline:3px solid #F84AAD;outline-offset:3px}
 .controls label{display:flex;gap:6px;align-items:center;cursor:pointer}
 .controls input{width:18px;height:18px;accent-color:#B2F224}
 .controls button{font:inherit;color:inherit;background:transparent;border:1px solid #aaa;padding:6px 12px;border-radius:8px;cursor:pointer}
 .controls button:focus-visible,.controls input:focus-visible{outline:2px solid #B2F224;outline-offset:3px}
 #status{font-size:11px;color:#ddd}
-@media(max-width:650px){.controls{gap:8px;padding:8px}.controls strong{width:100%;text-align:center}}
+@media(max-width:650px){.controls{left:6px;bottom:6px;right:6px;max-width:none;gap:8px;padding:8px}.controls strong{width:100%;text-align:center}.preview-tab{bottom:6px;left:6px}}
 </style></head><body>
 <iframe id="site" src="../" title="תיק העבודות — תצוגה חיה"></iframe>
-<div class="controls"><strong>ניסוי על האתר — לא שינוי קבוע</strong>
+<button class="preview-tab" id="open-preview" type="button" aria-expanded="false" aria-controls="preview-controls">⚙ ניסוי</button><div class="controls" id="preview-controls" hidden><button id="close-preview" type="button" aria-label="סגירת סרגל הניסוי">סגור ×</button><strong>ניסוי על האתר — לא שינוי קבוע</strong>
 <label><input type="checkbox" id="buttons">כפתורים</label>
 <label><input type="checkbox" id="shadow">צל על ציור לבן בכוכב ירוק</label>
 <button id="reset">הצג את המקור</button><span id="status" role="status">טוען…</span></div>
@@ -42,4 +42,4 @@ frame.addEventListener("load",()=>{
  }catch(e){status.textContent="לא ניתן להחיל את התצוגה על האתר";}
 });
 buttons.onchange=sync;shadow.onchange=sync;
-document.getElementById("reset").onclick=()=>{buttons.checked=false;shadow.checked=false;sync()};</script></body></html>
+document.getElementById("reset").onclick=()=>{buttons.checked=false;shadow.checked=false;sync()};const tab=document.getElementById("open-preview"),panel=document.getElementById("preview-controls");function setPanel(open){panel.hidden=!open;tab.hidden=open;tab.setAttribute("aria-expanded",String(open));if(open)document.getElementById("close-preview").focus();else tab.focus()}tab.onclick=()=>setPanel(true);document.getElementById("close-preview").onclick=()=>setPanel(false);document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!panel.hidden)setPanel(false)});</script></body></html>
