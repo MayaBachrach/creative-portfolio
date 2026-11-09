@@ -932,3 +932,7 @@ body > .custom-scroll .custom-scroll-thumb { left:3px; width:var(--page-thumb-wi
   :is(button, .top-nav a, .social-icon, .copyright a, .project-card):active:not(:disabled) { scale: .94; }
   :is(button, .top-nav a, .social-icon, .copyright a, .project-card) { transition: scale 140ms cubic-bezier(.22,1,.36,1); }
 }
+
+@media (max-width: 48rem) {
+  .site-header > .header-controls { gap: 4px; }
+}
