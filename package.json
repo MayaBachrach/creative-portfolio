@@ -1,0 +1,15 @@
+{
+  "name": "maya-portfolio",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node scripts/build.cjs",
+    "check": "node scripts/check.cjs",
+    "test": "npm run build && npm run check && node scripts/browser-test.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.65.0"
+  }
+}

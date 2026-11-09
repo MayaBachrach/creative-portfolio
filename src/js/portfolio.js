@@ -484,15 +484,20 @@ async function revealPreparedPage() {
  const elapsed = performance.now() - (window.portfolioLoadingStarted || 0);
  const minimum = Math.max(0, 1200 - elapsed);
  const assets = [document.fonts.ready, ...frameReadiness, ...[...document.querySelectorAll(".skating-frame")].map(image=>image.decode())];
- let assetsReadyAt=performance.now(), failedAssets=0;
+ let assetsReadyAt=performance.now(), failedAssets=0, assetWaitTimedOut=false;
  const assetsReady=Promise.allSettled(assets).then(results=>{assetsReadyAt=performance.now();failedAssets=results.filter(result=>result.status==="rejected").length;});
- await Promise.all([assetsReady,new Promise(resolve=>setTimeout(resolve,minimum))]);
+ let timeout;
+ const deadline = new Promise(resolve => {
+  timeout = setTimeout(() => { assetWaitTimedOut = true; resolve(); }, 3500);
+ });
+ await Promise.all([Promise.race([assetsReady, deadline]), new Promise(resolve => setTimeout(resolve, minimum))]);
+ clearTimeout(timeout);
  await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
  fitGreeting();
  document.documentElement.classList.remove("site-loading");
  document.querySelector("#site-loader")?.remove();
  const shownAt=performance.now();
- window.portfolioLoadHistory?.record({assetsReadyMs:Math.round(assetsReadyAt),pageShownMs:Math.round(shownAt),minimumLoaderExtraMs:Math.round(Math.max(0,shownAt-assetsReadyAt)),failedAssets});
+ window.portfolioLoadHistory?.record({assetsReadyMs:Math.round(assetsReadyAt),pageShownMs:Math.round(shownAt),minimumLoaderExtraMs:Math.round(Math.max(0,shownAt-assetsReadyAt)),failedAssets,assetWaitTimedOut});
  requestAnimationFrame(playHeadingIntro);
 }
 revealPreparedPage();
@@ -501,6 +506,8 @@ revealPreparedPage();
 (() => {
  const viewport=document.querySelector(".carousel-window"), track=document.querySelector("#carousel-track");
  const touch=matchMedia("(hover:none), (pointer:coarse)");
+ let onScreen=true;
+ new IntersectionObserver(([entry])=>{ onScreen=entry.isIntersecting; }).observe(viewport);
  let offset=0, last=0, focusCheck=0, drag=null, suppressClick=false, speed=1, momentum=0, focusedStar=null, focusStarted=0;
  const wrap=()=>{const width=track.scrollWidth/2;if(width)offset=((offset%width)+width)%width;};
  const paint=()=>track.style.transform="translate3d("+(-offset)+"px,0,0)";
@@ -521,7 +528,8 @@ revealPreparedPage();
  viewport.addEventListener("click",e=>{if(suppressClick){e.preventDefault();e.stopImmediatePropagation();}},true);
  function tick(now){
   const dt=Math.min((now-last)/1000||0,.05);last=now;
-  let reading=false, readingStrength=0;
+  if (!onScreen || document.hidden || (reducedMotion.matches && !drag)) { requestAnimationFrame(tick); return; }
+  let readingStrength=0;
   if(touch.matches){
    if(now-focusCheck>24){
     focusCheck=now;let closest=null,distance=Infinity;
@@ -539,7 +547,7 @@ revealPreparedPage();
      tile.classList.toggle("is-reading",strength>0);
     }
    }
-   reading=!!track.querySelector(".is-reading");
+
   }
   const paused=document.hidden||reducedMotion.matches||dialog.open||(!touch.matches&&track.matches(":hover"))||!!drag;
   readingStrength=Number(track.querySelector(".is-reading")?.style.getPropertyValue("--reading-strength")||0);
