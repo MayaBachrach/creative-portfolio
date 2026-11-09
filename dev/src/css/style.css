@@ -922,3 +922,6 @@ body > .custom-scroll .custom-scroll-thumb { left:3px; width:var(--page-thumb-wi
  .site-header .wordmark .handwritten-heading { width:clamp(6rem,27vw,11rem); }
 }
 @media(max-width:359px) { .site-header .top-nav > a { font-size:.875rem; } }
+
+.skip-link { position:fixed; inset:1rem auto auto 1rem; z-index:2147483647; padding:.5rem 1rem; background:var(--page-background); color:var(--page-text); transform:translateY(-200%); }
+.skip-link:focus { transform:none; }

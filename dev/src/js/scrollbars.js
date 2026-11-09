@@ -5,6 +5,9 @@ const reduced=matchMedia('(prefers-reduced-motion:reduce)');
 function clearFlowerLanding(ground) {
  const bounds=ground.getBoundingClientRect();
  if(bounds.height<=0)return;
+ const size = bounds.width + ":" + bounds.height;
+ if (ground.layoutSize === size) return;
+ ground.layoutSize = size;
  const width=bounds.width/(bounds.height/90);
  ground.setAttribute('viewBox','0 0 '+width+' 90');
  const line=ground.querySelector('.ground-line');
